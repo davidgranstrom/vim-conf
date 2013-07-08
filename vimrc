@@ -300,7 +300,7 @@ nnoremap Y y$
 " nnoremap <leader>J :SplitCommaList<CR>
 
 " create an empty buffer for SuperCollider code
-" nnoremap <leader>sn :SCNewScratchBuf<CR>
+nnoremap <leader>sn :SCNewScratchBuf<CR>
 
 " use <esc> to cancel completion
 inoremap <expr> <Esc> pumvisible() ? "\<C-y>" : "\<Esc>"
@@ -309,7 +309,7 @@ inoremap <expr> <C-c> pumvisible() ? "\<C-e>" : "\<C-c>"
 " inoremap <expr> <CR>  pumvisible() ? "\<C-y>" : "\<CR>"
 
 " edit current buffer in a new tab (buffer must be saved first)
-nnoremap <silent><leader>te :tabedit %<CR>
+nnoremap <silent><leader>te :tabedit! %<CR>
 nnoremap <silent><leader>tl :tabmove +1<CR>
 nnoremap <silent><leader>th :tabmove -1<CR>
 if has("gui_macvim")
@@ -393,29 +393,6 @@ elseif executable('grep')
     let g:unite_source_grep_default_opts = '--colour=never'
     let g:unite_source_grep_recursive_opt = ''
 endif
-
-
-" neocomplete
-" Use neocomplete.
-" let g:neocomplete#enable_at_startup = 1
-" " Use smartcase.
-" let g:neocomplete#enable_smart_case = 1
-" " Set minimum syntax keyword length.
-" let g:neocomplete#sources#syntax#min_keyword_length = 3
-" let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-
-" " Define dictionary.
-" let g:neocomplete#sources#dictionary#dictionaries = {
-"             \ 'default' : '',
-"             \ 'vimshell' : $HOME.'/.vimshell_hist',
-"             \ 'supercollider' : $HOME.'/.scvim/sc_object_completion',
-"             \ }
-" let g:neocomplete#use_vimproc = 1
-" let l:source = {
-"             \ 'name' : 'scvim',
-"             \ 'kind' : 'manual',
-"             \ 'filetypes' : { 'supercollider' : 1 },
-"             \}
 
 " ----------------------------------------------------------------------------
 " -- SuperTab  ---------------------------------------------------------------
@@ -506,6 +483,23 @@ imap <expr> <CR> pumvisible() ?
     \ "<Plug>delimitMateCR"
 let delimitMate_expand_cr    = 1
 let delimitMate_expand_space = 1
+
+" ----------------------------------------------------------------------------
+" -- clang_complete  ---------------------------------------------------------
+
+let g:clang_snippets = 1
+let g:clang_snippets_engine = 'ultisnips'
+let g:clang_use_library = 1
+" let g:clang_library_path='/usr/local/lib/libclang.dylib'
+" let g:clang_exec = '/usr/local/bin/clang'
+let g:clang_library_path='/Users/david/bin/clang+llvm-3.3-x86_64-apple-darwin12/lib/libclang.dylib'
+let g:clang_exec = '/Users/david/bin/clang+llvm-3.3-x86_64-apple-darwin12/bin/clang'
+
+" ----------------------------------------------------------------------------
+" -- airline  ---------------------------------------------------------
+let g:airline_theme='simple'
+let g:airline_enable_syntastic=0
+let g:airline_fugitive_prefix = '⎇ '
 
 " ----------------------------------------------------------------------------
 " ========================================================================={{{
