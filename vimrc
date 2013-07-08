@@ -130,14 +130,14 @@ set wildmenu                      " enhanced command line completion
 set wildignorecase                " be smart case-sensitive
 set backspace=2                   " allow backspacing over indent, eol, and the start of an insert
 set virtualedit=all               " be able to access all areas of the buffer
-set complete+=k                   " where to look for auto-completion
+" set complete+=k                   " where to look for auto-completion
+set complete-=i
 set diffopt+=vertical             " use vertical diffs by default
 set laststatus=2                  " always display a status line
 " turn off all alerts
-set visualbell t_vb=              " turn off error beep/flash
-set novisualbell                  " turn off visual bell (for gui)
-" set cpoptions+=$                  " place a '$' when editing with 'change'
-set autochdir                     " change to cwd of file
+set visualbell                    " turn off error beep/flash
+" set visualbell t_vb=              " turn off error beep/flash
+set autochdir                     " change to cwd of current file
 set fillchars=
 
 " indenting
@@ -148,7 +148,7 @@ set expandtab
 set shiftround
 
 "status line
-set statusline=%<%f\ [buf:%n]\ %h%m%r%=ln:%l\ col:%c%V\ \|\ char:%b\ [\ %p%%\ ]
+" set statusline=%<%f\ [buf:%n]\ %h%m%r%=ln:%l\ col:%c%V\ \|\ char:%b\ [\ %p%%\ ]
 " custom list chars
 set listchars=eol:$,tab:>-,trail:-,nbsp:%
 
