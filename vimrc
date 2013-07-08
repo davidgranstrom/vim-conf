@@ -25,7 +25,6 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " -- Plugins  ----------------------------------------------------------------
 
 NeoBundle 'Shougo/unite.vim',         { 'name' : 'unite'                     }
-NeoBundle 'Shougo/neocomplete.vim',   { 'name' : 'neocomplete'               }
 NeoBundle 'Shougo/unite-outline',     { 'name' : 'outline'                   }
 NeoBundle 'ujihisa/unite-colorscheme',{ 'name' : 'unite-colorscheme'         }
 NeoBundle 'tpope/vim-commentary' ,    { 'name' : 'commentary'                }
@@ -37,6 +36,8 @@ NeoBundle 'scrooloose/nerdtree',      { 'name' : 'nerdtree'                  }
 NeoBundle 'ervandew/supertab',        { 'name' : 'supertab'                  }
 NeoBundle 'SirVer/ultisnips',         { 'name' : 'ultisnips'                 }
 NeoBundle 'davidgranstrom/scvim',     { 'name' : 'supercollider'             }
+NeoBundle 'bling/vim-airline',        { 'name' : 'airline'                   }
+NeoBundle 'sjl/badwolf',              { 'name' : 'badwolf'                   }
 NeoBundle 'vim-scripts/Colour-Sampler-Pack',{ 'name' : 'colour-sampler-pack' }
 
 " automated builds
@@ -77,10 +78,15 @@ NeoBundleLazy 'b4winckler/vim-objc', {
             \ 'name' : 'objc',
             \ 'autoload' : { 'filetypes' : 'objc' }
             \}
-" NeoBundleLazy 'Rip-Rip/clang_complete', {
-"             \ 'name' : 'clang_complete',
-"             \ 'autoload' : { 'filetypes' : 'c,cpp,objc' }
-"             \}
+NeoBundleLazy 'Rip-Rip/clang_complete', {
+            \ 'name' : 'clang_complete',
+            \ 'autoload' : { 'filetypes' : 'c,cpp,objc' }
+            \}
+NeoBundleLazy 'derekwyatt/vim-fswitch', {
+            \ 'name' : 'fswitch',
+            \ 'autoload' : { 'filetypes' : 'c,cpp,objc' }
+            \}
+
 
 " pending
 "
@@ -88,9 +94,7 @@ NeoBundleLazy 'b4winckler/vim-objc', {
 " NeoBundle 'Lokaltog/powerline',       { 'name' :  'powerline'   }
 
 " disabled
-NeoBundleDisable neocomplete
 NeoBundleDisable unite-colorscheme
-" NeoBundleDisable ultisnips
 
 " ----------------------------------------------------------------------------
 " }}}
