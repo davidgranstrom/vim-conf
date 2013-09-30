@@ -371,20 +371,21 @@ au! BufEnter,BufWinEnter,BufNewFile,BufRead *.md,*.markdown set filetype=markdow
 " -- NerdTREE  ---------------------------------------------------------------
 
 " toggle
-map <silent> <F2> :NERDTreeToggle ~/<CR>
-map <silent> <F3> :NERDTreeFind<CR>
+nnoremap <silent> <F2> :NERDTreeToggle ~/<CR>
+nnoremap <silent> <F3> :NERDTreeFind<CR>
 
 " ----------------------------------------------------------------------------
 " -- Unite  ------------------------------------------------------------------
 
-" let g:unite_split_rule = 'botright'
 let g:unite_source_history_yank_enable = 1
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
+" call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#custom#source('file,file/new,buffer,file_rec',
+            \ 'matchers', 'matcher_fuzzy')
 
 nnoremap <leader>t :<C-u>Unite -start-insert file_rec/async<cr>
 nnoremap <leader>r :<C-u>Unite -start-insert file_rec/async:!<cr>
 nnoremap <leader>b :<C-u>Unite -start-insert -no-split buffer<cr>
-nnoremap <leader>f :<C-u>Unite -no-split file<cr>
+nnoremap <leader>. :<C-u>Unite file<cr>
 
 nnoremap <leader>m :<C-u>Unite -no-split file_mru<cr>
 nnoremap <leader>y :<C-u>Unite history/yank<cr>
@@ -400,6 +401,8 @@ autocmd FileType unite call s:unite_my_settings()
 function! s:unite_my_settings()
     nnoremap <silent><buffer><expr> <C-s> unite#do_action('split')
     nnoremap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+    inoremap <silent><buffer><expr> <C-s> unite#do_action('split')
+    inoremap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
 endfunction
 
 if executable('ag')
@@ -462,39 +465,6 @@ xmap s <plug>VSurround
 nnoremap <Leader>fs :Gstatus<CR><C-w>K
 
 " ----------------------------------------------------------------------------
-" -- Tagbar  -----------------------------------------------------------------
-
-let g:tagbar_autofocus = 1
-let g:tagbar_width     = 35
-" let g:tagbar_compact   = 1
-nnoremap <silent> <F5> :TagbarToggle<CR>
-
-" SuperCollider syntax
-let g:tagbar_type_supercollider = {
-    \ 'ctagstype' : 'supercollider',
-    \ 'kinds'     : [
-        \ 'c:Class names',
-        \ 'm:Class methods',
-        \ 'i:Instance methods',
-    \ ],
-    \ 'sort' : 0
-\ }
-
-" add this later to get full functionality (needs parser)
-    " \ 'sort' : 0,
-    " \ 'sro'  : '.',
-    " \ 'kind2scope' : {
-    "     \ 'c' : 'Class names',
-    "     \ 'm' : 'Class methods',
-    "     \ 'i' : 'Instance methods',
-    " \ },
-    " \ 'scope2kind' : {
-    "     \ 'Class names'      : 'c',
-    "     \ 'Class methods'    : 'm',
-    "     \ 'Instance methods' : 'i',
-    " \ }
-
-" ----------------------------------------------------------------------------
 " -- delimitMate  ------------------------------------------------------------
 
 imap <C-j> <Plug>delimitMateS-Tab
@@ -512,14 +482,32 @@ let g:clang_snippets_engine = 'ultisnips'
 let g:clang_use_library = 1
 " let g:clang_library_path='/usr/local/lib/libclang.dylib'
 " let g:clang_exec = '/usr/local/bin/clang'
-let g:clang_library_path='/Users/david/bin/clang+llvm-3.3-x86_64-apple-darwin12/lib/libclang.dylib'
-let g:clang_exec = '/Users/david/bin/clang+llvm-3.3-x86_64-apple-darwin12/bin/clang'
 
 " ----------------------------------------------------------------------------
-" -- airline  ---------------------------------------------------------
-let g:airline_theme='simple'
-let g:airline_enable_syntastic=0
-let g:airline_fugitive_prefix = '⎇ '
+" -- airline  ----------------------------------------------------------------
+
+" let g:airline_theme             = 'dark'
+let g:airline_theme             = 'jellybeans'
+let g:airline_enable_syntastic  = 0
+let g:airline_detect_whitespace = 0
+if has("gui_running")
+    let g:airline_powerline_fonts = 1
+endif
+" let g:airline_section_z = g:airline_linecolumn_prefix . '%3c:%3l%3p%%'
+" let g:airline_fugitive_prefix = '⎇ '
+" call s:check_defined('g:airline_section_z', '%3p%% '.g:airline_linecolumn_prefix.'%3l:%3c')
+
+" ----------------------------------------------------------------------------
+" -- YCM  --------------------------------------------------------------------
+
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+
+" ----------------------------------------------------------------------------
+" -- FSwitch  ----------------------------------------------------------------
+
+nmap <silent> <Leader>s :FSSplitAbove<cr>
+nmap <silent> <Leader>a :FSHere<cr>
 
 " ----------------------------------------------------------------------------
 " ========================================================================={{{
