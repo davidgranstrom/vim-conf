@@ -348,15 +348,14 @@ nnoremap <silent><leader>qf :call ToggleQuickFix()<cr>
 " ============================================================================
 " {{{
 
+" supercollider
+au FileType supercollider set tags^=$HOME/.sctags
+au Filetype supercollider set commentstring=//%s
 " source supercollider mappings
 so ~/.vim/bundle/dkg/supercollider/scvim_init.vim
 
 " markdown
 au! BufEnter,BufWinEnter,BufNewFile,BufRead *.md,*.markdown set filetype=markdown
-
-" supercollider
-" au! BufEnter,BufWinEnter,BufNewFile,BufRead *.sc,*.scd set filetype=supercollider
-" au! FileType supercollider NeoBundleSource supercollider
 
 " processing
 " au! BufEnter,BufWinEnter,BufNewFile,BufRead *.pde set filetype=processing
