@@ -9,9 +9,12 @@
 " no need to be compatible with vi
 set nocompatible
 
-" make NeoBundle to manage all plugins
+" make NeoBundle manage all plugins
 if has('vim_starting')
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
+    set runtimepath+=~/.vim/bundle/neobundle.vim/
+else
+    " Call on_source hook when reloading .vimrc.
+    call neobundle#call_hook('on_source')
 endif
 
 call neobundle#rc(expand('~/.vim/bundle/'))
@@ -27,18 +30,22 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'Shougo/unite.vim',         { 'name' : 'unite'                     }
 NeoBundle 'Shougo/unite-outline',     { 'name' : 'outline'                   }
 NeoBundle 'ujihisa/unite-colorscheme',{ 'name' : 'unite-colorscheme'         }
+NeoBundle 'scrooloose/nerdtree',      { 'name' : 'nerdtree'                  }
 NeoBundle 'tpope/vim-commentary' ,    { 'name' : 'commentary'                }
 NeoBundle 'tpope/vim-surround' ,      { 'name' : 'surround'                  }
 NeoBundle 'tpope/vim-repeat' ,        { 'name' : 'repeat'                    }
 NeoBundle 'godlygeek/tabular',        { 'name' : 'tabular'                   }
 NeoBundle 'Raimondi/delimitMate',     { 'name' : 'delimitMate'               }
-NeoBundle 'scrooloose/nerdtree',      { 'name' : 'nerdtree'                  }
 NeoBundle 'ervandew/supertab',        { 'name' : 'supertab'                  }
 NeoBundle 'SirVer/ultisnips',         { 'name' : 'ultisnips'                 }
 NeoBundle 'davidgranstrom/scvim',     { 'name' : 'supercollider'             }
 NeoBundle 'bling/vim-airline',        { 'name' : 'airline'                   }
-NeoBundle 'sjl/badwolf',              { 'name' : 'badwolf'                   }
-NeoBundle 'vim-scripts/Colour-Sampler-Pack',{ 'name' : 'colour-sampler-pack' }
+NeoBundle 'ryotakato/unite-outline-objc', {
+            \'name' : 'outline-objc'
+            \}
+NeoBundle 'vim-scripts/Colour-Sampler-Pack', {
+            \'name' : 'colour-sampler-pack'
+            \}
 
 " automated builds
 NeoBundle 'Shougo/vimproc', {
@@ -63,38 +70,37 @@ NeoBundleLazy 'godlygeek/csapprox', {
             \}
 NeoBundleLazy 'sjl/gundo.vim', {
             \ 'name' : 'gundo',
-            \ 'autoload' : { 'commands' : ':GundoToggle' }
-            \}
-NeoBundleLazy 'majutsushi/tagbar', {
-            \ 'name' : 'tagbar',
-            \ 'autoload' : { 'commands' : ':TagbarToggle' }
+            \ 'autoload' : { 'commands' : 'GundoToggle' }
             \}
 NeoBundleLazy 'tpope/vim-fugitive', {
             \ 'name' : 'fugitive',
             \ 'augroup' : 'fugitive',
-            \ 'autoload' : { 'commands' : ':Gstatus' }
+            \ 'autoload' : { 'commands' : 'Gstatus' }
             \}
 NeoBundleLazy 'b4winckler/vim-objc', {
             \ 'name' : 'objc',
             \ 'autoload' : { 'filetypes' : 'objc' }
             \}
-NeoBundleLazy 'Rip-Rip/clang_complete', {
-            \ 'name' : 'clang_complete',
-            \ 'autoload' : { 'filetypes' : 'c,cpp,objc' }
-            \}
 NeoBundleLazy 'derekwyatt/vim-fswitch', {
             \ 'name' : 'fswitch',
             \ 'autoload' : { 'filetypes' : 'c,cpp,objc' }
             \}
+NeoBundleLazy 'Valloric/YouCompleteMe', {
+            \ 'name' : 'youcompleteme',
+            \ 'autoload' : { 'filetypes' : 'c,cpp,objc' }
+            \}
+" NeoBundleLazy 'xolox/vim-easytags', {
+"             \ 'depends' : 'xolox/vim-misc',
+"             \ 'name' : 'easytags',
+"             \ 'autoload' : { 'filetypes' : 'c,cpp,objc' }
+"             \}
 
 
 " pending
 "
-" NeoBundle 'vim-scripts/ScrollColors', { 'name' : 'scrollcolors' }
-" NeoBundle 'Lokaltog/powerline',       { 'name' :  'powerline'   }
 
 " disabled
-NeoBundleDisable unite-colorscheme
+NeoBundleDisable youcompleteme
 
 " ----------------------------------------------------------------------------
 " }}}
@@ -107,10 +113,6 @@ filetype plugin indent on         " detect plugin filetypes
 syntax enable                     " syntax highlighting
 
 NeoBundleCheck                    " installation check
-                                  " call on_source hook when reloading .vimrc
-if !has('vim_starting')
-    call neobundle#call_hook('on_source')
-endif
 
 set directory^=$HOME/.vim/.swap// " put all swap files in one place
 let mapleader=","                 " set mapleader
