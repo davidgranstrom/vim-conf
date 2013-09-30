@@ -1,0 +1,44 @@
+"  vimrc0
+"
+set nocompatible
+filetype plugin indent on
+syntax enable
+
+colorscheme default
+set background=dark
+
+set directory^=$HOME/.vim/.swap// " put all swap files in one place
+let mapleader=","                 " set mapleader
+set mouse=a                       " enable mouse
+set clipboard=unnamed             " yank to system-wide clipboard
+set timeout timeoutlen=600        " shorter timeout lenght for keystrokes
+set ttyfast                       " assume fast terminal
+set hidden                        " be able to hide modified buffers
+set nowrap                        " don't wrap words
+set nostartofline                 " keep the cursor at the current column when moving
+set scrolloff=8                   " keep a distance of from the cursor when scrolling
+set formatoptions+=r              " auto insert comments from insert mode
+set ignorecase                    " ignore case in search patterns
+set smartcase                     " overrides 'ignorecase' if search pattern contains an upper char
+set incsearch                     " incrementally match the search
+set wildmenu                      " enhanced command line completion
+set wildignorecase                " be smart case-sensitive
+set backspace=2                   " allow backspacing over indent, eol, and the start of an insert
+set virtualedit=all               " be able to access all areas of the buffer
+set complete-=i                   " where to look for auto-completion
+set diffopt+=vertical             " use vertical diffs by default
+set laststatus=2                  " always display a status line
+" turn off all alerts
+set visualbell                    " turn off error beep/flash
+set visualbell t_vb=              " turn off error beep/flash
+set autochdir                     " change to cwd of current file
+
+" indenting
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set shiftround
+
+" key mappings
+imap jk <ESC>
