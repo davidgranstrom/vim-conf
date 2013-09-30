@@ -159,6 +159,9 @@ if has("gui_running")
     " set colorscheme and fonts
     " colorscheme kellys
     colorscheme jellybeans
+    if has("gui_macvim")
+        set transparency=3
+    endif
     " set guifont=Monospace,Menlo:h12
     set guifont=Monospace,Meslo\ LG\ S\ for\ Powerline:h12
     set guicursor=n-c-v:block-Cursor-blinkOn0
