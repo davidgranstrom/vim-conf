@@ -89,15 +89,14 @@ NeoBundleLazy 'Valloric/YouCompleteMe', {
             \ 'name' : 'youcompleteme',
             \ 'autoload' : { 'filetypes' : 'c,cpp,objc' }
             \}
+
+" pending
+"
 " NeoBundleLazy 'xolox/vim-easytags', {
 "             \ 'depends' : 'xolox/vim-misc',
 "             \ 'name' : 'easytags',
 "             \ 'autoload' : { 'filetypes' : 'c,cpp,objc' }
 "             \}
-
-
-" pending
-"
 
 " disabled
 NeoBundleDisable youcompleteme
@@ -151,7 +150,6 @@ set shiftround
 "status line
 " set statusline=%<%f\ [buf:%n]\ %h%m%r%=ln:%l\ col:%c%V\ \|\ char:%b\ [\ %p%%\ ]
 " custom list chars
-" set listchars=eol:¬,tab:>-,trail:–,nbsp:•
 set listchars=tab:>-,trail:–,nbsp:•
 
 " colorscheme
@@ -286,23 +284,6 @@ nnoremap <C-w>- <C-w>15-
 " make Y behave like D
 nnoremap Y y$
 
-" put/delete spaces between list items
-" let g:putSpace = 0
-" function! FormatList()
-"     " let curline = getline(".")
-"     " substitute(curline, ",", ", ", "g")
-"     " let curLine = getline(".")
-"     if g:putSpace==0
-"         exec "normal! :s/,/, /g<CR>"
-"         let g:putSpace = 1
-"     else
-"         " substitute(curLine, ",\s\+", ",", "g")
-"         exec "normal! :s/,\s\+/,/g<CR>"
-"         let g:putSpace = 0
-"     endif
-" endfunction
-" nnoremap <leader><Space> call FormatList()<CR>
-
 " split a comma delimited list (inverse of 'normal J')
 " nnoremap <leader>J :SplitCommaList<CR>
 
@@ -312,8 +293,6 @@ nnoremap <leader>sn :SCNewScratchBuf<CR>
 " use <esc> to cancel completion
 inoremap <expr> <Esc> pumvisible() ? "\<C-y>" : "\<Esc>"
 inoremap <expr> <C-c> pumvisible() ? "\<C-e>" : "\<C-c>"
-" already set with delimitMate plugin
-" inoremap <expr> <CR>  pumvisible() ? "\<C-y>" : "\<CR>"
 
 " edit current buffer in a new tab
 nnoremap <silent><leader>te :tabedit! %<CR>
@@ -356,10 +335,6 @@ so ~/.vim/bundle/dkg/supercollider/scvim_init.vim
 
 " markdown
 au! BufEnter,BufWinEnter,BufNewFile,BufRead *.md,*.markdown set filetype=markdown
-
-" processing
-" au! BufEnter,BufWinEnter,BufNewFile,BufRead *.pde set filetype=processing
-" au! FileType processing NeoBundleSource processing
 
 " }}}
 " ============================================================================
