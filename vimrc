@@ -132,15 +132,14 @@ set wildmenu                      " enhanced command line completion
 set wildignorecase                " be smart case-sensitive
 set backspace=2                   " allow backspacing over indent, eol, and the start of an insert
 set virtualedit=all               " be able to access all areas of the buffer
-" set complete+=k                   " where to look for auto-completion
-set complete-=i
+set complete-=i                   " where to look for auto-completion
 set diffopt+=vertical             " use vertical diffs by default
 set laststatus=2                  " always display a status line
 " turn off all alerts
 set visualbell                    " turn off error beep/flash
-" set visualbell t_vb=              " turn off error beep/flash
 set autochdir                     " change to cwd of current file
-set fillchars=
+set fillchars=                    " remove the fillchars from folds and splits
+set re=2                          " use the improved regexpengine
 
 " indenting
 set tabstop=4
@@ -152,18 +151,24 @@ set shiftround
 "status line
 " set statusline=%<%f\ [buf:%n]\ %h%m%r%=ln:%l\ col:%c%V\ \|\ char:%b\ [\ %p%%\ ]
 " custom list chars
-set listchars=eol:$,tab:>-,trail:-,nbsp:%
+" set listchars=eol:¬,tab:>-,trail:–,nbsp:•
+set listchars=tab:>-,trail:–,nbsp:•
 
 " colorscheme
 if has("gui_running")
     " set colorscheme and fonts
-    colorscheme kellys
-    set guifont=Monospace,Menlo:h12
+    " colorscheme kellys
+    colorscheme jellybeans
+    " set guifont=Monospace,Menlo:h12
+    set guifont=Monospace,Meslo\ LG\ S\ for\ Powerline:h12
     set guicursor=n-c-v:block-Cursor-blinkOn0
-    "get rid of the toolbar/scrollbars
+    " get rid of all scrollbars and the toolbar
     set guioptions-=T
-    set go-=r
-    set go-=L
+    set guioptions-=r
+    set guioptions-=R
+    set guioptions-=l
+    set guioptions-=L
+    set guioptions-=b
     "use console dialogs for simple choices
     set go+=c
 else
@@ -265,9 +270,6 @@ func! DeleteTrailingWS()
   exe "normal `z"
 endfunc
 
-" insert current date
-" iab <expr> dts strftime("%d/%m/%Y")
-
 " alternative scrolling
 nnoremap <C-j> 3<C-e>3j
 nnoremap <C-k> 3<C-y>3k
@@ -310,7 +312,7 @@ inoremap <expr> <C-c> pumvisible() ? "\<C-e>" : "\<C-c>"
 " already set with delimitMate plugin
 " inoremap <expr> <CR>  pumvisible() ? "\<C-y>" : "\<CR>"
 
-" edit current buffer in a new tab (buffer must be saved first)
+" edit current buffer in a new tab
 nnoremap <silent><leader>te :tabedit! %<CR>
 nnoremap <silent><leader>tl :tabmove +1<CR>
 nnoremap <silent><leader>th :tabmove -1<CR>
