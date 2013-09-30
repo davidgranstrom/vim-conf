@@ -326,6 +326,19 @@ if has("gui_macvim")
     nnoremap <D-Right> :tabmove +1<CR>
 endif
 
+" toggle the quickfix window
+let g:dkg_quickFixIsOpen = 0
+function! ToggleQuickFix()
+    if g:dkg_quickFixIsOpen==0
+        copen
+        let g:dkg_quickFixIsOpen = 1
+    else
+        cclose
+        let g:dkg_quickFixIsOpen = 0
+    endif
+endfunction
+nnoremap <silent><leader>qf :call ToggleQuickFix()<cr>
+
 " }}}
 " ============================================================================
 " LANGUAGE SETTINGS
