@@ -34,7 +34,6 @@ NeoBundle 'scrooloose/nerdtree',      { 'name' : 'nerdtree'                  }
 NeoBundle 'tpope/vim-commentary' ,    { 'name' : 'commentary'                }
 NeoBundle 'tpope/vim-surround' ,      { 'name' : 'surround'                  }
 NeoBundle 'tpope/vim-repeat' ,        { 'name' : 'repeat'                    }
-NeoBundle 'godlygeek/tabular',        { 'name' : 'tabular'                   }
 NeoBundle 'Raimondi/delimitMate',     { 'name' : 'delimitMate'               }
 NeoBundle 'ervandew/supertab',        { 'name' : 'supertab'                  }
 NeoBundle 'SirVer/ultisnips',         { 'name' : 'ultisnips'                 }
@@ -100,6 +99,7 @@ NeoBundleLazy 'Valloric/YouCompleteMe', {
 
 " disabled
 NeoBundleDisable youcompleteme
+" NeoBundleDisable supertab
 
 " ----------------------------------------------------------------------------
 " }}}
@@ -404,12 +404,11 @@ let g:SuperTabCrMapping = 0
 nnoremap <F4> :GundoToggle<CR>
 
 " ----------------------------------------------------------------------------
-" -- Tabularize  -------------------------------------------------------------
+" -- EasyAlign  --------------------------------------------------------------
 
-" align '='
-vnoremap <silent> + :Tabularize/=<CR>
-" align events
-vnoremap <silent> <CR> :Tabularize/\\\w\+,\zs\s<CR>
+vnoremap <Space> :EasyAlign<cr>
+" vnoremap <Space> <Plug>(EasyAlign)
+" nnoremap <Leader>a <Plug>(EasyAlign)
 
 " ----------------------------------------------------------------------------
 " -- UltiSnips  --------------------------------------------------------------
