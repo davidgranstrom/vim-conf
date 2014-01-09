@@ -200,6 +200,18 @@ augroup wiki
     au BufWritePost $HOME/dkg-wiki/*.md call GitCommitBuffer()
 augroup END
 
+com! -nargs=0 SoftWrapToggle call SoftWrapToggle() 
+let g:dkg_toggleSoftWrap = 0
+function! SoftWrapToggle()
+    if g:dkg_toggleSoftWrap == 1
+        set nowrap | set nolinebreak
+        let g:dkg_toggleSoftWrap = 0
+    else
+        set wrap | set linebreak
+        let g:dkg_toggleSoftWrap = 1
+    endif
+endfunction
+
 " }}}
 " ============================================================================
 " KEY MAPPINGS
