@@ -85,3 +85,4 @@
 [submodule "bundle/dkg"]
 	path = bundle/dkg
 	url = https://github.com/davidgranstrom/vim-dkg.git
+	ignore = dirty
