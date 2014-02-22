@@ -18,8 +18,8 @@ if !filereadable(expand("~/.vim/autoload/pathogen.vim"))
     !curl -Sso ~/.vim/autoload/pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
 endif
 
-" call pathogen#infect()
-" call pathogen#helptags()
+call pathogen#infect()
+call pathogen#helptags()
 
 set nocompatible                    " no need to be compatible with vi
 
