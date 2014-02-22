@@ -11,7 +11,7 @@ fi
 
 git submodule deinit -f "$1"
 git rm "$1"
-git commit "$1" -m "Removed bundle: ""$1"
+git commit "$1" .gitmodules -m "Removed bundle: ""$1"
 rm -rf .git/modules/bundle/"$1"
 
-echo "Submodule "$1" "deleted."
+echo "Submodule "$1" deleted."
