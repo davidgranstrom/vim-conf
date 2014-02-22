@@ -96,9 +96,8 @@ if has("gui_running")
 else
     " use 256 colors in terminal
     set t_Co=256
-    colorscheme rootwater-cterm
+    colorscheme jellybeans
 endif
-
 
 " }}}
 " ==============================================================================
