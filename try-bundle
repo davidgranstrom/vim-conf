@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+# Disable/Enable a plugin
+# Usage: try-bundle
+#
+
+echo "Do you wish to disable or enable a bundle?"
+select de in "disable" "enable"; do
+    case $de in
+        disable ) 
+            echo -e "\nEnter the name of the bundle to disable:"
+            ls bundle
+            read bundle_name
+            if [ -d bundle/"$bundle_name" ]; then
+                mv bundle/"$bundle_name" .ignore
+                echo "Disabled bundle: ""$bundle_name"
+            else
+                echo "Bundle not found."
+            fi
+            exit;;
+        enable )
+            echo -e "\nEnter the name of the bundle to enable:"
+            ls .ignore
+            read bundle_name
+            if [ -d .ignore/"$bundle_name" ]; then
+                mv .ignore/"$bundle_name" bundle
+                echo "Enabled bundle: ""$bundle_name"
+            else
+                echo "Bundle not found."
+            fi
+            exit;;
+    esac
+done

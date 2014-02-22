@@ -1,0 +1,28 @@
+#!/bin/bash
+#
+# Add a new plugin as a submodule
+# Usage: add-bundle URL name
+#
+
+if [ ! -n "$1"  ]
+then
+    echo "Usage: `basename $0` URL name"
+    exit 1;
+fi  
+
+if [ ! -n "$2" ]
+then
+    echo "Supply a name for the bundle: "
+    read bundle_name
+    if [ ! -n "$bundle_name" ]
+    then
+        echo "No name for bundle, exiting.."
+        exit 1;
+    else
+        git submodule add "$1" bundle/"$bundle_name"
+        git commit .gitmodules bundle/"$bundle_name" -m "Add bundle: ""$bundle_name" 
+    fi
+else
+    git submodule add "$1" bundle/"$2"
+    git commit .gitmodules bundle/"$2" -m "Add bundle: ""$2" 
+fi
