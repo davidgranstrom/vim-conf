@@ -249,9 +249,11 @@ inoremap <C-U> <C-G>u<C-U>
 " supercollider
 au FileType supercollider set tags^=$HOME/.sctags
 " source supercollider mappings
-so ~/.vim/bundle/dkg/supercollider/scvim_init.vim
+if filereadable(expand("~/.vim/bundle/dkg/supercollider/scvim_init.vim"))
+    source ~/.vim/bundle/dkg/supercollider/scvim_init.vim
+endif
 if filereadable(expand("~/.scvimrc"))
-    so ~/.scvimrc
+    source ~/.scvimrc
 endif
 
 " markdown
