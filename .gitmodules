@@ -55,3 +55,6 @@
 [submodule "bundle/unite-tag"]
 	path = bundle/unite-tag
 	url = https://github.com/tsukkee/unite-tag.git
+[submodule "bundle/vimproc"]
+	path = bundle/vimproc
+	url = https://github.com/Shougo/vimproc.vim.git
