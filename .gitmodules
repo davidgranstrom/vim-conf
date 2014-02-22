@@ -49,3 +49,6 @@
 [submodule "bundle/unite-outline"]
 	path = bundle/unite-outline
 	url = https://github.com/h1mesuke/unite-outline.git
+[submodule "bundle/unite-outline-objc"]
+	path = bundle/unite-outline-objc
+	url = https://github.com/ryotakato/unite-outline-objc.git
