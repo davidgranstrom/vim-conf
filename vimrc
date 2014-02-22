@@ -270,10 +270,11 @@ inoremap <C-U> <C-G>u<C-U>
 
 " supercollider
 au FileType supercollider set tags^=$HOME/.sctags
-au Filetype supercollider set commentstring=//%s
 " source supercollider mappings
 so ~/.vim/bundle/dkg/supercollider/scvim_init.vim
-so ~/.scvimrc
+if filereadable(expand("~/.scvimrc"))
+    so ~/.scvimrc
+endif
 
 " markdown
 au! BufEnter,BufWinEnter,BufNewFile,BufRead *.md,*.markdown set filetype=markdown
