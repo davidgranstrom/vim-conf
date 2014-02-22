@@ -159,28 +159,6 @@ function! DeleteTrailingWS()
   exe "normal `z"
 endfunction
 
-"let g:dkg_xcodeComments = 0
-"function! XcodeComments() range
-"    if g:dkg_xcodeComments == 1
-"        exec a:firstline . "," . a:lastline . 's/^\/\/\ze//g'
-"        let g:dkg_xcodeComments = 0
-"    else
-"        exec a:firstline . "," . a:lastline . 's/^\ze/\/\//g'
-"        let g:dkg_xcodeComments = 1
-"    endif
-"endfunction
-"" com! -nargs=0 XcodeComments call XcodeComments()
-"com! -range XcodeComments <line1>,<line2> call XcodeComments()
-"au! BufEnter,BufWinEnter,BufNewFile,BufRead *.m,*.h nnoremap gc :XcodeComments<cr>
-"au! BufEnter,BufWinEnter,BufNewFile,BufRead *.m,*.h xnoremap gc :XcodeComments<cr>
-" nnoremap <leader>x :call XcodeComments()<cr>
-" xnoremap <leader>x :call XcodeComments()<cr>
-
-" Load matchit.vim, but only if the user hasn't installed a newer version.
-" if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
-    source $VIMRUNTIME/macros/matchit.vim
-" endif
-
 " }}}
 " ==============================================================================
 " KEY MAPPINGS
@@ -278,9 +256,6 @@ endif
 
 " markdown
 au! BufEnter,BufWinEnter,BufNewFile,BufRead *.md,*.markdown set filetype=markdown
-
-" work
-au! BufEnter,BufWinEnter,BufNewFile,BufRead /Volumes/source/* set directory=/Volumes/source/.swp//
 
 " }}}
 " ==============================================================================
@@ -416,12 +391,6 @@ endif
 " let g:airline_section_z = g:airline_linecolumn_prefix . '%3c:%3l%3p%%'
 " let g:airline_fugitive_prefix = '⎇ '
 " call s:check_defined('g:airline_section_z', '%3p%% '.g:airline_linecolumn_prefix.'%3l:%3c')
-
-" ----------------------------------------------------------------------------
-" -- YCM  --------------------------------------------------------------------
-
-" let g:ycm_collect_identifiers_from_tags_files = 1
-" let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 
 " ----------------------------------------------------------------------------
 " -- FSwitch  ----------------------------------------------------------------
