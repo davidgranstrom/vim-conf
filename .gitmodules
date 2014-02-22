@@ -13,3 +13,6 @@
 [submodule "bundle/easyalign"]
 	path = bundle/easyalign
 	url = https://github.com/junegunn/vim-easy-align.git
+[submodule "bundle/fswitch"]
+	path = bundle/fswitch
+	url = https://github.com/derekwyatt/vim-fswitch.git
