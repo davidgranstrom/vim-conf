@@ -82,3 +82,6 @@
 	path = bundle/processing
 	url = https://github.com/sophacles/vim-processing.git
 	ignore = dirty
+[submodule "bundle/colorscheme-candyvirus"]
+	path = bundle/colorscheme-candyvirus
+	url = https://github.com/ercolanelli-leo/candyVirus.git
