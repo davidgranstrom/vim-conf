@@ -28,3 +28,6 @@
 [submodule "bundle/objc"]
 	path = bundle/objc
 	url = https://github.com/b4winckler/vim-objc.git
+[submodule "bundle/repeat"]
+	path = bundle/repeat
+	url = https://github.com/tpope/vim-repeat.git
