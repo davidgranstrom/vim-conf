@@ -64,7 +64,7 @@
 	ignore = dirty
 [submodule "bundle/unite-outline"]
 	path = bundle/unite-outline
-	url = https://github.com/h1mesuke/unite-outline.git
+	url = https://github.com/Shougo/unite-outline.git
 	ignore = dirty
 [submodule "bundle/unite-outline-objc"]
 	path = bundle/unite-outline-objc
