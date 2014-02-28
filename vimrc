@@ -224,8 +224,9 @@ inoremap <expr> <C-c> pumvisible() ? "\<C-e>" : "\<C-c>"
 
 " edit current buffer in a new tab
 nnoremap <silent><leader>z :tabedit!%<cr>
-nnoremap <silent><leader>tl :tabmove +1<cr>
-nnoremap <silent><leader>th :tabmove -1<cr>
+nnoremap <silent><C-n> :tabn<cr>
+nnoremap <silent><C-p> :tabp<cr>
+
 if has("gui_macvim")
     nnoremap <D-1> 1gt
     nnoremap <D-2> 2gt
