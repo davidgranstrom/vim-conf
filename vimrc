@@ -36,7 +36,8 @@ set virtualedit=all                 " be able to access all areas of the buffer
 set hidden                          " be able to hide modified buffers
 set complete-=i                     " where to look for auto-completion
 set clipboard=unnamed               " yank to system-wide clipboard
-set formatoptions+=r                " auto insert comments from insert mode
+set formatoptions+=rj               " auto insert comments from insert mode,
+                                    " remove comment leader when joining lines
 
 " appearance
 set fillchars=                      " remove the fillchars from folds and splits
