@@ -6,10 +6,6 @@
 	path = bundle/commentary
 	url = https://github.com/tpope/vim-commentary.git
 	ignore = dirty
-[submodule "bundle/csapprox"]
-	path = bundle/csapprox
-	url = https://github.com/godlygeek/csapprox.git
-	ignore = dirty
 [submodule "bundle/delimitMate"]
 	path = bundle/delimitMate
 	url = https://github.com/Raimondi/delimitMate.git
