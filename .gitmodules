@@ -50,10 +50,6 @@
 	path = bundle/surround
 	url = https://github.com/tpope/vim-surround.git
 	ignore = dirty
-[submodule "bundle/syntastic"]
-	path = bundle/syntastic
-	url = https://github.com/scrooloose/syntastic.git
-	ignore = dirty
 [submodule "bundle/ultisnips"]
 	path = bundle/ultisnips
 	url = https://github.com/SirVer/ultisnips.git
