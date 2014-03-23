@@ -86,3 +86,6 @@
 	path = bundle/dkg
 	url = https://github.com/davidgranstrom/vim-dkg.git
 	ignore = dirty
+[submodule "bundle/unimpaired"]
+	path = bundle/unimpaired
+	url = https://github.com/tpope/vim-unimpaired.git
