@@ -179,18 +179,6 @@ nnoremap <silent> <leader>so :w<CR>:so%<CR>
 " change to current dir
 nnoremap <leader>cd :cd %:p:h\|pwd<cr>
 
-" toggle search highlighting
-noremap <F8> :set hlsearch? hlsearch!<CR>
-
-" toggle cursor line highlighting
-noremap <Leader>cl :set cursorline! cursorline?<CR>
-
-" toggle cursor column highlighting
-noremap <Leader>cc :set cursorcolumn! cursorcolumn?<CR>
-
-" toggle line numbers
-noremap <Leader>nu :set rnu! rnu?<CR>
-
 " unmap help, and replace with <Esc>
 map <F1> <Esc>
 map! <F1> <Esc>
