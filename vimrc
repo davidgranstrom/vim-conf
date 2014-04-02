@@ -160,6 +160,9 @@ function! DeleteTrailingWS()
   exe "normal `z"
 endfunction
 
+" format json
+com! FormatJSON %!python -m json.tool
+
 " }}}
 " ==============================================================================
 " KEY MAPPINGS
