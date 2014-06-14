@@ -194,6 +194,10 @@ map! <F1> <Esc>
 " exit insert mode
 imap jk <Esc>
 
+" easier navigation in wrap mode
+nnoremap j gj
+nnoremap k gk
+
 " make horizontal scrolling easier
 nnoremap <C-l> 10zl
 nnoremap <C-h> 10zh
