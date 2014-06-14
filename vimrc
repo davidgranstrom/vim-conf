@@ -61,7 +61,8 @@ set laststatus=2                    " always display a status line
 set autochdir                       " change to cwd of current file
 set visualbell                      " turn off error beep/flash
 set regexpengine=2                  " use the improved regexpengine
-set timeout timeoutlen=600          " shorter timeout lenght for keystrokes
+set timeout timeoutlen=1000         " shorter timeout lenght for keystrokes
+set lazyredraw                      " don't redraw screen for macros
 
 " indenting/formating
 set autoindent                      " indent even if we have no filetype rules
