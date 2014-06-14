@@ -101,6 +101,11 @@ else
     colorscheme jellybeans
 endif
 
+" use par to format text
+if executable("par")
+    set formatprg=par\ -w80qr
+endif
+
 " }}}
 " ==============================================================================
 " FUNCTIONS
@@ -163,6 +168,8 @@ endfunction
 
 " format json
 com! FormatJSON %!python -m json.tool
+" justify selected text
+com! -nargs=0 -range Justify '<,'>!par \-w80qrj
 
 " }}}
 " ==============================================================================
