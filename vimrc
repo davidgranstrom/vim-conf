@@ -242,10 +242,14 @@ inoremap <C-U> <C-G>u<C-U>
 " resize windows
 if has("gui_macvim")
     " insert/normal mode
-    noremap! <silent><left>  <C-o>:3wincmd <<cr>
-    noremap! <silent><right> <C-o>:3wincmd ><cr>
-    noremap! <silent><up>    <C-o>:3wincmd +<cr>
-    noremap! <silent><down>  <C-o>:3wincmd -<cr>
+    nnoremap <silent><left>  :3wincmd <<cr>
+    nnoremap <silent><right> :3wincmd ><cr>
+    nnoremap <silent><up>    :3wincmd +<cr>
+    nnoremap <silent><down>  :3wincmd -<cr>
+    inoremap <silent><left>  <C-o>:3wincmd <<cr>
+    inoremap <silent><right> <C-o>:3wincmd ><cr>
+    inoremap <silent><up>    <C-o>:3wincmd +<cr>
+    inoremap <silent><down>  <C-o>:3wincmd -<cr>
 else
     nnoremap <silent><left>  :3wincmd <<cr>
     nnoremap <silent><right> :3wincmd ><cr>
