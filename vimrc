@@ -206,16 +206,6 @@ nnoremap <C-h> 10zh
 nnoremap <c-s> 1z=
 inoremap <c-s> <c-g>u<c-o>1z=
 
-" alternative scrolling
-nnoremap <C-j> 3<C-e>3j
-nnoremap <C-k> 3<C-y>3k
-
-" easier resizing
-nnoremap <C-w>< <C-w>15<
-nnoremap <C-w>> <C-w>15>
-nnoremap <C-w>+ <C-w>15+
-nnoremap <C-w>- <C-w>15-
-
 " make Y behave like D
 nnoremap Y y$
 
@@ -248,6 +238,20 @@ endif
 " CTRL-U in insert mode deletes a lot. Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
+
+" resize windows
+if has("gui_macvim")
+    " insert/normal mode
+    noremap! <silent><left>  <C-o>:3wincmd <<cr>
+    noremap! <silent><right> <C-o>:3wincmd ><cr>
+    noremap! <silent><up>    <C-o>:3wincmd +<cr>
+    noremap! <silent><down>  <C-o>:3wincmd -<cr>
+else
+    nnoremap <silent><left>  :3wincmd <<cr>
+    nnoremap <silent><right> :3wincmd ><cr>
+    nnoremap <silent><up>    :3wincmd +<cr>
+    nnoremap <silent><down>  :3wincmd -<cr>
+endif
 
 " }}}
 " ==============================================================================
