@@ -288,9 +288,7 @@ nnoremap <silent> <F3> :NERDTreeFind<CR>
 " -- Unite  ------------------------------------------------------------------
 
 let g:unite_source_history_yank_enable = 1
-" call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#custom#source('file,file/new,buffer,file_rec',
-            \ 'matchers', 'matcher_fuzzy')
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
 
 nnoremap <leader>tt :<C-u>Unite -start-insert file_rec/async<cr>
 nnoremap <leader>r  :<C-u>Unite -start-insert file_rec/async:!<cr>
@@ -365,6 +363,7 @@ xmap s <plug>VSurround
 " -- Fugitive  ---------------------------------------------------------------
 
 nnoremap <Leader>fs :Gstatus<CR><C-w>K
+nnoremap <F5> :Gblame<cr>
 autocmd BufNewFile,BufRead fugitive://* set bufhidden=delete
 
 " ----------------------------------------------------------------------------
@@ -388,6 +387,8 @@ endif
 " let g:airline_section_z = g:airline_linecolumn_prefix . '%3c:%3l%3p%%'
 " let g:airline_fugitive_prefix = '⎇ '
 " call s:check_defined('g:airline_section_z', '%3p%% '.g:airline_linecolumn_prefix.'%3l:%3c')
+
+" let g:airline#extensions#tabline#enabled = 1
 
 " ----------------------------------------------------------------------------
 " -- FSwitch  ----------------------------------------------------------------
