@@ -357,13 +357,6 @@ let g:UltiSnipsJumpBackwardTrigger = "<C-h>"
 let g:UltiSnipsUsePythonVersion = 2
 
 " ----------------------------------------------------------------------------
-" -- Commentary  -------------------------------------------------------------
-
-xmap gc  <Plug>Commentary
-nmap gc  <Plug>Commentary
-nmap gcc <Plug>CommentaryLine
-
-" ----------------------------------------------------------------------------
 " -- Surround  ---------------------------------------------------------------
 
 xmap s <plug>VSurround
@@ -381,17 +374,6 @@ imap <C-l> <Plug>delimitMateS-Tab
 imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
 let delimitMate_expand_cr    = 1
 let delimitMate_expand_space = 1
-
-" ----------------------------------------------------------------------------
-" -- clang_complete  ---------------------------------------------------------
-
-" let g:clang_snippets_engine  = 'ultisnips'
-" let g:clang_snippets         = 1
-" let g:clang_conceal_snippets = 1
-" let g:clang_close_preview    = 1
-" let g:clang_use_library      = 1
-" let g:clang_library_path='/usr/local/lib/libclang.dylib'
-" let g:clang_exec = '/usr/local/bin/clang'
 
 " ----------------------------------------------------------------------------
 " -- airline  ----------------------------------------------------------------
