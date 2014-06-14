@@ -228,17 +228,21 @@ inoremap <expr> <C-c> pumvisible() ? "\<C-e>" : "\<C-c>"
 
 " edit current buffer in a new tab
 nnoremap <silent><leader>z :tabedit!%<cr>
+" move between tabs
 nnoremap <silent><C-n> :tabn<cr>
 nnoremap <silent><C-p> :tabp<cr>
-
+" nmap <silent> ]t :tabn<cr>
+" nmap <silent> [t :tabp<cr>
 if has("gui_macvim")
     nnoremap <D-1> 1gt
     nnoremap <D-2> 2gt
     nnoremap <D-3> 3gt
     nnoremap <D-4> 4gt
     nnoremap <D-5> 5gt
-    nnoremap <D-Left>  :tabmove -1<CR>
-    nnoremap <D-Right> :tabmove +1<CR>
+    nnoremap <D-6> 6gt
+    nnoremap <D-7> 7gt
+    nnoremap <D-8> 8gt
+    nnoremap <D-9> 9gt
 endif
 
 " CTRL-U in insert mode deletes a lot. Use CTRL-G u to first break undo,
