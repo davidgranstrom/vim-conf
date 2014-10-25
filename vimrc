@@ -7,17 +7,6 @@
 " {{{
 
 " setup pathogen
-if !isdirectory(expand("~/.vim/bundle"))
-    call mkdir(expand("~/.vim/bundle"), "p")
-endif
-if !isdirectory(expand("~/.vim/autoload"))
-    call mkdir(expand("~/.vim/autoload"), "p")
-endif
-
-if !filereadable(expand("~/.vim/autoload/pathogen.vim")) 
-    !curl -Sso ~/.vim/autoload/pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
-endif
-
 call pathogen#infect()
 call pathogen#helptags()
 
