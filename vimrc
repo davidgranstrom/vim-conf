@@ -308,8 +308,18 @@ endif
 " -- NerdTREE  ---------------------------------------------------------------
 
 " toggle
-nnoremap <silent> <F2> :NERDTreeToggle ~/<CR>
-nnoremap <silent> <F3> :NERDTreeFind<CR>
+" nnoremap <silent> <F2> :NERDTreeToggle ~/<CR>
+" nnoremap <silent> <F3> :NERDTreeFind<CR>
+
+" -- VimFiler  ---------------------------------------------------------------
+
+" toggle
+nnoremap <silent><F2> :VimFiler -auto-cd -buffer-name=vimfiler ~<CR>
+nnoremap <silent><F3> :VimFilerBufferDir -buffer-name=vimfiler -auto-cd<CR>
+nnoremap <leader>v <C-w>v<F3>
+
+let g:vimfiler_as_default_explorer=1
+let g:vimfiler_force_overwrite_statusline=0
 
 " ----------------------------------------------------------------------------
 " -- Unite  ------------------------------------------------------------------
@@ -351,6 +361,11 @@ elseif executable('grep')
     let g:unite_source_grep_default_opts = '--colour=never'
     let g:unite_source_grep_recursive_opt = ''
 endif
+
+" ----------------------------------------------------------------------------
+" -- Vimfiler  ---------------------------------------------------------------
+"
+let g:vimfiler_enable_auto_cd = 1
 
 " ----------------------------------------------------------------------------
 " -- SuperTab  ---------------------------------------------------------------
