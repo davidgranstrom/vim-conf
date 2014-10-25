@@ -382,19 +382,20 @@ nnoremap <F4> :GundoToggle<CR>
 " ----------------------------------------------------------------------------
 " -- EasyAlign  --------------------------------------------------------------
 
-vnoremap <Space> :EasyAlign<cr>
-" vnoremap <Space> <Plug>(EasyAlign)
-" nnoremap <Leader>a <Plug>(EasyAlign)
+vmap <Space> <Plug>(EasyAlign)
+" For normal mode, with Vim movement (e.g. <Leader>aip)
+nmap <leader><Space> <Plug>(EasyAlign)
 
 " ----------------------------------------------------------------------------
 " -- UltiSnips  --------------------------------------------------------------
 
-let g:UltiSnipsListSnippets = "<c-\\>"
-let g:UltiSnips_Author = "David Granstrom"
-let g:UltiSnipsExpandTrigger       = "<Tab>"
+let g:UltiSnipsListSnippets        = "<c-\\>"
+let g:UltiSnips_Author             = "David Granstrom"
+let g:UltiSnipsExpandTrigger       = "<C-j>"
 let g:UltiSnipsJumpForwardTrigger  = "<C-j>"
-let g:UltiSnipsJumpBackwardTrigger = "<C-h>"
-let g:UltiSnipsUsePythonVersion = 2
+let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
+let g:UltiSnipsUsePythonVersion    = 2
+
 
 " ----------------------------------------------------------------------------
 " -- Surround  ---------------------------------------------------------------
@@ -419,14 +420,15 @@ let delimitMate_expand_space = 1
 " ----------------------------------------------------------------------------
 " -- airline  ----------------------------------------------------------------
 
-let g:airline_theme             = 'dark'
+" let g:airline_theme             = 'base16'
+" let g:airline_theme             = 'dark'
 " let g:airline_theme             = 'jellybeans'
 let g:airline_enable_syntastic  = 0
 let g:airline_detect_whitespace = 0
 if has("gui_running")
     let g:airline_powerline_fonts = 1
 endif
-" let g:airline_section_z = g:airline_linecolumn_prefix . '%3c:%3l%3p%%'
+" let g:airline_section_z = '%3c:%3l%3p%%'
 " let g:airline_fugitive_prefix = '⎇ '
 " call s:check_defined('g:airline_section_z', '%3p%% '.g:airline_linecolumn_prefix.'%3l:%3c')
 
