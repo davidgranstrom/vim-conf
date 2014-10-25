@@ -265,8 +265,25 @@ if filereadable(expand("~/.scvimrc"))
     source ~/.scvimrc
 endif
 
+" c
+autocmd FileType c set commentstring=\/\/\ %s
+
+" haskell
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+
 " markdown
-au! BufEnter,BufWinEnter,BufNewFile,BufRead *.md,*.markdown set filetype=markdown
+augroup markdown
+    autocmd!
+    au BufEnter,BufWinEnter,BufNewFile,BufRead *.md,*.markdown set filetype=markdown 
+    au BufEnter,BufWinEnter,BufNewFile,BufRead *.md,*.markdown set commentstring=<!--%s--> 
+augroup END
+
+" format html using pandoc
+if has("autocmd")
+  let pandoc_pipeline  = "pandoc --from=html --to=markdown"
+  let pandoc_pipeline .= " | pandoc --from=markdown --to=html"
+  autocmd FileType html let &formatprg=pandoc_pipeline
+endif
 
 " }}}
 " ==============================================================================
