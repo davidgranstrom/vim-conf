@@ -65,14 +65,17 @@ set shiftround                      " round indent to multiples of 'shiftwidth'
 " colorscheme
 if has("gui_running")
     " set colorscheme and fonts
+    set background=dark
     " colorscheme kellys
-    colorscheme jellybeans
+    " colorscheme jellybeans
+    colorscheme gruvbox
     " change to alternate theme
     if has("gui_macvim")
         set transparency=3
     endif
     " set guifont=Monospace,Menlo:h12
-    set guifont=Monospace,Meslo\ LG\ S\ for\ Powerline:h12
+    " set guifont=Monospace,Meslo\ LG\ S\ for\ Powerline:h12
+    set guifont=Monospace,DejaVu\ Sans\ Mono\ for\ Powerline:h12
     " style guicursor
     set guicursor=n-c-v:block-Cursor-blinkOn0
     " get rid of all scrollbars and the toolbar
@@ -82,12 +85,16 @@ if has("gui_running")
     set guioptions-=l
     set guioptions-=L
     set guioptions-=b
-    "use console dialogs for simple choices
+    set guioptions-=m
+    set guioptions-=e
+    " use console dialogs for simple choices
     set guioptions+=c
 else
     " use 256 colors in terminal
-    set t_Co=256
-    colorscheme jellybeans
+    " set t_Co=256
+    set background=dark
+    " colorscheme jellybeans
+    colorscheme gruvbox
 endif
 
 " use par to format text
