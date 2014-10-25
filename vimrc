@@ -6,14 +6,36 @@
 " ==============================================================================
 " {{{
 
-" setup pathogen
-call pathogen#infect()
-call pathogen#helptags()
+set nocompatible           " no need to be compatible with vi
+filetype plugin indent on  " detect plugin filetypes
+syntax enable              " syntax highlighting
 
-set nocompatible                    " no need to be compatible with vi
+" vim-plug
+call plug#begin('~/.vim/plugged')
 
-filetype plugin indent on           " detect plugin filetypes
-syntax enable                       " syntax highlighting
+Plug 'bling/vim-airline'
+Plug 'tpope/vim-commentary'
+Plug 'Raimondi/delimitMate'
+Plug 'junegunn/vim-easy-align'
+Plug 'derekwyatt/vim-fswitch', { 'on': [ 'FSSplitAbove', 'FSHere' ] }
+Plug 'tpope/vim-fugitive'
+Plug 'sjl/gundo.vim'
+Plug 'b4winckler/vim-objc', { 'for': 'objc' }
+Plug 'tpope/vim-repeat'
+Plug 'ervandew/supertab'
+Plug 'tpope/vim-surround'
+Plug 'SirVer/ultisnips'
+Plug 'Shougo/unite.vim'
+Plug 'Shougo/unite-outline'
+Plug 'ryotakato/unite-outline-objc'
+Plug 'Shougo/vimproc.vim', { 'do': 'make -f make_mac.mak' }
+Plug 'sophacles/vim-processing'
+Plug 'davidgranstrom/vim-dkg'
+Plug 'tpope/vim-unimpaired'
+Plug 'elzr/vim-json', { 'for': 'json' }
+Plug 'morhetz/gruvbox'
+
+call plug#end()
 
 set directory^=$HOME/.vim/.swap//   " put all swap files in one place
 let mapleader=","                   " set mapleader
