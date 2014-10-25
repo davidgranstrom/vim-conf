@@ -47,7 +47,7 @@ set wildmenu                        " enhanced command line completion
 set wildignorecase                  " be smart case-sensitive
 set diffopt+=vertical               " use vertical diffs by default
 set laststatus=2                    " always display a status line
-set autochdir                       " change to cwd of current file
+" set autochdir                       " change to cwd of current file
 set visualbell                      " turn off error beep/flash
 set regexpengine=2                  " use the improved regexpengine
 set timeout timeoutlen=1000         " shorter timeout lenght for keystrokes
