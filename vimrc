@@ -272,19 +272,11 @@ endif
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
 
-" resize windows
-if has("gui_macvim")
-    " insert/normal mode
-    nnoremap <silent><left>  :3wincmd <<cr>
-    nnoremap <silent><right> :3wincmd ><cr>
-    nnoremap <silent><up>    :3wincmd +<cr>
-    nnoremap <silent><down>  :3wincmd -<cr>
-else
-    nnoremap <silent><left>  :3wincmd <<cr>
-    nnoremap <silent><right> :3wincmd ><cr>
-    nnoremap <silent><up>    :3wincmd +<cr>
-    nnoremap <silent><down>  :3wincmd -<cr>
-endif
+" resize windows with arrow-keys
+nnoremap <silent><left>  :3wincmd <<cr>
+nnoremap <silent><right> :3wincmd ><cr>
+nnoremap <silent><up>    :3wincmd +<cr>
+nnoremap <silent><down>  :3wincmd -<cr>
 
 " Move visual block
 vnoremap J :m '>+1<CR>gv=gv
