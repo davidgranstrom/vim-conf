@@ -14,26 +14,27 @@ syntax enable              " syntax highlighting
 call plug#begin('~/.vim/plugged')
 
 Plug 'bling/vim-airline'
-Plug 'tpope/vim-commentary'
 Plug 'Raimondi/delimitMate'
 Plug 'junegunn/vim-easy-align'
 Plug 'derekwyatt/vim-fswitch', { 'on': [ 'FSSplitAbove', 'FSHere' ] }
-Plug 'tpope/vim-fugitive'
 Plug 'sjl/gundo.vim'
 Plug 'b4winckler/vim-objc', { 'for': 'objc' }
-Plug 'tpope/vim-repeat'
 Plug 'ervandew/supertab'
-Plug 'tpope/vim-surround'
 Plug 'SirVer/ultisnips'
-Plug 'Shougo/unite.vim'
-Plug 'Shougo/unite-outline'
 Plug 'ryotakato/unite-outline-objc'
-Plug 'Shougo/vimproc.vim', { 'do': 'make -f make_mac.mak' }
 Plug 'sophacles/vim-processing'
 Plug 'davidgranstrom/vim-dkg'
-Plug 'tpope/vim-unimpaired'
 Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'morhetz/gruvbox'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'Shougo/unite.vim'
+Plug 'Shougo/vimfiler'
+Plug 'Shougo/unite-outline'
+Plug 'Shougo/vimproc.vim', { 'do': 'make -f make_mac.mak' }
 
 call plug#end()
 
