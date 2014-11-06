@@ -292,12 +292,12 @@ vnoremap <C-k> :m '<-2<CR>gv=gv
 " supercollider
 au FileType supercollider set tags^=$HOME/.sctags
 " source supercollider mappings
-if filereadable(expand("~/.vim/bundle/dkg/supercollider/scvim_init.vim"))
-    source ~/.vim/bundle/dkg/supercollider/scvim_init.vim
+if filereadable(expand("~/.vim/plugged/vim-dkg/supercollider/scvim_init.vim"))
+    source ~/.vim/plugged/vim-dkg/supercollider/scvim_init.vim
 endif
-if filereadable(expand("~/.scvimrc"))
-    source ~/.scvimrc
-endif
+" if filereadable(expand("~/.scvimrc"))
+"     source ~/.scvimrc
+" endif
 
 " c
 autocmd FileType c set commentstring=\/\/\ %s
