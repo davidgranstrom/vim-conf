@@ -280,8 +280,8 @@ nnoremap <silent><up>    :3wincmd +<cr>
 nnoremap <silent><down>  :3wincmd -<cr>
 
 " Move visual block
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
+vnoremap <C-j> :m '>+1<CR>gv=gv
+vnoremap <C-k> :m '<-2<CR>gv=gv
 
 " }}}
 " ==============================================================================
