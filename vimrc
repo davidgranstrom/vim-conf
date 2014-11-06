@@ -48,6 +48,7 @@ set virtualedit=all                 " be able to access all areas of the buffer
 set hidden                          " be able to hide modified buffers
 set complete-=i                     " where to look for auto-completion
 set clipboard=unnamed               " yank to system-wide clipboard
+set autoread                        " reload buffers changed from the outside
 set formatoptions+=rj               " auto insert comments from insert mode,
                                     " remove comment leader when joining lines
 
@@ -70,7 +71,7 @@ set wildmenu                        " enhanced command line completion
 set wildignorecase                  " be smart case-sensitive
 set diffopt+=vertical               " use vertical diffs by default
 set laststatus=2                    " always display a status line
-" set autochdir                       " change to cwd of current file
+set autochdir                       " change to cwd of current file
 set visualbell                      " turn off error beep/flash
 set regexpengine=2                  " use the improved regexpengine
 set timeout timeoutlen=1000         " shorter timeout lenght for keystrokes
