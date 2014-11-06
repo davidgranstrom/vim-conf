@@ -16,14 +16,13 @@ call plug#begin('~/.vim/plugged')
 Plug 'bling/vim-airline'
 Plug 'Raimondi/delimitMate'
 Plug 'junegunn/vim-easy-align'
-Plug 'derekwyatt/vim-fswitch', { 'on': [ 'FSSplitAbove', 'FSHere' ] }
-Plug 'sjl/gundo.vim'
+Plug 'derekwyatt/vim-fswitch'
+Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
 Plug 'b4winckler/vim-objc', { 'for': 'objc' }
 Plug 'ervandew/supertab'
 Plug 'SirVer/ultisnips'
 Plug 'ryotakato/unite-outline-objc'
 Plug 'sophacles/vim-processing'
-Plug 'davidgranstrom/vim-dkg'
 Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-fugitive'
@@ -32,9 +31,12 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'Shougo/unite.vim'
-Plug 'Shougo/vimfiler'
 Plug 'Shougo/unite-outline'
+" Plug 'Shougo/vimfiler', { 'on': [ 'VimFiler', 'VimFilerBufferDir' ] }
 Plug 'Shougo/vimproc.vim', { 'do': 'make -f make_mac.mak' }
+Plug 'davidgranstrom/scvim', { 'branch': 'detect-screen' }
+Plug 'davidgranstrom/vim-dkg'
+Plug 'scrooloose/nerdtree'
 
 call plug#end()
 
