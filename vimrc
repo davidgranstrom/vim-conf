@@ -148,18 +148,6 @@ endif
 " ==============================================================================
 " {{{
 
-com! -nargs=0 SoftWrapToggle call SoftWrapToggle()
-let g:dkg_toggleSoftWrap = 0
-function! SoftWrapToggle()
-    if g:dkg_toggleSoftWrap == 1
-        set nowrap | set nolinebreak
-        let g:dkg_toggleSoftWrap = 0
-    else
-        set wrap | set linebreak
-        let g:dkg_toggleSoftWrap = 1
-    endif
-endfunction
-
 " toggle the quickfix window
 let g:dkg_quickFixIsOpen = 0
 function! ToggleQuickFix()
@@ -202,22 +190,23 @@ function! DeleteTrailingWS()
   exe "normal `z"
 endfunction
 
-augroup checktime
-    au!
-    if !has("gui_running")
-        "silent! necessary otherwise throws errors when using command
-        "line window.
-        autocmd BufEnter    * silent! checktime
-        autocmd CursorHold  * silent! checktime
-        autocmd CursorHoldI * silent! checktime
-        "these two _may_ slow things down. Remove if they do.
-        autocmd CursorMoved  * silent! checktime
-        autocmd CursorMovedI * silent! checktime
-    endif
-augroup END
+" augroup checktime
+"     au!
+"     if !has("gui_running")
+"         "silent! necessary otherwise throws errors when using command
+"         "line window.
+"         autocmd BufEnter    * silent! checktime
+"         autocmd CursorHold  * silent! checktime
+"         autocmd CursorHoldI * silent! checktime
+"         "these two _may_ slow things down. Remove if they do.
+"         autocmd CursorMoved  * silent! checktime
+"         autocmd CursorMovedI * silent! checktime
+"     endif
+" augroup END
 
 " format json
 com! FormatJSON %!python -m json.tool
+
 " justify selected text
 com! -nargs=0 -range Justify '<,'>!par \-w80qrj
 
