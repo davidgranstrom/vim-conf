@@ -95,14 +95,17 @@ if has("gui_running")
     set background=dark
     " colorscheme kellys
     " colorscheme jellybeans
-    colorscheme gruvbox
+    " colorscheme gruvbox
+    " colorscheme seoul256
+    colorscheme molokai
+    let g:airline_theme = 'gruvbox'
     " change to alternate theme
     if has("gui_macvim")
         set transparency=3
     endif
     " set guifont=Monospace,Menlo:h12
     " set guifont=Monospace,Meslo\ LG\ S\ for\ Powerline:h12
-    set guifont=Monospace,DejaVu\ Sans\ Mono\ for\ Powerline:h12
+    set guifont=Monospace,DejaVu\ Sans\ Mono\ for\ Powerline:h14
     " style guicursor
     set guicursor=n-c-v:block-Cursor-blinkOn0
     " get rid of all scrollbars and the toolbar
@@ -121,7 +124,17 @@ else
     " set t_Co=256
     set background=dark
     " colorscheme jellybeans
-    colorscheme gruvbox
+    " colorscheme gruvbox
+    " colorscheme seoul256
+    colorscheme molokai
+    " let g:airline_theme = 'gruvbox'
+endif
+
+if &term =~ '256color'
+    " disable Background Color Erase (BCE) so that color schemes
+    " render properly when inside 256-color tmux and GNU screen.
+    " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
+    set t_ut=
 endif
 
 " use par to format text
