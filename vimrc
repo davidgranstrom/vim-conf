@@ -60,6 +60,7 @@ set listchars=tab:>-,trail:–,nbsp:• " custom list chars
 set nostartofline                   " keep the cursor at the current column when moving
 set scrolloff=8                     " keep a distance of from the cursor when scrolling
 set nowrap                          " don't wrap words
+set linebreak                       " break at word boundries for wrapped text
 
 " searching
 set ignorecase                      " ignore case in search patterns
