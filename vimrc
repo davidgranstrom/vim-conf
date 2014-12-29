@@ -333,52 +333,50 @@ endif
 " -- NerdTREE  ---------------------------------------------------------------
 
 " toggle
-" nnoremap <silent> <F2> :NERDTreeToggle ~/<CR>
-" nnoremap <silent> <F3> :NERDTreeFind<CR>
-
-" -- VimFiler  ---------------------------------------------------------------
-
-" toggle
-nnoremap <silent><F2> :VimFiler -auto-cd -buffer-name=vimfiler ~<CR>
-nnoremap <silent><F3> :VimFilerBufferDir -buffer-name=vimfiler -auto-cd<CR>
-nnoremap <leader>v <C-w>v<F3>
-
-let g:vimfiler_as_default_explorer=1
-let g:vimfiler_force_overwrite_statusline=0
+nnoremap <silent> <F2> :NERDTreeToggle ~/<CR>
+nnoremap <silent> <F3> :NERDTreeFind<CR>
 
 " ----------------------------------------------------------------------------
 " -- Unite  ------------------------------------------------------------------
 
 let g:unite_source_history_yank_enable = 1
+let g:unite_source_rec_max_cache_files = 0
+
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#custom#source('file_rec/async', 'converters', [])
+call unite#custom#source('file_rec/async', 'sorters', [])
+call unite#custom#source('file_rec/async', 'max_candidates', 10)
 
-nnoremap <leader>tt :<C-u>Unite -start-insert file_rec/async<cr>
-nnoremap <leader>r  :<C-u>Unite -start-insert file_rec/async:!<cr>
-nnoremap <leader>b  :<C-u>Unite -no-split buffer<cr>
-nnoremap <leader>.  :<C-u>Unite file<cr>
+" position and style
+call unite#custom#profile('default', 'context', {
+\   'direction': 'botright',
+\   'winheight': 10,
+\   'cursor-line-time': 0.0,
+\   'prompt': '» '
+\ })
 
-nnoremap <leader>m :<C-u>Unite -no-split file_mru<cr>
-nnoremap <leader>y :<C-u>Unite history/yank<cr>
-
-nnoremap <leader>/ :<C-u>Unite grep:%<cr>
-nnoremap <leader>gb :<C-u>Unite grep:$buffers<cr>
+nnoremap cot :<C-u>Unite -start-insert file/async:!<CR>
+nnoremap <leader>b  :<C-u>Unite -no-split -no-resize buffer<cr>
+nnoremap <leader>/  :<C-u>Unite -no-resize line<cr>
 nnoremap <leader>gg :<C-u>Unite grep:<cr>
+nnoremap <leader>o  :<C-u>Unite outline<cr>
+nnoremap <leader>y  :<C-u>Unite history/yank<cr>
 
-nnoremap <leader>o :<C-u>Unite outline<cr>
-
-autocmd FileType unite call s:unite_my_settings()
 " overwrite default settings
 function! s:unite_my_settings()
+    inoremap <silent><buffer> jk <Plug>(unite_insert_leave)
     nnoremap <silent><buffer><expr> <C-s> unite#do_action('split')
     nnoremap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
     inoremap <silent><buffer><expr> <C-s> unite#do_action('split')
     inoremap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
 endfunction
 
+autocmd FileType unite call s:unite_my_settings()
+
 if executable('ag')
     " Use ag in unite grep source.
     let g:unite_source_grep_command = 'ag'
-    let g:unite_source_grep_default_opts = '--nocolor --nogroup --hidden'
+    let g:unite_source_grep_default_opts = '--nocolor --nogroup --hidden --ignore="tags"'
     let g:unite_source_grep_recursive_opt = ''
 elseif executable('grep')
     " otherwise use grep
