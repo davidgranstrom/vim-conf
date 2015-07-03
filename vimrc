@@ -11,32 +11,69 @@ filetype plugin indent on  " detect plugin filetypes
 syntax enable              " syntax highlighting
 
 " vim-plug
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.vim/bundle')
 
+" appearance
 Plug 'bling/vim-airline'
-Plug 'Raimondi/delimitMate'
+Plug 'junegunn/goyo.vim', { 'on' : 'Goyo' }
+
+" editing
 Plug 'junegunn/vim-easy-align'
-Plug 'derekwyatt/vim-fswitch'
-Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
-Plug 'b4winckler/vim-objc', { 'for': 'objc' }
-Plug 'ervandew/supertab'
-Plug 'SirVer/ultisnips'
-Plug 'ryotakato/unite-outline-objc'
-Plug 'sophacles/vim-processing'
-Plug 'elzr/vim-json', { 'for': 'json' }
-Plug 'morhetz/gruvbox'
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
+Plug 'SirVer/ultisnips'
+Plug 'Raimondi/delimitMate'
+Plug 'ervandew/supertab'
+" Plug 'ajh17/VimCompletesMe'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'honza/vim-snippets'
+
+" navigation
+Plug 'derekwyatt/vim-fswitch'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/unite-outline'
-" Plug 'Shougo/vimfiler', { 'on': [ 'VimFiler', 'VimFilerBufferDir' ] }
-Plug 'Shougo/vimproc.vim', { 'do': 'make -f make_mac.mak' }
-Plug 'davidgranstrom/scvim', { 'branch': 'detect-screen' }
-Plug 'davidgranstrom/vim-dkg'
 Plug 'scrooloose/nerdtree'
+Plug 'kopischke/vim-fetch'
+
+" util
+Plug 'tpope/vim-fugitive'
+Plug 'fmoralesc/vim-pad'
+Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
+Plug 'junegunn/vim-peekaboo'
+Plug 'tmux-plugins/vim-tmux-focus-events'
+
+" vim
+Plug 'tpope/vim-scriptease'
+Plug 'vim-scripts/matchit.zip'
+
+" language
+Plug 'b4winckler/vim-objc'
+Plug 'ryotakato/unite-outline-objc'
+Plug 'sophacles/vim-processing', { 'for': 'processing' }
+" Plug 'davidgranstrom/scvim', { 'branch' : 'dkg' }
+" Plug 'davidgranstrom/scvim'
+Plug 'sbl/scvim'
+Plug 'elzr/vim-json', { 'for': 'json' }
+Plug 'StanAngeloff/php.vim', { 'for': 'php' }
+Plug 'leafgarland/typescript-vim', { 'for': 'typescript' } 
+" Plug 'clausreinke/typescript-tools.vim', { 'for': 'typescript' } 
+Plug 'Quramy/tsuquyomi', { 'for': 'typescript' }
+Plug 'moll/vim-node'
+Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
+Plug 'wookiehangover/jshint.vim'
+Plug 'scrooloose/syntastic'
+
+" color schemes
+Plug 'morhetz/gruvbox'
+Plug 'junegunn/seoul256.vim'
+Plug 'tomasr/molokai'
+
+" misc
+Plug 'tpope/vim-repeat'
+Plug 'Shougo/vimproc.vim', { 'do': 'make -f make_mac.mak' }
+Plug 'tpope/vim-unimpaired'
+Plug 'davidgranstrom/vim-dkg'
+Plug 'fmoralesc/vim-tutor-mode'
 
 call plug#end()
 
