@@ -264,31 +264,32 @@ com! SudoWrite w !sudo tee > /dev/null %
 " edit vimrc
 nnoremap <leader>ev :tabe $MYVIMRC<CR>
 
-" save and source current file
-nnoremap <silent> <leader>so :w<CR>:so%<CR>
-    \:echo "Saved and sourced current buffer.."<CR>
+augroup vimrc_reload
+    autocmd!
+    " save and source current file
+    autocmd FileType vim nnoremap <buffer> <leader>so :w<cr>:so%<cr>:echo "Saved and sourced current buffer.."<cr>
+augroup END
 
 " change to current dir
-nnoremap <leader>cd :cd %:p:h\|pwd<cr>
+nnoremap <leader>c :cd %:p:h\|pwd<cr>
 
 " unmap help, and replace with <Esc>
-map <F1> <Esc>
 map! <F1> <Esc>
 
 " exit insert mode
 imap jk <Esc>
 
-" easier navigation in wrap mode
+" easier navigation in wrapped text
 nnoremap j gj
 nnoremap k gk
+
+" navigate paragraphs
+nnoremap <C-j> }
+nnoremap <C-k> {
 
 " make horizontal scrolling easier
 nnoremap <C-l> 10zl
 nnoremap <C-h> 10zh
-
-" spelling suggestions
-nnoremap <c-s> 1z=
-inoremap <c-s> <c-g>u<c-o>1z=
 
 " make Y behave like D
 nnoremap Y y$
@@ -305,8 +306,10 @@ nnoremap <silent><leader>z :tabedit!%<cr>
 " move between tabs
 nnoremap <silent><C-n> :tabn<cr>
 nnoremap <silent><C-p> :tabp<cr>
-" nmap <silent> ]t :tabn<cr>
-" nmap <silent> [t :tabp<cr>
+nnoremap <silent> ]t :tabn<cr>
+nnoremap <silent> [t :tabp<cr>
+
+" switch tabs web browser style
 if has("gui_macvim")
     nnoremap <D-1> 1gt
     nnoremap <D-2> 2gt
