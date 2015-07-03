@@ -211,33 +211,37 @@ function! ToggleFoldColumn()
     endif
 endfunction
 
-" Show syntax highlighting groups for word under cursor
-function! <SID>SynStack()
-  if !exists("*synstack")
-    return
-  endif
-  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-endfunc
-nmap <Leader><F12> :call <SID>SynStack()<CR>
+" " Show syntax highlighting groups for word under cursor
+" function! <SID>SynStack()
+"   if !exists("*synstack")
+"     return
+"   endif
+"   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+" endfunc
+" nmap <Leader><F12> :call <SID>SynStack()<CR>
 
 " delete trailing whitespace in the whole buffer
 function! DeleteTrailingWS()
-  exe "normal mz"
+  normal! m`
   %s/\s\+$//ge
-  exe "normal `z"
+  normal! ``
 endfunction
+
+com! DeleteTrailingWS :call DeleteTrailingWS()
+nnoremap _$ :DeleteTrailingWS<cr>
+nnoremap __ :s/\s\+$//ge<cr>
 
 " augroup checktime
 "     au!
 "     if !has("gui_running")
 "         "silent! necessary otherwise throws errors when using command
 "         "line window.
-"         autocmd BufEnter    * silent! checktime
-"         autocmd CursorHold  * silent! checktime
+"         autocmd BufEnter * silent! checktime
+"         autocmd CursorHold * silent! checktime
 "         autocmd CursorHoldI * silent! checktime
 "         "these two _may_ slow things down. Remove if they do.
-"         autocmd CursorMoved  * silent! checktime
-"         autocmd CursorMovedI * silent! checktime
+"         " autocmd CursorMoved * silent! checktime
+"         " autocmd CursorMovedI * silent! checktime
 "     endif
 " augroup END
 
@@ -246,6 +250,10 @@ com! FormatJSON %!python -m json.tool
 
 " justify selected text
 com! -nargs=0 -range Justify '<,'>!par \-w80qrj
+
+" Allow saving of files as sudo when I forgot to start vim using sudo.
+com! SudoWrite w !sudo tee > /dev/null %
+
 
 " }}}
 " ==============================================================================
