@@ -111,10 +111,11 @@ set wildmenu                        " enhanced command line completion
 set wildignorecase                  " be smart case-sensitive
 set diffopt+=vertical               " use vertical diffs by default
 set laststatus=2                    " always display a status line
-set autochdir                       " change to cwd of current file
+" set autochdir                       " change to cwd of current file
 set visualbell                      " turn off error beep/flash
 set regexpengine=2                  " use the improved regexpengine
-set timeout timeoutlen=1000         " shorter timeout lenght for keystrokes
+set timeoutlen=1000                 " shorter timeout lenght for keystrokes
+set ttimeoutlen=50                  " make esc work faster
 set lazyredraw                      " don't redraw screen for macros
 
 " indenting/formating
@@ -126,25 +127,21 @@ set shiftwidth=4
 set expandtab                       " use whitespace instead of tabs
 set shiftround                      " round indent to multiples of 'shiftwidth'
 
-" colorscheme
+" colorscheme/appearance
 if has("gui_running")
-    " set colorscheme and fonts
     set background=dark
-    " colorscheme kellys
-    " colorscheme jellybeans
     " colorscheme gruvbox
     " colorscheme seoul256
     colorscheme molokai
-    let g:airline_theme = 'gruvbox'
-    " change to alternate theme
+
     if has("gui_macvim")
         set transparency=3
     endif
-    " set guifont=Monospace,Menlo:h12
-    " set guifont=Monospace,Meslo\ LG\ S\ for\ Powerline:h12
-    set guifont=Monospace,DejaVu\ Sans\ Mono\ for\ Powerline:h14
+
+    set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h14,Monospace
     " style guicursor
     set guicursor=n-c-v:block-Cursor-blinkOn0
+
     " get rid of all scrollbars and the toolbar
     set guioptions-=T
     set guioptions-=r
@@ -158,20 +155,20 @@ if has("gui_running")
     set guioptions+=c
 else
     " use 256 colors in terminal
-    " set t_Co=256
     set background=dark
-    " colorscheme jellybeans
     " colorscheme gruvbox
     " colorscheme seoul256
     colorscheme molokai
-    " let g:airline_theme = 'gruvbox'
-endif
 
-if &term =~ '256color'
-    " disable Background Color Erase (BCE) so that color schemes
-    " render properly when inside 256-color tmux and GNU screen.
-    " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
-    set t_ut=
+    " let &t_SI .= "\ePtmux;\e\e[5 q\e\\"
+    " let &t_EI .= "\ePtmux;\e\e[1 q\e\\"
+    
+    if &term =~ '256color'
+        " disable Background Color Erase (BCE) so that color schemes
+        " render properly when inside 256-color tmux and GNU screen.
+        " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
+        set t_ut=
+    endif
 endif
 
 " use par to format text
