@@ -176,6 +176,9 @@ if executable("par")
     set formatprg=par\ -w80qr
 endif
 
+" source the manpage plugin
+source $VIMRUNTIME/ftplugin/man.vim
+
 " }}}
 " ==============================================================================
 " FUNCTIONS
