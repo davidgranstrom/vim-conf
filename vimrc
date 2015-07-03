@@ -383,17 +383,22 @@ endif
 " toggle
 nnoremap <silent> <F2> :NERDTreeToggle ~/<CR>
 nnoremap <silent> <F3> :NERDTreeFind<CR>
+let g:NERDTreeHijackNetrw=1
 
 " ----------------------------------------------------------------------------
 " -- Unite  ------------------------------------------------------------------
 
 let g:unite_source_history_yank_enable = 1
-let g:unite_source_rec_max_cache_files = 0
+" let g:unite_source_rec_max_cache_files = 0
+let g:unite_force_overwrite_statusline = 0
 
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#custom#source('file_rec/async', 'converters', [])
-call unite#custom#source('file_rec/async', 'sorters', [])
-call unite#custom#source('file_rec/async', 'max_candidates', 10)
+call unite#filters#matcher_default#use([ 'matcher_fuzzy', 'matcher_hide_hidden_files', 'matcher_hide_current_file' ])
+call unite#filters#sorter_default#use(['sorter_rank'])
+
+call unite#custom#source(
+    \ 'file_rec,file_rec/async,file_mru,file,buffer,grep',
+    \ 'ignore_pattern', '\.git/'
+    \ )
 
 " position and style
 call unite#custom#profile('default', 'context', {
@@ -403,23 +408,32 @@ call unite#custom#profile('default', 'context', {
 \   'prompt': '» '
 \ })
 
-nnoremap cot :<C-u>Unite -start-insert file/async:!<CR>
+" override vim default [I (list lines containing <pattern>)
+" nnoremap [I :execute 'Unite -no-resize -start-insert -buffer-name=search line:all' . expand("<cword>")<cr>
+nnoremap <leader>ff :execute 'Unite grep:.::' . expand("<cword>")<cr>
+nnoremap <leader>ft :execute 'Unite -buffer-name=files file_rec/async:! ' . expand("<cword>")<cr>
+nnoremap <leader>t :<C-u>Unite -buffer-name=files -start-insert buffer file_rec/async:.<cr>
 nnoremap <leader>b  :<C-u>Unite -no-split -no-resize buffer<cr>
-nnoremap <leader>/  :<C-u>Unite -no-resize line<cr>
+nnoremap <leader>/  :<C-u>Unite -no-resize -start-insert line<cr>
 nnoremap <leader>gg :<C-u>Unite grep:<cr>
-nnoremap <leader>o  :<C-u>Unite outline<cr>
+nnoremap <leader>o  :<C-u>Unite -direction=topleft outline<cr>
 nnoremap <leader>y  :<C-u>Unite history/yank<cr>
 
 " overwrite default settings
 function! s:unite_my_settings()
-    inoremap <silent><buffer> jk <Plug>(unite_insert_leave)
-    nnoremap <silent><buffer><expr> <C-s> unite#do_action('split')
-    nnoremap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
-    inoremap <silent><buffer><expr> <C-s> unite#do_action('split')
-    inoremap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+    imap <silent><buffer> jk <Plug>(unite_insert_leave)
+    imap <silent><buffer> <C-j> <Plug>(unite_select_next_line)
+    imap <silent><buffer> <C-k> <Plug>(unite_select_previous_line)
+    nnoremap <silent><buffer><expr> <leader>n unite#do_action('split')
+    nnoremap <silent><buffer><expr> <leader>v unite#do_action('vsplit')
+    inoremap <silent><buffer><expr> <leader>n unite#do_action('split')
+    inoremap <silent><buffer><expr> <leader>v unite#do_action('vsplit')
 endfunction
 
-autocmd FileType unite call s:unite_my_settings()
+augroup unite_settings
+    autocmd!
+    autocmd FileType unite call s:unite_my_settings()
+augroup END
 
 if executable('ag')
     " Use ag in unite grep source.
@@ -432,11 +446,6 @@ elseif executable('grep')
     let g:unite_source_grep_default_opts = '--colour=never'
     let g:unite_source_grep_recursive_opt = ''
 endif
-
-" ----------------------------------------------------------------------------
-" -- Vimfiler  ---------------------------------------------------------------
-"
-let g:vimfiler_enable_auto_cd = 1
 
 " ----------------------------------------------------------------------------
 " -- SuperTab  ---------------------------------------------------------------
@@ -453,9 +462,9 @@ nnoremap <F4> :GundoToggle<CR>
 " ----------------------------------------------------------------------------
 " -- EasyAlign  --------------------------------------------------------------
 
-vmap <Space> <Plug>(EasyAlign)
+vmap <leader><space> <Plug>(EasyAlign)
 " For normal mode, with Vim movement (e.g. <Leader>aip)
-nmap <leader><Space> <Plug>(EasyAlign)
+nmap <leader><space> <Plug>(EasyAlign)
 
 " ----------------------------------------------------------------------------
 " -- UltiSnips  --------------------------------------------------------------
@@ -467,7 +476,6 @@ let g:UltiSnipsJumpForwardTrigger  = "<C-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 let g:UltiSnipsUsePythonVersion    = 2
 
-
 " ----------------------------------------------------------------------------
 " -- Surround  ---------------------------------------------------------------
 
@@ -478,7 +486,6 @@ xmap s <plug>VSurround
 
 nnoremap <Leader>fs :Gstatus<CR><C-w>K
 nnoremap <F5> :Gblame<cr>
-autocmd BufNewFile,BufRead fugitive://* set bufhidden=delete
 
 " ----------------------------------------------------------------------------
 " -- delimitMate  ------------------------------------------------------------
@@ -491,25 +498,41 @@ let delimitMate_expand_space = 1
 " ----------------------------------------------------------------------------
 " -- airline  ----------------------------------------------------------------
 
-" let g:airline_theme             = 'base16'
-" let g:airline_theme             = 'dark'
-" let g:airline_theme             = 'jellybeans'
-let g:airline_enable_syntastic  = 0
-let g:airline_detect_whitespace = 0
-if has("gui_running")
-    let g:airline_powerline_fonts = 1
-endif
-" let g:airline_section_z = '%3c:%3l%3p%%'
-" let g:airline_fugitive_prefix = '⎇ '
-" call s:check_defined('g:airline_section_z', '%3p%% '.g:airline_linecolumn_prefix.'%3l:%3c')
-
-" let g:airline#extensions#tabline#enabled = 1
+" let g:airline_enable_syntastic  = 0
+let g:airline#extensions#whitespace#enabled = 0
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#branch#displayed_head_limit = 10
 
 " ----------------------------------------------------------------------------
 " -- FSwitch  ----------------------------------------------------------------
 
 nnoremap <silent> <Leader>s :FSSplitAbove<cr>
 nnoremap <silent> <Leader>a :FSHere<cr>
+
+" ----------------------------------------------------------------------------
+" -- Goyo  -------------------------------------------------------------------
+
+let g:goyo_width = 80
+let g:goyo_margin_top = 10
+let g:goyo_margin_bottom = 10
+
+" ----------------------------------------------------------------------------
+" -- vim-pad -----------------------------------------------------------------
+
+let g:pad#dir = "~/Documents/notes"
+let g:pad#local_dir = "vim-pad-notes"
+let g:pad#use_default_mappings = 0
+
+nmap <silent><leader>pn <Plug>(pad-new)
+nmap <silent><leader>pl <Plug>(pad-list)
+nmap <silent><leader>ps <Plug>(pad-search)
+nnoremap <silent><leader>pt :Pad this<cr>
+
+" ----------------------------------------------------------------------------
+" -- jshint ------------------------------------------------------------------
+
+let g:JSHintUpdateWriteOnly=1
 
 " ========================================================================={{{
 
