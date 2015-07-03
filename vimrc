@@ -41,7 +41,7 @@ Plug 'scrooloose/nerdtree'
 call plug#end()
 
 set directory^=$HOME/.vim/.swap//   " put all swap files in one place
-let mapleader=","                   " set mapleader
+let mapleader="\<space>"            " set mapleader
 set mouse=a                         " enable mouse
 
 " editing
