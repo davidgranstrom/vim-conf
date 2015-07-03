@@ -55,8 +55,8 @@ Plug 'sophacles/vim-processing', { 'for': 'processing' }
 Plug 'sbl/scvim'
 Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'StanAngeloff/php.vim', { 'for': 'php' }
-Plug 'leafgarland/typescript-vim', { 'for': 'typescript' } 
-" Plug 'clausreinke/typescript-tools.vim', { 'for': 'typescript' } 
+Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
+" Plug 'clausreinke/typescript-tools.vim', { 'for': 'typescript' }
 Plug 'Quramy/tsuquyomi', { 'for': 'typescript' }
 Plug 'moll/vim-node'
 Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
@@ -162,7 +162,7 @@ else
 
     " let &t_SI .= "\ePtmux;\e\e[5 q\e\\"
     " let &t_EI .= "\ePtmux;\e\e[1 q\e\\"
-    
+
     if &term =~ '256color'
         " disable Background Color Erase (BCE) so that color schemes
         " render properly when inside 256-color tmux and GNU screen.
@@ -343,33 +343,78 @@ vnoremap <C-k> :m '<-2<CR>gv=gv
 " {{{
 
 " supercollider
-au FileType supercollider set tags^=$HOME/.sctags
-" source supercollider mappings
-if filereadable(expand("~/.vim/plugged/vim-dkg/supercollider/scvim_init.vim"))
-    source ~/.vim/plugged/vim-dkg/supercollider/scvim_init.vim
-endif
-" if filereadable(expand("~/.scvimrc"))
-"     source ~/.scvimrc
-" endif
+source ~/.vim/bundle/vim-dkg/supercollider/scvim_init.vim
 
-" c
-autocmd FileType c set commentstring=\/\/\ %s
-
-" haskell
-autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-
-" markdown
-augroup markdown
-    autocmd!
-    au BufEnter,BufWinEnter,BufNewFile,BufRead *.md,*.markdown set filetype=markdown 
-    au BufEnter,BufWinEnter,BufNewFile,BufRead *.md,*.markdown set commentstring=<!--%s--> 
-augroup END
-
-" format html using pandoc
 if has("autocmd")
-  let pandoc_pipeline  = "pandoc --from=html --to=markdown"
-  let pandoc_pipeline .= " | pandoc --from=markdown --to=html"
-  autocmd FileType html let &formatprg=pandoc_pipeline
+    " supercollider
+    augroup supercollider_vimrc
+        autocmd FileType supercollider let b:vcm_tab_complete = "tags"
+    augroup END
+
+    " c
+    augroup c_comment
+        autocmd!
+        autocmd FileType c set commentstring=\/\/\ %s
+    augroup END
+
+    " haskell
+    augroup haskell_omni
+        autocmd!
+        autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+    augroup END
+
+    " markdown
+    augroup markdown
+        autocmd!
+        autocmd BufEnter,BufWinEnter,BufNewFile,BufRead *.md,*.markdown set filetype=markdown
+        autocmd BufEnter,BufWinEnter,BufNewFile,BufRead *.md,*.markdown set commentstring=<!--%s-->
+    augroup END
+
+    " markdown
+    augroup typescript
+        autocmd!
+        autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
+		autocmd FileType typescript nmap <buffer> <Leader>k :<C-u>echo tsuquyomi#hint()<CR>
+        autocmd FileType typescript setlocal ts=2 sts=2 sw=2
+    augroup END
+
+    " fugitive
+    augroup fugitive_index
+        autocmd!
+        autocmd BufEnter,BufWinEnter */.git/index set spell | set spelllang=en
+    augroup END
+
+    function! TogglePhpHtml()
+        if &ft == "php"
+            set ft=html
+        else
+            set ft=php
+        endif
+    endfunction
+
+    " php
+    augroup php_vimrc
+        autocmd!
+        autocmd FileType php nnoremap <leader>s :call TogglePhpHtml()<cr>
+        " autocmd FileType html nnoremap <leader>s :set ft=html
+    augroup END
+
+    " node
+    augroup node_vimrc
+        autocmd!
+        " autocmd FileType js nnoremap <leader>s :call TogglePhpHtml()<cr>
+        " autocmd FileType html nnoremap <leader>s :set ft=html
+        autocmd FileType javascript setlocal ts=2 sts=2 sw=2
+    augroup END
+
+
+    " format html using pandoc
+    let pandoc_pipeline  = "pandoc --from=html --to=markdown"
+    let pandoc_pipeline .= " | pandoc --from=markdown --to=html"
+    augroup html_format
+        autocmd!
+        autocmd FileType html let &formatprg=pandoc_pipeline
+    augroup END
 endif
 
 " }}}
