@@ -329,6 +329,22 @@ nnoremap <silent><down>  :3wincmd -<cr>
 vnoremap <C-j> :m '>+1<CR>gv=gv
 vnoremap <C-k> :m '<-2<CR>gv=gv
 
+if has('nvim')
+    " remap esc in terminal mode
+    tnoremap <Esc> <C-\><C-n>
+    " navigating terminal splits
+    tnoremap <A-h> <C-\><C-n><C-w>h
+    tnoremap <A-j> <C-\><C-n><C-w>j
+    tnoremap <A-k> <C-\><C-n><C-w>k
+    tnoremap <A-l> <C-\><C-n><C-w>l
+    nnoremap <A-h> <C-w>h
+    nnoremap <A-j> <C-w>j
+    nnoremap <A-k> <C-w>k
+    nnoremap <A-l> <C-w>l
+
+    " autocmd BufType
+endif
+
 " }}}
 " ==============================================================================
 " LANGUAGE SETTINGS
@@ -363,13 +379,22 @@ if has("autocmd")
         autocmd BufEnter,BufWinEnter,BufNewFile,BufRead *.md,*.markdown set commentstring=<!--%s-->
     augroup END
 
-    " markdown
+    " typescript
     augroup typescript
         autocmd!
         autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
 		autocmd FileType typescript nmap <buffer> <Leader>k :<C-u>echo tsuquyomi#hint()<CR>
         autocmd FileType typescript setlocal ts=2 sts=2 sw=2
     augroup END
+
+    " neomake
+    if has('nvim')
+        augroup neomake
+            autocmd!
+            autocmd FileType javascript setlocal makeprg=jshint
+            autocmd BufWritePost * Neomake
+        augroup END
+    endif
 
     " fugitive
     augroup fugitive_index
@@ -450,12 +475,17 @@ call unite#custom#profile('default', 'context', {
 " nnoremap [I :execute 'Unite -no-resize -start-insert -buffer-name=search line:all' . expand("<cword>")<cr>
 nnoremap <leader>ff :execute 'Unite grep:.::' . expand("<cword>")<cr>
 nnoremap <leader>ft :execute 'Unite -buffer-name=files file_rec/async:! ' . expand("<cword>")<cr>
-nnoremap <leader>t :<C-u>Unite -buffer-name=files -start-insert buffer file_rec/async:.<cr>
 nnoremap <leader>b  :<C-u>Unite -no-split -no-resize buffer<cr>
 nnoremap <leader>/  :<C-u>Unite -no-resize -start-insert line<cr>
 nnoremap <leader>gg :<C-u>Unite grep:<cr>
 nnoremap <leader>o  :<C-u>Unite -direction=topleft outline<cr>
 nnoremap <leader>y  :<C-u>Unite history/yank<cr>
+
+if has('nvim')
+    nnoremap <leader>t :<C-u>Unite -buffer-name=files -start-insert buffer file_rec/neovim<cr>
+else
+    nnoremap <leader>t :<C-u>Unite -buffer-name=files -start-insert buffer file_rec/async<cr>
+endif
 
 " overwrite default settings
 function! s:unite_my_settings()
