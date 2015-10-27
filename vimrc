@@ -13,9 +13,6 @@ syntax enable              " syntax highlighting
 " vim-plug
 call plug#begin('~/.vim/bundle')
 
-" appearance
-Plug 'bling/vim-airline'
-
 " editing
 Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-commentary'
@@ -32,34 +29,57 @@ Plug 'Shougo/unite-outline'
 Plug 'scrooloose/nerdtree'
 Plug 'kopischke/vim-fetch'
 Plug 'vim-scripts/matchit.zip'
+" Plug 'justinmk/vim-dirvish'
+Plug 'ludovicchabant/vim-gutentags'
+
 
 " util
 Plug 'tpope/vim-fugitive'
-Plug 'fmoralesc/vim-pad'
 Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
 Plug 'tmux-plugins/vim-tmux-focus-events'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
+Plug 'junegunn/fzf.vim'
+Plug 'Benekastah/neomake'
+Plug 'Yggdroot/indentLine'
+
+if has('nvim')
+    Plug 'neovim/node-host', { 'do' : 'npm install' }
+endif
 
 " language
+Plug 'sheerun/vim-polyglot'
+" langs not included in polyglot
 Plug 'b4winckler/vim-objc'
 Plug 'ryotakato/unite-outline-objc'
 Plug 'sophacles/vim-processing', { 'for': 'processing' }
 Plug 'sbl/scvim'
-Plug 'elzr/vim-json', { 'for': 'json' }
-Plug 'StanAngeloff/php.vim', { 'for': 'php' }
-Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
-Plug 'Quramy/tsuquyomi', { 'for': 'typescript' }
+
+"" web
+Plug 'Quramy/tsuquyomi', { 'for': 'typescript', 'do': 'make -f make_mac.mak' }
 Plug 'moll/vim-node'
 Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
+Plug 'Slava/tern-meteor'
+
+" Plug 'groenewege/vim-less'
+" Plug 'StanAngeloff/php.vim', { 'for': 'php' }
+" Plug 'elzr/vim-json', { 'for': 'json' }
+" Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
+
 if has('nvim')
-    Plug 'Benekastah/neomake'
-else 
-    Plug 'wookiehangover/jshint.vim'
+    Plug 'kassio/neoterm'
 endif
 
-" color schemes
+" color schemes / appearance
 Plug 'morhetz/gruvbox'
 Plug 'junegunn/seoul256.vim'
 Plug 'tomasr/molokai'
+Plug 'christophermca/meta5'
+Plug 'romainl/Apprentice'
+Plug 'freeo/vim-kalisi'
+Plug 'bling/vim-airline'
+Plug 'w0ng/vim-hybrid'
+Plug 'zenorocha/dracula-theme', { 'rtp': 'vim/' }
+Plug 'chriskempson/base16-vim'
 
 " misc
 Plug 'tpope/vim-repeat'
@@ -67,6 +87,9 @@ Plug 'tpope/vim-scriptease', { 'on': 'Runtime' }
 Plug 'Shougo/vimproc.vim', { 'do': 'make -f make_mac.mak' }
 Plug 'tpope/vim-unimpaired'
 Plug 'davidgranstrom/vim-dkg'
+
+" unused
+" Plug 'fmoralesc/vim-pad'
 
 call plug#end()
 
@@ -385,16 +408,13 @@ if has("autocmd")
         autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
 		autocmd FileType typescript nmap <buffer> <Leader>k :<C-u>echo tsuquyomi#hint()<CR>
         autocmd FileType typescript setlocal ts=2 sts=2 sw=2
+        if has('nvim')
+            autocmd FileType typescript setlocal makeprg=tslint
+            autocmd InsertLeave *.ts Neomake
+            autocmd BufWritePost *.ts Neomake
+        endif
     augroup END
 
-    " neomake
-    if has('nvim')
-        augroup neomake
-            autocmd!
-            autocmd FileType javascript setlocal makeprg=jshint
-            autocmd BufWritePost * Neomake
-        augroup END
-    endif
 
     " fugitive
     augroup fugitive_index
@@ -423,6 +443,12 @@ if has("autocmd")
         " autocmd FileType js nnoremap <leader>s :call TogglePhpHtml()<cr>
         " autocmd FileType html nnoremap <leader>s :set ft=html
         autocmd FileType javascript setlocal ts=2 sts=2 sw=2
+        " neomake
+        if has('nvim')
+            autocmd FileType javascript setlocal makeprg=jshint
+            autocmd InsertLeave *.js Neomake
+            autocmd BufWritePost *.js Neomake
+        endif
     augroup END
 
 
@@ -481,11 +507,12 @@ nnoremap <leader>gg :<C-u>Unite grep:<cr>
 nnoremap <leader>o  :<C-u>Unite -direction=topleft outline<cr>
 nnoremap <leader>y  :<C-u>Unite history/yank<cr>
 
-if has('nvim')
-    nnoremap <leader>t :<C-u>Unite -buffer-name=files -start-insert buffer file_rec/neovim<cr>
-else
-    nnoremap <leader>t :<C-u>Unite -buffer-name=files -start-insert buffer file_rec/async<cr>
-endif
+" if has('nvim')
+"     nnoremap <leader>t :<C-u>Unite -buffer-name=files -start-insert buffer file_rec/neovim<cr>
+" else
+"     nnoremap <leader>t :<C-u>Unite -buffer-name=files -start-insert buffer file_rec/async<cr>
+"     nnoremap <leader>t :<C-u>Unite -buffer-name=files -start-insert buffer file_rec/neovim<cr>
+" endif
 
 " overwrite default settings
 function! s:unite_my_settings()
@@ -503,13 +530,12 @@ augroup unite_settings
     autocmd FileType unite call s:unite_my_settings()
 augroup END
 
+" Use ag in unite grep source.
 if executable('ag')
-    " Use ag in unite grep source.
     let g:unite_source_grep_command = 'ag'
     let g:unite_source_grep_default_opts = '--nocolor --nogroup --hidden --ignore="tags"'
     let g:unite_source_grep_recursive_opt = ''
 elseif executable('grep')
-    " otherwise use grep
     let g:unite_source_grep_command = 'grep'
     let g:unite_source_grep_default_opts = '--colour=never'
     let g:unite_source_grep_recursive_opt = ''
@@ -578,30 +604,79 @@ let g:airline#extensions#branch#displayed_head_limit = 10
 nnoremap <silent> <Leader>s :FSSplitAbove<cr>
 nnoremap <silent> <Leader>a :FSHere<cr>
 
-" ----------------------------------------------------------------------------
-" -- Goyo  -------------------------------------------------------------------
+" ------------------------------------------------------------------------------
+" -- indentLine  ---------------------------------------------------------------
 
-let g:goyo_width = 80
-let g:goyo_margin_top = 10
-let g:goyo_margin_bottom = 10
+let g:indentLine_char = '┊'
 
-" ----------------------------------------------------------------------------
-" -- vim-pad -----------------------------------------------------------------
+" ------------------------------------------------------------------------------
+" -- fzf -----------------------------------------------------------------------
 
-let g:pad#dir = "~/Documents/notes"
-let g:pad#local_dir = "vim-pad-notes"
-let g:pad#use_default_mappings = 0
+let g:fzf_nvim_statusline = 0 " disable statusline overwriting
 
-nmap <silent><leader>pn <Plug>(pad-new)
-nmap <silent><leader>pl <Plug>(pad-list)
-nmap <silent><leader>ps <Plug>(pad-search)
-nnoremap <silent><leader>pt :Pad this<cr>
+" search for file
+nnoremap <silent> <leader>t :<C-u>Files<cr>
+" select buffers
+nnoremap <silent> <leader>b :<C-u>Buffers<cr>
+" search in loaded buffers
+nnoremap <silent> <leader>g/ :<C-u>Lines<cr>
+" search in current buffer
+nnoremap <silent> <leader>/ :<C-u>BLines<cr>
+" search for current word in pwd
+nnoremap <silent> <leader>f :<C-u>call SearchWordWithAg()<cr>
+vnoremap <silent> <leader>f :<C-u>call SearchVisualSelectionWithAg()<cr>
+" filter (vim) commands
+nnoremap <silent> <leader>: :<C-u>Commands<cr>
 
-" ----------------------------------------------------------------------------
-" -- jshint ------------------------------------------------------------------
+let g:fzf_action = {
+      \ 'ctrl-s': 'split',
+      \ 'ctrl-v': 'vsplit'
+      \ }
 
-let g:JSHintUpdateWriteOnly=1
+function! SearchWordWithAg()
+    execute 'Ag' expand('<cword>')
+endfunction
 
-" ========================================================================={{{
+function! SearchVisualSelectionWithAg() range
+    let old_reg = getreg('"')
+    let old_regtype = getregtype('"')
+    let old_clipboard = &clipboard
+    set clipboard&
+    normal! ""gvy
+    let selection = getreg('"')
+    call setreg('"', old_reg, old_regtype)
+    let &clipboard = old_clipboard
+    execute 'Ag' selection
+endfunction
 
+" ------------------------------------------------------------------------------
+" -- dirvish -------------------------------------------------------------------
+
+" augroup dirvish
+"     autocmd!
+"     autocmd FileType dirvish setlocal bufhidden=wipe
+
+"     autocmd FileType dirvish nnoremap <buffer> t
+"         \ :tabnew <C-R>=fnameescape(getline('.'))<CR><CR>
+
+"     autocmd FileType dirvish nnoremap <buffer> gh
+"         \ :set ma<bar>g@\v/\.[^\/]+/?$@d<cr>:set noma<cr>
+
+"     autocmd FileType dirvish nnoremap <buffer> q
+"         \ :bd!<cr>
+" augroup END
+
+" let g:dirvish_relative_paths = 1
+
+" nnoremap <silent> <F2> :15split \| Dirvish ~/<cr>
+" nnoremap <silent> <F3> :15split \| Dirvish %<cr>
+
+" ------------------------------------------------------------------------------
+" -- vim-tern ------------------------------------------------------------------
+
+let tern_show_argument_hints = 0
+let tern_show_signature_in_pum = 1
+
+"
+" ==========================================================================={{{
 " vim:foldmethod=marker colorcolumn=80 textwidth=80
