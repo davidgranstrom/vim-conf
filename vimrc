@@ -524,7 +524,6 @@ let g:NERDTreeHijackNetrw=1
 " -- Unite  ------------------------------------------------------------------
 
 let g:unite_source_history_yank_enable = 1
-" let g:unite_source_rec_max_cache_files = 0
 let g:unite_force_overwrite_statusline = 0
 
 call unite#filters#matcher_default#use([ 'matcher_fuzzy', 'matcher_hide_hidden_files', 'matcher_hide_current_file' ])
@@ -543,22 +542,7 @@ call unite#custom#profile('default', 'context', {
 \   'prompt': '» '
 \ })
 
-" override vim default [I (list lines containing <pattern>)
-" nnoremap [I :execute 'Unite -no-resize -start-insert -buffer-name=search line:all' . expand("<cword>")<cr>
-nnoremap <leader>ff :execute 'Unite grep:.::' . expand("<cword>")<cr>
-nnoremap <leader>ft :execute 'Unite -buffer-name=files file_rec/async:! ' . expand("<cword>")<cr>
-nnoremap <leader>b  :<C-u>Unite -no-split -no-resize buffer<cr>
-nnoremap <leader>/  :<C-u>Unite -no-resize -start-insert line<cr>
-nnoremap <leader>gg :<C-u>Unite grep:<cr>
 nnoremap <leader>o  :<C-u>Unite -direction=topleft outline<cr>
-nnoremap <leader>y  :<C-u>Unite history/yank<cr>
-
-" if has('nvim')
-"     nnoremap <leader>t :<C-u>Unite -buffer-name=files -start-insert buffer file_rec/neovim<cr>
-" else
-"     nnoremap <leader>t :<C-u>Unite -buffer-name=files -start-insert buffer file_rec/async<cr>
-"     nnoremap <leader>t :<C-u>Unite -buffer-name=files -start-insert buffer file_rec/neovim<cr>
-" endif
 
 " overwrite default settings
 function! s:unite_my_settings()
@@ -575,17 +559,6 @@ augroup unite_settings
     autocmd!
     autocmd FileType unite call s:unite_my_settings()
 augroup END
-
-" Use ag in unite grep source.
-if executable('ag')
-    let g:unite_source_grep_command = 'ag'
-    let g:unite_source_grep_default_opts = '--nocolor --nogroup --hidden --ignore="tags"'
-    let g:unite_source_grep_recursive_opt = ''
-elseif executable('grep')
-    let g:unite_source_grep_command = 'grep'
-    let g:unite_source_grep_default_opts = '--colour=never'
-    let g:unite_source_grep_recursive_opt = ''
-endif
 
 " ----------------------------------------------------------------------------
 " -- SuperTab  ---------------------------------------------------------------
