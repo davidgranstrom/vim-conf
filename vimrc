@@ -29,9 +29,7 @@ Plug 'Shougo/unite-outline'
 Plug 'scrooloose/nerdtree'
 Plug 'kopischke/vim-fetch'
 Plug 'vim-scripts/matchit.zip'
-" Plug 'justinmk/vim-dirvish'
 Plug 'ludovicchabant/vim-gutentags'
-
 
 " util
 Plug 'tpope/vim-fugitive'
@@ -54,16 +52,11 @@ Plug 'ryotakato/unite-outline-objc'
 Plug 'sophacles/vim-processing', { 'for': 'processing' }
 Plug 'sbl/scvim'
 
-"" web
+" web
 Plug 'Quramy/tsuquyomi', { 'for': 'typescript', 'do': 'make -f make_mac.mak' }
 Plug 'moll/vim-node'
 Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
 Plug 'Slava/tern-meteor'
-
-" Plug 'groenewege/vim-less'
-" Plug 'StanAngeloff/php.vim', { 'for': 'php' }
-" Plug 'elzr/vim-json', { 'for': 'json' }
-" Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 
 if has('nvim')
     Plug 'kassio/neoterm'
@@ -90,6 +83,7 @@ Plug 'davidgranstrom/vim-dkg'
 
 " unused
 " Plug 'fmoralesc/vim-pad'
+" Plug 'justinmk/vim-dirvish'
 
 call plug#end()
 
@@ -221,28 +215,6 @@ function! ToggleQuickFix()
 endfunction
 nnoremap <silent><leader>qf :call ToggleQuickFix()<cr>
 
-" toggle fold column
-com! -nargs=0 FoldColumnToggle call ToggleFoldColumn()
-let g:dkg_setfoldcolumn = 0
-function! ToggleFoldColumn()
-    if g:dkg_setfoldcolumn == 0
-        let g:dkg_setfoldcolumn= 1
-        set foldcolumn=4
-    else
-        let g:dkg_setfoldcolumn= 0
-        set foldcolumn=0
-    endif
-endfunction
-
-" " Show syntax highlighting groups for word under cursor
-" function! <SID>SynStack()
-"   if !exists("*synstack")
-"     return
-"   endif
-"   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-" endfunc
-" nmap <Leader><F12> :call <SID>SynStack()<CR>
-
 " delete trailing whitespace in the whole buffer
 function! DeleteTrailingWS()
   normal! m`
@@ -254,20 +226,6 @@ com! DeleteTrailingWS :call DeleteTrailingWS()
 nnoremap _$ :DeleteTrailingWS<cr>
 nnoremap __ :s/\s\+$//ge<cr>
 
-" augroup checktime
-"     au!
-"     if !has("gui_running")
-"         "silent! necessary otherwise throws errors when using command
-"         "line window.
-"         autocmd BufEnter * silent! checktime
-"         autocmd CursorHold * silent! checktime
-"         autocmd CursorHoldI * silent! checktime
-"         "these two _may_ slow things down. Remove if they do.
-"         " autocmd CursorMoved * silent! checktime
-"         " autocmd CursorMovedI * silent! checktime
-"     endif
-" augroup END
-
 " format json
 com! JSONFormat %!python -m json.tool
 
@@ -276,7 +234,6 @@ com! -nargs=0 -range Justify '<,'>!par \-w80qrj
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 com! SudoWrite w !sudo tee > /dev/null %
-
 
 " }}}
 " ==============================================================================
@@ -452,7 +409,7 @@ if has("autocmd")
     augroup typescript
         autocmd!
         autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
-		autocmd FileType typescript nmap <buffer> <Leader>k :<C-u>echo tsuquyomi#hint()<CR>
+        autocmd FileType typescript nmap <buffer> <Leader>k :<C-u>echo tsuquyomi#hint()<CR>
         autocmd FileType typescript setlocal ts=2 sts=2 sw=2
         if has('nvim')
             autocmd FileType typescript setlocal makeprg=tslint
@@ -515,10 +472,11 @@ endif
 
 " -- NerdTREE  ---------------------------------------------------------------
 
+let g:NERDTreeHijackNetrw=1
+
 " toggle
 nnoremap <silent> <F2> :NERDTreeToggle ~/<CR>
 nnoremap <silent> <F3> :NERDTreeFind<CR>
-let g:NERDTreeHijackNetrw=1
 
 " ----------------------------------------------------------------------------
 " -- Unite  ------------------------------------------------------------------
@@ -611,7 +569,6 @@ let delimitMate_expand_space = 1
 " ----------------------------------------------------------------------------
 " -- airline  ----------------------------------------------------------------
 
-" let g:airline_enable_syntastic  = 0
 let g:airline#extensions#whitespace#enabled = 0
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
