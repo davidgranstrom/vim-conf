@@ -104,6 +104,7 @@ set hidden                          " be able to hide modified buffers
 set complete-=i                     " where to look for auto-completion
 set clipboard=unnamed               " yank to system-wide clipboard
 set autoread                        " reload buffers changed from the outside
+set completeopt-=preview            " don't display scratch buffer for completion
 set formatoptions+=rj               " auto insert comments from insert mode,
                                     " remove comment leader when joining lines
 
@@ -114,6 +115,7 @@ set nostartofline                   " keep the cursor at the current column when
 set scrolloff=8                     " keep a distance of from the cursor when scrolling
 set nowrap                          " don't wrap words
 set linebreak                       " break at word boundries for wrapped text
+set list                            " show unprintable characters
 
 " searching
 set ignorecase                      " ignore case in search patterns
@@ -146,9 +148,13 @@ set shiftround                      " round indent to multiples of 'shiftwidth'
 " colorscheme/appearance
 if has("gui_running")
     set background=dark
-    " colorscheme gruvbox
+
+    let g:gruvbox_contrast_dark='hard'
+    let g:gruvbox_italic=1
+
+    colorscheme gruvbox
     " colorscheme seoul256
-    colorscheme molokai
+    " colorscheme molokai
 
     if has("gui_macvim")
         set transparency=3
@@ -172,12 +178,13 @@ if has("gui_running")
 else
     " use 256 colors in terminal
     set background=dark
-    " colorscheme gruvbox
-    " colorscheme seoul256
-    colorscheme molokai
 
-    " let &t_SI .= "\ePtmux;\e\e[5 q\e\\"
-    " let &t_EI .= "\ePtmux;\e\e[1 q\e\\"
+    let g:gruvbox_contrast_dark='hard'
+    let g:gruvbox_contrast_light='hard'
+    let g:gruvbox_italic=1
+    colorscheme gruvbox
+    " colorscheme seoul256
+    " colorscheme molokai
 
     if &term =~ '256color'
         " disable Background Color Erase (BCE) so that color schemes
