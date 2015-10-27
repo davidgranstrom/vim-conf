@@ -269,7 +269,7 @@ nnoremap __ :s/\s\+$//ge<cr>
 " augroup END
 
 " format json
-com! FormatJSON %!python -m json.tool
+com! JSONFormat %!python -m json.tool
 
 " justify selected text
 com! -nargs=0 -range Justify '<,'>!par \-w80qrj
@@ -290,14 +290,14 @@ nnoremap <leader>ev :tabe $MYVIMRC<CR>
 augroup vimrc_reload
     autocmd!
     " save and source current file
-    autocmd FileType vim nnoremap <buffer> <leader>so :w<cr>:so%<cr>:echo "Saved and sourced current buffer.."<cr>
+    autocmd FileType vim nnoremap <buffer> <leader>so :w<cr>:so%<cr>
 augroup END
 
 " change to current dir
 nnoremap <leader>c :cd %:p:h\|pwd<cr>
 
 " unmap help, and replace with <Esc>
-map! <F1> <Esc>
+nnoremap <F1> <Esc>
 
 " exit insert mode
 imap jk <Esc>
@@ -317,6 +317,9 @@ nnoremap <C-h> 10zh
 " make Y behave like D
 nnoremap Y y$
 
+" move to the first non-blank character of the line
+nnoremap <BS> ^
+
 " create an empty buffer for SuperCollider code
 nnoremap <leader>sn :SCNewScratchBuf<CR>
 
@@ -329,8 +332,6 @@ nnoremap <silent><leader>z :tabedit!%<cr>
 " move between tabs
 nnoremap <silent><C-n> :tabn<cr>
 nnoremap <silent><C-p> :tabp<cr>
-nnoremap <silent> ]t :tabn<cr>
-nnoremap <silent> [t :tabp<cr>
 
 " switch tabs web browser style
 if has("gui_macvim")
@@ -372,7 +373,45 @@ if has('nvim')
     nnoremap <A-k> <C-w>k
     nnoremap <A-l> <C-w>l
 
-    " autocmd BufType
+    " augroup neovim
+    "     au!
+    "     au BufEnter * if &buftype == 'terminal' | :startinsert | endif
+    " augroup   END
+
+    " visor style terminal buffer
+    let s:termbuf = 0
+    function! ToggleTerm()
+        topleft 15 split
+        try
+            exe 'buffer' . s:termbuf
+            startinsert
+        catch
+            terminal
+            let s:termbuf=bufnr('%')
+            tnoremap <buffer> <A-t>  <C-\><C-n>:close<cr>
+        endtry
+    endfunction
+
+    com! ToggleTerm call ToggleTerm()
+    nnoremap <A-t> :ToggleTerm<cr>
+
+    " toggle calculator
+    let s:calcbuf = 0
+
+    function! ToggleCalculator()
+        topleft 10 split
+        try
+            exe 'buffer' . s:calcbuf
+            startinsert
+        catch
+            terminal calc
+            let s:calcbuf=bufnr('%')
+            tnoremap <buffer> <A-c> <C-\><C-n>:close<cr>
+        endtry
+    endfunction
+
+    com! ToggleCalculator call ToggleCalculator()
+    nnoremap <A-c> :ToggleCalculator<cr>
 endif
 
 " }}}
