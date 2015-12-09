@@ -19,60 +19,54 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'Raimondi/delimitMate'
-Plug 'ervandew/supertab'
 Plug 'AndrewRadev/splitjoin.vim'
+Plug 'Shougo/deoplete.nvim'
 
 " navigation
-Plug 'derekwyatt/vim-fswitch'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/unite-outline'
 Plug 'scrooloose/nerdtree'
 Plug 'kopischke/vim-fetch'
 Plug 'vim-scripts/matchit.zip'
-Plug 'ludovicchabant/vim-gutentags'
 
 " util
 Plug 'tpope/vim-fugitive'
-Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
-Plug 'tmux-plugins/vim-tmux-focus-events'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'Benekastah/neomake'
 Plug 'Yggdroot/indentLine'
-
+Plug 'simnalamburt/vim-mundo', { 'on': 'GundoToggle' }
 if has('nvim')
     Plug 'neovim/node-host', { 'do' : 'npm install' }
+endif
+
+if has('nvim')
+    " make autoread behave as expected (neovim only)
+    au FocusGained * if &autoread | silent checktime | endif
+else
+    Plug 'tmux-plugins/vim-tmux-focus-events'
 endif
 
 " language
 Plug 'sheerun/vim-polyglot'
 " langs not included in polyglot
-Plug 'b4winckler/vim-objc'
 Plug 'ryotakato/unite-outline-objc'
 Plug 'sophacles/vim-processing', { 'for': 'processing' }
 Plug 'sbl/scvim'
 
 " web
-Plug 'Quramy/tsuquyomi', { 'for': 'typescript', 'do': 'make -f make_mac.mak' }
-Plug 'moll/vim-node'
+Plug 'moll/vim-node', { 'for': 'javascript' }
 Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
-Plug 'Slava/tern-meteor'
-
-if has('nvim')
-    Plug 'kassio/neoterm'
-endif
 
 " color schemes / appearance
+Plug 'bling/vim-airline'
 Plug 'morhetz/gruvbox'
 Plug 'junegunn/seoul256.vim'
 Plug 'tomasr/molokai'
-Plug 'christophermca/meta5'
-Plug 'romainl/Apprentice'
 Plug 'freeo/vim-kalisi'
-Plug 'bling/vim-airline'
 Plug 'w0ng/vim-hybrid'
 Plug 'zenorocha/dracula-theme', { 'rtp': 'vim/' }
-Plug 'chriskempson/base16-vim'
+Plug 'NLKNguyen/papercolor-theme'
 
 " misc
 Plug 'tpope/vim-repeat'
@@ -84,6 +78,12 @@ Plug 'davidgranstrom/vim-dkg'
 " unused
 " Plug 'fmoralesc/vim-pad'
 " Plug 'justinmk/vim-dirvish'
+" Plug 'Quramy/tsuquyomi', { 'for': 'typescript', 'do': 'make -f make_mac.mak' }
+" Plug 'kassio/neoterm'
+" Plug 'ervandew/supertab'
+" Plug 'derekwyatt/vim-fswitch'
+" Plug 'ludovicchabant/vim-gutentags'
+" Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
 
 call plug#end()
 
