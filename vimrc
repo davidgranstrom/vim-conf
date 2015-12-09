@@ -289,6 +289,7 @@ nnoremap <silent><leader>z :tabedit!%<cr>
 " move between tabs
 nnoremap <silent><C-n> :tabn<cr>
 nnoremap <silent><C-p> :tabp<cr>
+nnoremap <silent><leader>n :tabnew \| Files<cr>
 
 " switch tabs web browser style
 if has("gui_macvim")
@@ -329,6 +330,9 @@ if has('nvim')
     nnoremap <A-j> <C-w>j
     nnoremap <A-k> <C-w>k
     nnoremap <A-l> <C-w>l
+
+    " save buffer
+    nnoremap <A-s> :<C-u>w<cr>
 
     " augroup neovim
     "     au!
@@ -405,19 +409,28 @@ if has("autocmd")
         autocmd BufEnter,BufWinEnter,BufNewFile,BufRead *.md,*.markdown set commentstring=<!--%s-->
     augroup END
 
-    " typescript
-    augroup typescript
+    " javascript
+    augroup javascript
         autocmd!
-        autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
-        autocmd FileType typescript nmap <buffer> <Leader>k :<C-u>echo tsuquyomi#hint()<CR>
-        autocmd FileType typescript setlocal ts=2 sts=2 sw=2
-        if has('nvim')
-            autocmd FileType typescript setlocal makeprg=tslint
-            autocmd InsertLeave *.ts Neomake
-            autocmd BufWritePost *.ts Neomake
-        endif
+        autocmd FileType javascript setlocal ts=2 sts=2 sw=2
+        let g:neomake_javascript_enabled_makers = ['jshint', 'jscs']
+        " autocmd InsertLeave *.ts Neomake
+        " autocmd BufWritePost *.ts Neomake
+        autocmd BufWritePost *.js Neomake
+        autocmd InsertLeave *.js Neomake
     augroup END
 
+    " typescript
+    " augroup typescript
+    "     autocmd!
+    "     autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
+    "     autocmd FileType typescript nmap <buffer> <Leader>k :<C-u>echo tsuquyomi#hint()<CR>
+    "     autocmd FileType typescript setlocal ts=2 sts=2 sw=2
+    "     let g:neomake_javascript_enabled_makers = ['tslint']
+    "     autocmd FileType typescript setlocal makeprg=tslint
+    "     autocmd InsertLeave *.ts Neomake
+    "     autocmd BufWritePost *.ts Neomake
+    " augroup END
 
     " fugitive
     augroup fugitive_index
@@ -448,6 +461,7 @@ if has("autocmd")
         autocmd FileType javascript setlocal ts=2 sts=2 sw=2
         " neomake
         if has('nvim')
+            " let g:neomake_javascript_enabled_makers = ['flow']
             autocmd FileType javascript setlocal makeprg=jshint
             autocmd InsertLeave *.js Neomake
             autocmd BufWritePost *.js Neomake
@@ -591,11 +605,13 @@ let g:indentLine_char = '┊'
 let g:fzf_nvim_statusline = 0 " disable statusline overwriting
 
 " search for file
-nnoremap <silent> <leader>t :<C-u>Files<cr>
+nnoremap <silent> <leader>t :<C-u>GitFiles<cr>
 " select buffers
 nnoremap <silent> <leader>b :<C-u>Buffers<cr>
+" search in whole project
+nnoremap <silent> <leader>g/ :<C-u>Ag<cr>
 " search in loaded buffers
-nnoremap <silent> <leader>g/ :<C-u>Lines<cr>
+nnoremap <silent> <leader>a/ :<C-u>Lines<cr>
 " search in current buffer
 nnoremap <silent> <leader>/ :<C-u>BLines<cr>
 " search for current word in pwd
@@ -653,6 +669,20 @@ endfunction
 let tern_show_argument_hints = 0
 let tern_show_signature_in_pum = 1
 
-"
+" ------------------------------------------------------------------------------
+" -- deoplete ------------------------------------------------------------------
+
+if has('nvim')
+    let g:deoplete#enable_at_startup = 1
+
+    inoremap <silent> <expr> <Tab>
+        \ pumvisible() ? "\<C-n>" :
+        \ deoplete#mappings#manual_complete()
+
+    " inoremap <expr><Tab> deoplete#mappings#manual_complete()
+    inoremap <expr><C-h> deolete#mappings#smart_close_popup()."\<C-h>"
+    inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
+endif
+
 " ==========================================================================={{{
 " vim:foldmethod=marker colorcolumn=80 textwidth=80
