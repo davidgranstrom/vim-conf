@@ -20,7 +20,11 @@ Plug 'tpope/vim-surround'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'Raimondi/delimitMate'
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'Shougo/deoplete.nvim'
+if has('nvim')
+    Plug 'Shougo/deoplete.nvim'
+else
+    Plug 'ervandew/supertab'
+endif
 
 " navigation
 Plug 'Shougo/unite.vim'
@@ -80,7 +84,6 @@ Plug 'davidgranstrom/vim-dkg'
 " Plug 'justinmk/vim-dirvish'
 " Plug 'Quramy/tsuquyomi', { 'for': 'typescript', 'do': 'make -f make_mac.mak' }
 " Plug 'kassio/neoterm'
-" Plug 'ervandew/supertab'
 " Plug 'derekwyatt/vim-fswitch'
 " Plug 'ludovicchabant/vim-gutentags'
 " Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
