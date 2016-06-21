@@ -10,6 +10,11 @@ set nocompatible           " no need to be compatible with vi
 filetype plugin indent on  " detect plugin filetypes
 syntax enable              " syntax highlighting
 
+" enable true color for nvim
+if has('nvim')
+    set termguicolors
+endif
+
 " vim-plug
 call plug#begin('~/.vim/bundle')
 
@@ -18,7 +23,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-Plug 'Raimondi/delimitMate'
+Plug 'cohama/lexima.vim'
 Plug 'AndrewRadev/splitjoin.vim'
 if has('nvim')
     Plug 'Shougo/deoplete.nvim'
@@ -29,7 +34,7 @@ endif
 " navigation
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/unite-outline'
-Plug 'scrooloose/nerdtree'
+Plug 'justinmk/vim-dirvish'
 Plug 'kopischke/vim-fetch'
 Plug 'vim-scripts/matchit.zip'
 
@@ -37,9 +42,9 @@ Plug 'vim-scripts/matchit.zip'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'Benekastah/neomake'
+Plug 'neomake/neomake'
 Plug 'Yggdroot/indentLine'
-Plug 'simnalamburt/vim-mundo', { 'on': 'GundoToggle' }
+Plug 'simnalamburt/vim-mundo'
 if has('nvim')
     Plug 'neovim/node-host', { 'do' : 'npm install' }
 endif
@@ -53,23 +58,23 @@ endif
 
 " language
 Plug 'sheerun/vim-polyglot'
+
+" javascript
+Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
+Plug 'carlitux/deoplete-ternjs'
+
 " langs not included in polyglot
-Plug 'ryotakato/unite-outline-objc'
+Plug 'ryotakato/unite-outline-objc', { 'for': 'obj-c' }
 Plug 'sophacles/vim-processing', { 'for': 'processing' }
 Plug 'sbl/scvim'
 
-" web
-Plug 'moll/vim-node', { 'for': 'javascript' }
-Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
-
 " color schemes / appearance
-Plug 'bling/vim-airline'
+Plug 'itchyny/lightline.vim'
 Plug 'morhetz/gruvbox'
 Plug 'junegunn/seoul256.vim'
 Plug 'tomasr/molokai'
 Plug 'freeo/vim-kalisi'
 Plug 'w0ng/vim-hybrid'
-Plug 'zenorocha/dracula-theme', { 'rtp': 'vim/' }
 Plug 'NLKNguyen/papercolor-theme'
 
 " misc
@@ -81,12 +86,18 @@ Plug 'davidgranstrom/vim-dkg'
 
 " unused
 " Plug 'fmoralesc/vim-pad'
-" Plug 'justinmk/vim-dirvish'
 " Plug 'Quramy/tsuquyomi', { 'for': 'typescript', 'do': 'make -f make_mac.mak' }
 " Plug 'kassio/neoterm'
 " Plug 'derekwyatt/vim-fswitch'
 " Plug 'ludovicchabant/vim-gutentags'
 " Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
+" Plug 'scrooloose/nerdtree'
+" Plug 'vim-airline/vim-airline'
+" Plug 'gavocanov/vim-js-indent', { 'for': 'javascript' }
+" Plug 'marijnh/tern_for_vim', { 'for': 'javascript', 'do': 'npm install' }
+" Plug 'othree/yajs.vim', { 'for': 'javascript' }
+" Plug 'othree/jspc.vim', { 'for': 'javascript' }
+" Plug 'moll/vim-node', { 'for': 'javascript' }
 
 call plug#end()
 
