@@ -376,10 +376,13 @@ endif
 source ~/.vim/bundle/vim-dkg/supercollider/scvim_init.vim
 
 if has("autocmd")
-    " supercollider
-    augroup supercollider_vimrc
-        autocmd FileType supercollider let b:vcm_tab_complete = "tags"
-    augroup END
+    if has('nvim')
+        augroup neomake
+            autocmd!
+            autocmd BufWritePost * Neomake
+        augroup END
+    endif
+
 
     " c
     augroup c_comment
@@ -404,10 +407,9 @@ if has("autocmd")
     augroup javascript
         autocmd!
         autocmd FileType javascript setlocal ts=2 sts=2 sw=2
-        let g:neomake_javascript_enabled_makers = ['jshint', 'jscs']
-        " autocmd InsertLeave *.ts Neomake
-        " autocmd BufWritePost *.ts Neomake
-        autocmd BufWritePost *.js Neomake
+        let g:neomake_javascript_enabled_makers = ['jshint']
+
+        autocmd BufWrite *.js Neomake
         autocmd InsertLeave *.js Neomake
     augroup END
 
@@ -447,8 +449,6 @@ if has("autocmd")
     " node
     augroup node_vimrc
         autocmd!
-        " autocmd FileType js nnoremap <leader>s :call TogglePhpHtml()<cr>
-        " autocmd FileType html nnoremap <leader>s :set ft=html
         autocmd FileType javascript setlocal ts=2 sts=2 sw=2
         " neomake
         if has('nvim')
