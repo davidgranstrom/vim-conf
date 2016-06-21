@@ -224,7 +224,7 @@ else
 endif
 
 " justify selected text
-com! -nargs=0 -range Justify '<,'>!par \-w80qrj
+com! -nargs=0 -range Justify '<,'>!par \-w80j
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 com! SudoWrite w !sudo tee > /dev/null %
