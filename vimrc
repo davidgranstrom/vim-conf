@@ -248,7 +248,8 @@ augroup END
 nnoremap <leader>c :cd %:p:h\|pwd<cr>
 
 " unmap help, and replace with <Esc>
-nnoremap <F1> <Esc>
+noremap <F1> <Esc>
+inoremap <F1> <Esc>
 
 " exit insert mode
 imap jk <Esc>
@@ -265,8 +266,17 @@ nnoremap <C-k> {
 nnoremap <C-l> 10zl
 nnoremap <C-h> 10zh
 
+" move a step to the right in insert mode
+inoremap <C-l> <C-o>l
+
 " make Y behave like D
 nnoremap Y y$
+
+" send current line to the blackhole register
+nnoremap <leader>d "_dd
+
+" always send empty lines into the blackhole register
+nnoremap <expr> dd empty(getline('.')) ? '"_dd' : 'dd'
 
 " move to the first non-blank character of the line
 nnoremap <BS> ^
@@ -284,19 +294,6 @@ nnoremap <silent><leader>z :tabedit!%<cr>
 nnoremap <silent><C-n> :tabn<cr>
 nnoremap <silent><C-p> :tabp<cr>
 nnoremap <silent><leader>n :tabnew \| Files<cr>
-
-" switch tabs web browser style
-if has("gui_macvim")
-    nnoremap <D-1> 1gt
-    nnoremap <D-2> 2gt
-    nnoremap <D-3> 3gt
-    nnoremap <D-4> 4gt
-    nnoremap <D-5> 5gt
-    nnoremap <D-6> 6gt
-    nnoremap <D-7> 7gt
-    nnoremap <D-8> 8gt
-    nnoremap <D-9> 9gt
-endif
 
 " CTRL-U in insert mode deletes a lot. Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
