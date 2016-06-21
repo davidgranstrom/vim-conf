@@ -216,7 +216,12 @@ nnoremap _$ :DeleteTrailingWS<cr>
 nnoremap __ :s/\s\+$//ge<cr>
 
 " format json
-com! JSONFormat %!python -m json.tool
+if executable('jq')
+    com! JSONPretty %!jq '.'
+    com! JSONUgly %!jq -c '.'
+else
+    com! JSONPretty %!python -m json.tool
+endif
 
 " justify selected text
 com! -nargs=0 -range Justify '<,'>!par \-w80qrj
