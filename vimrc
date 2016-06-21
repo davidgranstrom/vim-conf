@@ -117,13 +117,14 @@ set formatoptions+=rj               " auto insert comments from insert mode,
                                     " remove comment leader when joining lines
 
 " appearance
-set fillchars=                      " remove the fillchars from folds and splits
+" set fillchars=                      " remove the fillchars from folds and splits
 set listchars=tab:>-,trail:–,nbsp:• " custom list chars
 set nostartofline                   " keep the cursor at the current column when moving
 set scrolloff=8                     " keep a distance of from the cursor when scrolling
 set nowrap                          " don't wrap words
 set linebreak                       " break at word boundries for wrapped text
 set list                            " show unprintable characters
+set relativenumber
 
 " searching
 set ignorecase                      " ignore case in search patterns
@@ -156,13 +157,8 @@ set shiftround                      " round indent to multiples of 'shiftwidth'
 " colorscheme/appearance
 if has("gui_running")
     set background=dark
-
     let g:gruvbox_contrast_dark='hard'
-    let g:gruvbox_italic=1
-
     colorscheme gruvbox
-    " colorscheme seoul256
-    " colorscheme molokai
 
     if has("gui_macvim")
         set transparency=3
@@ -173,33 +169,12 @@ if has("gui_running")
     set guicursor=n-c-v:block-Cursor-blinkOn0
 
     " get rid of all scrollbars and the toolbar
-    set guioptions-=T
-    set guioptions-=r
-    set guioptions-=R
-    set guioptions-=l
-    set guioptions-=L
-    set guioptions-=b
-    set guioptions-=m
-    set guioptions-=e
+    set guioptions-=TRLrlbme
     " use console dialogs for simple choices
     set guioptions+=c
 else
-    " use 256 colors in terminal
     set background=dark
-
-    let g:gruvbox_contrast_dark='hard'
-    let g:gruvbox_contrast_light='hard'
-    let g:gruvbox_italic=1
-    colorscheme gruvbox
-    " colorscheme seoul256
-    " colorscheme molokai
-
-    if &term =~ '256color'
-        " disable Background Color Erase (BCE) so that color schemes
-        " render properly when inside 256-color tmux and GNU screen.
-        " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
-        set t_ut=
-    endif
+    colorscheme hybrid
 endif
 
 " use par to format text
