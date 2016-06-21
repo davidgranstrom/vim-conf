@@ -475,23 +475,47 @@ endif
 " ==============================================================================
 " {{{
 
-" -- NerdTREE  ---------------------------------------------------------------
+" -- Dirvish  ------------------------------------------------------------------
 
-let g:NERDTreeHijackNetrw=1
+function! OpenDirvish()
+    if &filetype == ''
+        Dirvish
+    else
+        Dirvish %
+    endif
+endfunction
 
-" toggle
-nnoremap <silent> <F2> :NERDTreeToggle ~/<CR>
-nnoremap <silent> <F3> :NERDTreeFind<CR>
+nnoremap <silent> <F1> :call OpenDirvish()<cr>
 
-" ----------------------------------------------------------------------------
-" -- Unite  ------------------------------------------------------------------
+augroup my_dirvish_autocmds
+    autocmd!
+    " Map t to "open in new tab".
+    autocmd FileType dirvish
+    \  nnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
+    \ |xnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
 
-let g:unite_source_history_yank_enable = 1
+    " Enable :Gstatus and friends.
+    autocmd FileType dirvish call fugitive#detect(@%)
+
+    " Map CTRL-R to reload the Dirvish buffer.
+    autocmd FileType dirvish nnoremap <buffer> <C-R> :<C-U>Dirvish %<CR>
+
+    " Map gh to hide "hidden" files.
+    autocmd FileType dirvish nnoremap <buffer> gh 
+        \ :g@\v/\.[^\/]+/?$@d<cr>
+
+    autocmd FileType dirvish nnoremap <buffer> s :<C-U>sort r /[^\/]$/<CR>
+    autocmd FileType dirvish nnoremap <buffer> S :<C-U>sort r /\/$/<CR>
+augroup END
+
+" ------------------------------------------------------------------------------
+" -- Unite  --------------------------------------------------------------------
+
 let g:unite_force_overwrite_statusline = 0
 
-call unite#filters#matcher_default#use([ 'matcher_fuzzy', 'matcher_hide_hidden_files', 'matcher_hide_current_file' ])
+call unite#filters#matcher_default#use([ 'matcher_fuzzy',
+            \ 'matcher_hide_hidden_files', 'matcher_hide_current_file' ])
 call unite#filters#sorter_default#use(['sorter_rank'])
-
 call unite#custom#source(
     \ 'file_rec,file_rec/async,file_mru,file,buffer,grep',
     \ 'ignore_pattern', '\.git/'
@@ -507,83 +531,45 @@ call unite#custom#profile('default', 'context', {
 
 nnoremap <leader>o  :<C-u>Unite -direction=topleft outline<cr>
 
-" overwrite default settings
-function! s:unite_my_settings()
-    imap <silent><buffer> jk <Plug>(unite_insert_leave)
-    imap <silent><buffer> <C-j> <Plug>(unite_select_next_line)
-    imap <silent><buffer> <C-k> <Plug>(unite_select_previous_line)
-    nnoremap <silent><buffer><expr> <leader>n unite#do_action('split')
-    nnoremap <silent><buffer><expr> <leader>v unite#do_action('vsplit')
-    inoremap <silent><buffer><expr> <leader>n unite#do_action('split')
-    inoremap <silent><buffer><expr> <leader>v unite#do_action('vsplit')
-endfunction
-
-augroup unite_settings
-    autocmd!
-    autocmd FileType unite call s:unite_my_settings()
-augroup END
-
-" ----------------------------------------------------------------------------
-" -- SuperTab  ---------------------------------------------------------------
+" ------------------------------------------------------------------------------
+" -- SuperTab  -----------------------------------------------------------------
 
 let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
 let g:SuperTabCrMapping = 0
 
-" ----------------------------------------------------------------------------
-" -- Gundo  ------------------------------------------------------------------
+" ------------------------------------------------------------------------------
+" -- Mundo  --------------------------------------------------------------------
 
-nnoremap <F4> :GundoToggle<CR>
+nnoremap <F4> :MundoToggle<CR>
 
-" ----------------------------------------------------------------------------
-" -- EasyAlign  --------------------------------------------------------------
+" ------------------------------------------------------------------------------
+" -- EasyAlign  ----------------------------------------------------------------
 
 vmap <leader><space> <Plug>(EasyAlign)
 " For normal mode, with Vim movement (e.g. <Leader>aip)
 nmap <leader><space> <Plug>(EasyAlign)
 
-" ----------------------------------------------------------------------------
-" -- UltiSnips  --------------------------------------------------------------
+" ------------------------------------------------------------------------------
+" -- UltiSnips  ----------------------------------------------------------------
 
 let g:UltiSnipsListSnippets        = "<c-\\>"
-let g:UltiSnips_Author             = "David Granstrom"
+let g:UltiSnips_Author             = "David Granström"
 let g:UltiSnipsExpandTrigger       = "<C-j>"
 let g:UltiSnipsJumpForwardTrigger  = "<C-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 let g:UltiSnipsUsePythonVersion    = 2
 
-" ----------------------------------------------------------------------------
-" -- Surround  ---------------------------------------------------------------
+" ------------------------------------------------------------------------------
+" -- Surround  -----------------------------------------------------------------
 
 xmap s <plug>VSurround
 
-" ----------------------------------------------------------------------------
-" -- Fugitive  ---------------------------------------------------------------
+" ------------------------------------------------------------------------------
+" -- Fugitive  -----------------------------------------------------------------
 
 nnoremap <Leader>fs :Gstatus<CR><C-w>K
 nnoremap <F5> :Gblame<cr>
-
-" ----------------------------------------------------------------------------
-" -- delimitMate  ------------------------------------------------------------
-
-imap <C-l> <Plug>delimitMateS-Tab
-imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
-let delimitMate_expand_cr    = 1
-let delimitMate_expand_space = 1
-
-" ----------------------------------------------------------------------------
-" -- airline  ----------------------------------------------------------------
-
-let g:airline#extensions#whitespace#enabled = 0
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#branch#displayed_head_limit = 10
-
-" ----------------------------------------------------------------------------
-" -- FSwitch  ----------------------------------------------------------------
-
-nnoremap <silent> <Leader>s :FSSplitAbove<cr>
-nnoremap <silent> <Leader>a :FSHere<cr>
 
 " ------------------------------------------------------------------------------
 " -- indentLine  ---------------------------------------------------------------
@@ -597,6 +583,7 @@ let g:fzf_nvim_statusline = 0 " disable statusline overwriting
 
 " search for file
 nnoremap <silent> <leader>t :<C-u>GitFiles<cr>
+" nnoremap <silent> <leader>t :<C-u>Files<cr>
 " select buffers
 nnoremap <silent> <leader>b :<C-u>Buffers<cr>
 " search in whole project
@@ -606,8 +593,8 @@ nnoremap <silent> <leader>a/ :<C-u>Lines<cr>
 " search in current buffer
 nnoremap <silent> <leader>/ :<C-u>BLines<cr>
 " search for current word in pwd
-nnoremap <silent> <leader>f :<C-u>call SearchWordWithAg()<cr>
-vnoremap <silent> <leader>f :<C-u>call SearchVisualSelectionWithAg()<cr>
+nnoremap <silent> <leader>i :<C-u>call SearchWordWithAg()<cr>
+vnoremap <silent> <leader>i :<C-u>call SearchVisualSelectionWithAg()<cr>
 " filter (vim) commands
 nnoremap <silent> <leader>: :<C-u>Commands<cr>
 
@@ -633,28 +620,6 @@ function! SearchVisualSelectionWithAg() range
 endfunction
 
 " ------------------------------------------------------------------------------
-" -- dirvish -------------------------------------------------------------------
-
-" augroup dirvish
-"     autocmd!
-"     autocmd FileType dirvish setlocal bufhidden=wipe
-
-"     autocmd FileType dirvish nnoremap <buffer> t
-"         \ :tabnew <C-R>=fnameescape(getline('.'))<CR><CR>
-
-"     autocmd FileType dirvish nnoremap <buffer> gh
-"         \ :set ma<bar>g@\v/\.[^\/]+/?$@d<cr>:set noma<cr>
-
-"     autocmd FileType dirvish nnoremap <buffer> q
-"         \ :bd!<cr>
-" augroup END
-
-" let g:dirvish_relative_paths = 1
-
-" nnoremap <silent> <F2> :15split \| Dirvish ~/<cr>
-" nnoremap <silent> <F3> :15split \| Dirvish %<cr>
-
-" ------------------------------------------------------------------------------
 " -- vim-tern ------------------------------------------------------------------
 
 let tern_show_argument_hints = 0
@@ -666,11 +631,7 @@ let tern_show_signature_in_pum = 1
 if has('nvim')
     let g:deoplete#enable_at_startup = 1
 
-    inoremap <silent> <expr> <Tab>
-        \ pumvisible() ? "\<C-n>" :
-        \ deoplete#mappings#manual_complete()
-
-    " inoremap <expr><Tab> deoplete#mappings#manual_complete()
+    inoremap <silent> <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
     inoremap <expr><C-h> deolete#mappings#smart_close_popup()."\<C-h>"
     inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
 endif
