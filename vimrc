@@ -557,14 +557,11 @@ let g:indentLine_char = '┊'
 " ------------------------------------------------------------------------------
 " -- fzf -----------------------------------------------------------------------
 
-let g:fzf_nvim_statusline = 0 " disable statusline overwriting
-
 " search for file
 nnoremap <silent> <leader>t :<C-u>GitFiles<cr>
-" nnoremap <silent> <leader>t :<C-u>Files<cr>
 " select buffers
 nnoremap <silent> <leader>b :<C-u>Buffers<cr>
-" search in whole project
+" search in current dir
 nnoremap <silent> <leader>g/ :<C-u>Ag<cr>
 " search in loaded buffers
 nnoremap <silent> <leader>a/ :<C-u>Lines<cr>
@@ -572,7 +569,7 @@ nnoremap <silent> <leader>a/ :<C-u>Lines<cr>
 nnoremap <silent> <leader>/ :<C-u>BLines<cr>
 " search for current word in pwd
 nnoremap <silent> <leader>i :<C-u>call SearchWordWithAg()<cr>
-vnoremap <silent> <leader>i :<C-u>call SearchVisualSelectionWithAg()<cr>
+xnoremap <silent> <leader>i :<C-u>call SearchVisualSelectionWithAg()<cr>
 " filter (vim) commands
 nnoremap <silent> <leader>: :<C-u>Commands<cr>
 
