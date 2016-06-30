@@ -510,29 +510,6 @@ augroup my_dirvish_autocmds
 augroup END
 
 " ------------------------------------------------------------------------------
-" -- Unite  --------------------------------------------------------------------
-
-let g:unite_force_overwrite_statusline = 0
-
-call unite#filters#matcher_default#use([ 'matcher_fuzzy',
-            \ 'matcher_hide_hidden_files', 'matcher_hide_current_file' ])
-call unite#filters#sorter_default#use(['sorter_rank'])
-call unite#custom#source(
-    \ 'file_rec,file_rec/async,file_mru,file,buffer,grep',
-    \ 'ignore_pattern', '\.git/'
-    \ )
-
-" position and style
-call unite#custom#profile('default', 'context', {
-\   'direction': 'botright',
-\   'winheight': 10,
-\   'cursor-line-time': 0.0,
-\   'prompt': '» '
-\ })
-
-nnoremap <leader>o  :<C-u>Unite -direction=topleft outline<cr>
-
-" ------------------------------------------------------------------------------
 " -- SuperTab  -----------------------------------------------------------------
 
 let g:SuperTabDefaultCompletionType = "context"
