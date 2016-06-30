@@ -272,11 +272,12 @@ inoremap <C-l> <C-o>l
 " make Y behave like D
 nnoremap Y y$
 
-" send current line to the blackhole register
-nnoremap <leader>d "_dd
-
 " always send empty lines into the blackhole register
 nnoremap <expr> dd empty(getline('.')) ? '"_dd' : 'dd'
+
+" paste last yanked item
+nnoremap gp "0p
+xnoremap gp "0p
 
 " move to the first non-blank character of the line
 nnoremap <BS> ^
@@ -500,7 +501,7 @@ augroup my_dirvish_autocmds
     " Map CTRL-R to reload the Dirvish buffer.
     autocmd FileType dirvish nnoremap <buffer> <C-R> :<C-U>Dirvish %<CR>
 
-    " Map gh to hide "hidden" files.
+    " Map gh to hide 'hidden' files.
     autocmd FileType dirvish nnoremap <buffer> gh 
         \ :g@\v/\.[^\/]+/?$@d<cr>
 
