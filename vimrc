@@ -32,8 +32,6 @@ else
 endif
 
 " navigation
-Plug 'Shougo/unite.vim'
-Plug 'Shougo/unite-outline'
 Plug 'justinmk/vim-dirvish'
 Plug 'kopischke/vim-fetch'
 Plug 'vim-scripts/matchit.zip'
@@ -98,6 +96,8 @@ Plug 'davidgranstrom/vim-dkg'
 " Plug 'othree/yajs.vim', { 'for': 'javascript' }
 " Plug 'othree/jspc.vim', { 'for': 'javascript' }
 " Plug 'moll/vim-node', { 'for': 'javascript' }
+" Plug 'Shougo/unite.vim'
+" Plug 'Shougo/unite-outline'
 
 call plug#end()
 
