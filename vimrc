@@ -24,6 +24,7 @@ Plug 'tpope/vim-surround'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'cohama/lexima.vim'
 Plug 'AndrewRadev/splitjoin.vim'
+Plug 'tommcdo/vim-exchange'
 if has('nvim')
     Plug 'Shougo/deoplete.nvim'
 else
@@ -42,26 +43,28 @@ Plug 'junegunn/fzf.vim'
 Plug 'neomake/neomake'
 Plug 'Yggdroot/indentLine'
 Plug 'simnalamburt/vim-mundo'
-if has('nvim')
-    Plug 'neovim/node-host', { 'do' : 'npm install' }
-endif
+Plug 'kassio/neoterm'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'metakirby5/codi.vim'
+Plug 'mhinz/vim-grepper'
 
 if has('nvim')
     " make autoread behave as expected (neovim only)
+    Plug 'neovim/node-host', { 'do' : 'npm install' }
     au FocusGained * if &autoread | silent checktime | endif
-else
-    Plug 'tmux-plugins/vim-tmux-focus-events'
 endif
 
 " language
+let g:vim_markdown_conceal = 0
 Plug 'sheerun/vim-polyglot'
+Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
+Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
 
 " javascript
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
-Plug 'carlitux/deoplete-ternjs'
+Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' }
 
 " langs not included in polyglot
-Plug 'ryotakato/unite-outline-objc', { 'for': 'obj-c' }
 Plug 'sophacles/vim-processing', { 'for': 'processing' }
 Plug 'sbl/scvim'
 
@@ -73,6 +76,9 @@ Plug 'tomasr/molokai'
 Plug 'freeo/vim-kalisi'
 Plug 'w0ng/vim-hybrid'
 Plug 'NLKNguyen/papercolor-theme'
+Plug 'mhartington/oceanic-next'
+Plug 'jacoborus/tender'
+" Plug 'machakann/vim-highlightedyank'
 
 " misc
 Plug 'tpope/vim-repeat'
@@ -84,9 +90,7 @@ Plug 'davidgranstrom/vim-dkg'
 " unused
 " Plug 'fmoralesc/vim-pad'
 " Plug 'Quramy/tsuquyomi', { 'for': 'typescript', 'do': 'make -f make_mac.mak' }
-" Plug 'kassio/neoterm'
 " Plug 'derekwyatt/vim-fswitch'
-" Plug 'ludovicchabant/vim-gutentags'
 " Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
 " Plug 'scrooloose/nerdtree'
 " Plug 'vim-airline/vim-airline'
@@ -97,6 +101,9 @@ Plug 'davidgranstrom/vim-dkg'
 " Plug 'moll/vim-node', { 'for': 'javascript' }
 " Plug 'Shougo/unite.vim'
 " Plug 'Shougo/unite-outline'
+" Plug 'ryotakato/unite-outline-objc', { 'for': 'obj-c' }
+" Plug 'tmux-plugins/vim-tmux-focus-events'
+" Plug 'roxma/vim-tmux-clipboard'
 
 call plug#end()
 
