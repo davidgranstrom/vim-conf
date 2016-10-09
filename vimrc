@@ -126,7 +126,7 @@ set formatoptions+=rj               " auto insert comments from insert mode,
 " set fillchars=                      " remove the fillchars from folds and splits
 set listchars=tab:>-,trail:–,nbsp:• " custom list chars
 set nostartofline                   " keep the cursor at the current column when moving
-set scrolloff=8                     " keep a distance of from the cursor when scrolling
+set scrolloff=4                     " keep a distance of from the cursor when scrolling
 set nowrap                          " don't wrap words
 set linebreak                       " break at word boundries for wrapped text
 set list                            " show unprintable characters
@@ -173,14 +173,13 @@ if has("gui_running")
     set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h14,Monospace
     " style guicursor
     set guicursor=n-c-v:block-Cursor-blinkOn0
-
     " get rid of all scrollbars and the toolbar
     set guioptions-=TRLrlbme
     " use console dialogs for simple choices
     set guioptions+=c
 else
     set background=dark
-    colorscheme hybrid
+    colorscheme tender
 endif
 
 " use par to format text
