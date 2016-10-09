@@ -615,5 +615,10 @@ if has('nvim')
     inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
 endif
 
+" ------------------------------------------------------------------------------
+" -- Highlighted Yank ----------------------------------------------------------
+
+let g:highlightedyank_highlight_duration = 100
+
 " ==========================================================================={{{
 " vim:foldmethod=marker colorcolumn=80 textwidth=80
