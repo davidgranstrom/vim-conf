@@ -78,7 +78,7 @@ Plug 'w0ng/vim-hybrid'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'mhartington/oceanic-next'
 Plug 'jacoborus/tender'
-" Plug 'machakann/vim-highlightedyank'
+Plug 'machakann/vim-highlightedyank'
 
 " misc
 Plug 'tpope/vim-repeat'
@@ -388,7 +388,6 @@ if has("autocmd")
             autocmd BufWritePost * Neomake
         augroup END
     endif
-
 
     " c
     augroup c_comment
