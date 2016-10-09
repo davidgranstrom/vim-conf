@@ -6,7 +6,6 @@
 " ==============================================================================
 " {{{
 
-set nocompatible           " no need to be compatible with vi
 filetype plugin indent on  " detect plugin filetypes
 syntax enable              " syntax highlighting
 
