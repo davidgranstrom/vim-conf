@@ -55,7 +55,6 @@ if has('nvim')
 endif
 
 " language
-let g:vim_markdown_conceal = 0
 Plug 'sheerun/vim-polyglot'
 Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
 Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
@@ -165,10 +164,6 @@ if has("gui_running")
     set background=dark
     let g:gruvbox_contrast_dark='hard'
     colorscheme gruvbox
-
-    if has("gui_macvim")
-        set transparency=3
-    endif
 
     set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h14,Monospace
     " style guicursor
