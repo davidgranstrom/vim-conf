@@ -263,10 +263,6 @@ imap jk <Esc>
 nnoremap j gj
 nnoremap k gk
 
-" navigate paragraphs
-nnoremap <C-j> }
-nnoremap <C-k> {
-
 " make horizontal scrolling easier
 nnoremap <C-l> 10zl
 nnoremap <C-h> 10zh
@@ -327,6 +323,10 @@ if has('nvim')
     nnoremap <A-j> <C-w>j
     nnoremap <A-k> <C-w>k
     nnoremap <A-l> <C-w>l
+    " navigate tab pages (like chrome)
+    for i in range(1, 9)
+        execute 'nnoremap <silent><A-' . i . '> :tabnext ' . i . ' <cr>'
+    endfor
 
     " save buffer
     nnoremap <A-s> :<C-u>w<cr>
@@ -504,6 +504,10 @@ let g:UltiSnipsExpandTrigger       = "<C-j>"
 let g:UltiSnipsJumpForwardTrigger  = "<C-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 let g:UltiSnipsUsePythonVersion    = 2
+if has('nvim')
+    let g:UltiSnipsUsePythonVersion    = 3
+endif
+
 
 " ------------------------------------------------------------------------------
 " -- Surround  -----------------------------------------------------------------
@@ -582,6 +586,17 @@ endif
 " -- Highlighted Yank ----------------------------------------------------------
 
 let g:highlightedyank_highlight_duration = 100
+
+" ------------------------------------------------------------------------------
+" -- Neomake -------------------------------------------------------------------
+
+" let g:neomake_open_list = 2
+let g:neomake_javascript_enabled_makers = ['eslint']
+
+" ------------------------------------------------------------------------------
+" -- misc ----------------------------------------------------------------------
+
+let g:vim_markdown_conceal = 0
 
 " ==========================================================================={{{
 " vim:foldmethod=marker colorcolumn=80 textwidth=80
