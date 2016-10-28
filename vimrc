@@ -382,60 +382,46 @@ endif
 source ~/.vim/bundle/vim-dkg/supercollider/scvim_init.vim
 
 if has("autocmd")
-    if has('nvim')
-        augroup neomake
-            autocmd!
-            autocmd BufWritePost * Neomake
-        augroup END
-    endif
+    " neomake
+    augroup dkg_neomake
+        autocmd!
+        autocmd BufWritePost * Neomake
+    augroup END
 
     " c
-    augroup c_comment
+    augroup dkg_c
         autocmd!
         autocmd FileType c set commentstring=\/\/\ %s
     augroup END
 
     " haskell
-    augroup haskell_omni
+    augroup dkg_haskell
         autocmd!
         autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
     augroup END
 
     " markdown
-    augroup markdown
+    augroup dkg_markdown
         autocmd!
         autocmd BufEnter,BufWinEnter,BufNewFile,BufRead *.md,*.markdown set filetype=markdown
         autocmd BufEnter,BufWinEnter,BufNewFile,BufRead *.md,*.markdown set commentstring=<!--%s-->
     augroup END
 
     " javascript
-    augroup javascript
+    augroup dkg_javascript
         autocmd!
-        autocmd FileType javascript setlocal ts=2 sts=2 sw=2
-        let g:neomake_javascript_enabled_makers = ['jshint']
-
-        autocmd BufWrite *.js Neomake
-        autocmd InsertLeave *.js Neomake
+        autocmd FileType javascript.jsx setlocal filetype=javascript
+        autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
+        autocmd FileType javascript,typescript, setlocal ts=2 sts=2 sw=2
     augroup END
 
-    " typescript
-    " augroup typescript
-    "     autocmd!
-    "     autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
-    "     autocmd FileType typescript nmap <buffer> <Leader>k :<C-u>echo tsuquyomi#hint()<CR>
-    "     autocmd FileType typescript setlocal ts=2 sts=2 sw=2
-    "     let g:neomake_javascript_enabled_makers = ['tslint']
-    "     autocmd FileType typescript setlocal makeprg=tslint
-    "     autocmd InsertLeave *.ts Neomake
-    "     autocmd BufWritePost *.ts Neomake
-    " augroup END
-
     " fugitive
-    augroup fugitive_index
+    augroup dkg_fugitive
         autocmd!
         autocmd BufEnter,BufWinEnter */.git/index set spell | set spelllang=en
     augroup END
 
+    " php
     function! TogglePhpHtml()
         if &ft == "php"
             set ft=html
@@ -444,33 +430,10 @@ if has("autocmd")
         endif
     endfunction
 
-    " php
-    augroup php_vimrc
+    augroup dkg_php
         autocmd!
         autocmd FileType php nnoremap <leader>s :call TogglePhpHtml()<cr>
         " autocmd FileType html nnoremap <leader>s :set ft=html
-    augroup END
-
-    " node
-    augroup node_vimrc
-        autocmd!
-        autocmd FileType javascript setlocal ts=2 sts=2 sw=2
-        " neomake
-        if has('nvim')
-            " let g:neomake_javascript_enabled_makers = ['flow']
-            autocmd FileType javascript setlocal makeprg=jshint
-            autocmd InsertLeave *.js Neomake
-            autocmd BufWritePost *.js Neomake
-        endif
-    augroup END
-
-
-    " format html using pandoc
-    let pandoc_pipeline  = "pandoc --from=html --to=markdown"
-    let pandoc_pipeline .= " | pandoc --from=markdown --to=html"
-    augroup html_format
-        autocmd!
-        autocmd FileType html let &formatprg=pandoc_pipeline
     augroup END
 endif
 
