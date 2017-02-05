@@ -12,6 +12,7 @@ syntax enable              " syntax highlighting
 " enable true color for nvim
 if has('nvim')
     set termguicolors
+    let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 endif
 
 " vim-plug
@@ -26,7 +27,8 @@ Plug 'cohama/lexima.vim'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'tommcdo/vim-exchange'
 if has('nvim')
-    Plug 'Shougo/deoplete.nvim'
+    " Plug 'Shougo/deoplete.nvim' | Plug 'Shougo/context_filetype.vim'
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } | Plug 'Shougo/context_filetype.vim'
 else
     Plug 'ervandew/supertab'
 endif
@@ -35,22 +37,26 @@ endif
 Plug 'justinmk/vim-dirvish'
 Plug 'kopischke/vim-fetch'
 Plug 'vim-scripts/matchit.zip'
+Plug 'justinmk/vim-sneak'
 
 " util
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'neomake/neomake'
-Plug 'Yggdroot/indentLine'
+" Plug 'neomake/neomake'
+Plug 'w0rp/ale'
+" Plug 'Yggdroot/indentLine'
 Plug 'simnalamburt/vim-mundo'
-Plug 'kassio/neoterm'
+Plug 'jalvesaq/vimcmdline'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'metakirby5/codi.vim'
 Plug 'mhinz/vim-grepper'
+Plug 'junegunn/vim-slash'
+Plug 'alok/notational-fzf-vim'
 
 if has('nvim')
-    " make autoread behave as expected (neovim only)
     Plug 'neovim/node-host', { 'do' : 'npm install' }
+    " make autoread behave as expected (neovim only)
     au FocusGained * if &autoread | silent checktime | endif
 endif
 
@@ -58,6 +64,7 @@ endif
 Plug 'sheerun/vim-polyglot'
 Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
 Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
+Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 
 " javascript
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
@@ -85,6 +92,7 @@ Plug 'tpope/vim-scriptease', { 'on': 'Runtime' }
 Plug 'Shougo/vimproc.vim', { 'do': 'make -f make_mac.mak' }
 Plug 'tpope/vim-unimpaired'
 Plug 'davidgranstrom/vim-dkg'
+Plug 'tweekmonster/nvim-api-viewer'
 
 " unused
 " Plug 'fmoralesc/vim-pad'
@@ -103,6 +111,7 @@ Plug 'davidgranstrom/vim-dkg'
 " Plug 'ryotakato/unite-outline-objc', { 'for': 'obj-c' }
 " Plug 'tmux-plugins/vim-tmux-focus-events'
 " Plug 'roxma/vim-tmux-clipboard'
+" Plug 'kassio/neoterm'
 
 call plug#end()
 
