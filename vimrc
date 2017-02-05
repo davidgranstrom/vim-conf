@@ -127,6 +127,7 @@ set complete-=i                     " where to look for auto-completion
 set clipboard=unnamed               " yank to system-wide clipboard
 set autoread                        " reload buffers changed from the outside
 set completeopt-=preview            " don't display scratch buffer for completion
+set inccommand=nosplit              " preview changes (:s/) incrementally
 set formatoptions+=rj               " auto insert comments from insert mode,
                                     " remove comment leader when joining lines
 
@@ -137,7 +138,7 @@ set nostartofline                   " keep the cursor at the current column when
 set scrolloff=4                     " keep a distance of from the cursor when scrolling
 set nowrap                          " don't wrap words
 set linebreak                       " break at word boundries for wrapped text
-set list                            " show unprintable characters
+" set list                            " show unprintable characters
 set relativenumber
 
 " searching
@@ -154,7 +155,7 @@ set diffopt+=vertical               " use vertical diffs by default
 set laststatus=2                    " always display a status line
 " set autochdir                       " change to cwd of current file
 set visualbell                      " turn off error beep/flash
-set regexpengine=2                  " use the improved regexpengine
+set regexpengine=0                  " auto-switch regexp engines
 set timeoutlen=1000                 " shorter timeout lenght for keystrokes
 set ttimeoutlen=50                  " make esc work faster
 set lazyredraw                      " don't redraw screen for macros
