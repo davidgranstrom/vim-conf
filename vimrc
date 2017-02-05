@@ -300,7 +300,7 @@ nnoremap <silent><leader>z :tabedit!%<cr>
 " move between tabs
 nnoremap <silent><C-n> :tabn<cr>
 nnoremap <silent><C-p> :tabp<cr>
-nnoremap <silent><leader>n :tabnew \| Files<cr>
+" nnoremap <silent><leader>n :tabnew \| Files<cr>
 
 " CTRL-U in insert mode deletes a lot. Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
@@ -315,6 +315,8 @@ nnoremap <silent><down>  :3wincmd -<cr>
 " Move visual block
 vnoremap <C-j> :m '>+1<CR>gv=gv
 vnoremap <C-k> :m '<-2<CR>gv=gv
+
+nnoremap Q q:
 
 if has('nvim')
     " remap esc in terminal mode
@@ -388,10 +390,10 @@ source ~/.vim/bundle/vim-dkg/supercollider/scvim_init.vim
 
 if has("autocmd")
     " neomake
-    augroup dkg_neomake
-        autocmd!
-        autocmd BufWritePost * Neomake
-    augroup END
+    " augroup dkg_neomake
+    "     autocmd!
+    "     autocmd BufWritePost * Neomake
+    " augroup END
 
     " c
     augroup dkg_c
@@ -418,6 +420,13 @@ if has("autocmd")
         autocmd FileType javascript.jsx setlocal filetype=javascript
         autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
         autocmd FileType javascript,typescript, setlocal ts=2 sts=2 sw=2
+        autocmd FileType css,less setlocal ts=2 sts=2 sw=2
+    augroup END
+
+    " python
+    augroup dkg_python
+        autocmd!
+        autocmd FileType python setlocal ts=4 sts=4 sw=4
     augroup END
 
     " fugitive
@@ -510,7 +519,7 @@ let g:UltiSnipsJumpForwardTrigger  = "<C-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 let g:UltiSnipsUsePythonVersion    = 2
 if has('nvim')
-    let g:UltiSnipsUsePythonVersion    = 3
+    let g:UltiSnipsUsePythonVersion = 3
 endif
 
 
@@ -528,7 +537,7 @@ nnoremap <F5> :Gblame<cr>
 " ------------------------------------------------------------------------------
 " -- indentLine  ---------------------------------------------------------------
 
-let g:indentLine_char = '┊'
+" let g:indentLine_char = '┊'
 
 " ------------------------------------------------------------------------------
 " -- fzf -----------------------------------------------------------------------
@@ -581,6 +590,7 @@ let tern_show_signature_in_pum = 1
 
 if has('nvim')
     let g:deoplete#enable_at_startup = 1
+    let g:deoplete#enable_smart_case = 1
 
     inoremap <silent> <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
     inoremap <expr><C-h> deolete#mappings#smart_close_popup()."\<C-h>"
@@ -596,7 +606,24 @@ let g:highlightedyank_highlight_duration = 100
 " -- Neomake -------------------------------------------------------------------
 
 " let g:neomake_open_list = 2
-let g:neomake_javascript_enabled_makers = ['eslint']
+" let g:neomake_javascript_enabled_makers = ['eslint']
+
+" ------------------------------------------------------------------------------
+" -- Grepper -------------------------------------------------------------------
+
+nmap gs <plug>(GrepperOperator)
+xmap gs <plug>(GrepperOperator)
+
+" ------------------------------------------------------------------------------
+" -- Ale -----------------------------------------------------------------------
+
+let g:ale_linters = {'javascript': ['eslint']}
+
+" ------------------------------------------------------------------------------
+" -- Notational-fzf ------------------------------------------------------------
+
+nnoremap <leader>n :NV<cr>
+let g:nv_directories = ['~/wiki']
 
 " ------------------------------------------------------------------------------
 " -- misc ----------------------------------------------------------------------
