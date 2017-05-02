@@ -9,12 +9,6 @@
 filetype plugin indent on  " detect plugin filetypes
 syntax enable              " syntax highlighting
 
-" enable true color for nvim
-if has('nvim')
-    set termguicolors
-    let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-endif
-
 " vim-plug
 call plug#begin('~/.vim/bundle')
 
@@ -25,10 +19,11 @@ Plug 'tpope/vim-surround'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'cohama/lexima.vim'
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'tommcdo/vim-exchange'
+Plug 'brooth/far.vim'
+Plug 'tweekmonster/wstrip.vim'
+
 if has('nvim')
-    " Plug 'Shougo/deoplete.nvim' | Plug 'Shougo/context_filetype.vim'
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } | Plug 'Shougo/context_filetype.vim'
+    Plug 'Shougo/deoplete.nvim' | Plug 'Shougo/context_filetype.vim'
 else
     Plug 'ervandew/supertab'
 endif
@@ -43,28 +38,23 @@ Plug 'justinmk/vim-sneak'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-" Plug 'neomake/neomake'
 Plug 'w0rp/ale'
-" Plug 'Yggdroot/indentLine'
 Plug 'simnalamburt/vim-mundo'
-Plug 'jalvesaq/vimcmdline'
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'metakirby5/codi.vim'
-Plug 'mhinz/vim-grepper'
 Plug 'junegunn/vim-slash'
-Plug 'alok/notational-fzf-vim'
+Plug 'kassio/neoterm'
 
 if has('nvim')
     Plug 'neovim/node-host', { 'do' : 'npm install' }
     " make autoread behave as expected (neovim only)
-    au FocusGained * if &autoread | silent checktime | endif
+    au! FocusGained * if &autoread | silent checktime | endif
 endif
 
 " language
 Plug 'sheerun/vim-polyglot'
-Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
-Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
+Plug 'neovimhaskell/haskell-vim', { 'for': [ 'haskell', 'haskell.tidal' ] }
+Plug 'eagletmt/neco-ghc', { 'for': [ 'haskell', 'haskell.tidal' ] }
 Plug 'zchee/deoplete-jedi', { 'for': 'python' }
+Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
 
 " javascript
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
@@ -73,6 +63,8 @@ Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' }
 " langs not included in polyglot
 Plug 'sophacles/vim-processing', { 'for': 'processing' }
 Plug 'sbl/scvim'
+Plug '~/code/vim/vim-tidal'
+" Plug 'munshkr/vim-tidal'
 
 " color schemes / appearance
 Plug 'itchyny/lightline.vim'
@@ -85,16 +77,18 @@ Plug 'NLKNguyen/papercolor-theme'
 Plug 'mhartington/oceanic-next'
 Plug 'jacoborus/tender'
 Plug 'machakann/vim-highlightedyank'
+Plug 'rakr/vim-one'
+Plug 'pgdouyon/vim-yin-yang'
+Plug 'ewilazarus/preto'
 
 " misc
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-scriptease', { 'on': 'Runtime' }
-Plug 'Shougo/vimproc.vim', { 'do': 'make -f make_mac.mak' }
 Plug 'tpope/vim-unimpaired'
 Plug 'davidgranstrom/vim-dkg'
-Plug 'tweekmonster/nvim-api-viewer'
+Plug 'tpope/vim-scriptease', { 'on': 'Runtime' }
 
 " unused
+" Plug 'Shougo/vimproc.vim', { 'do': 'make -f make_mac.mak' }
 " Plug 'fmoralesc/vim-pad'
 " Plug 'Quramy/tsuquyomi', { 'for': 'typescript', 'do': 'make -f make_mac.mak' }
 " Plug 'derekwyatt/vim-fswitch'
@@ -111,9 +105,22 @@ Plug 'tweekmonster/nvim-api-viewer'
 " Plug 'ryotakato/unite-outline-objc', { 'for': 'obj-c' }
 " Plug 'tmux-plugins/vim-tmux-focus-events'
 " Plug 'roxma/vim-tmux-clipboard'
-" Plug 'kassio/neoterm'
+" Plug 'neomake/neomake'
+" Plug 'Yggdroot/indentLine'
+" Plug 'jalvesaq/vimcmdline'
+" Plug 'ludovicchabant/vim-gutentags'
+" Plug 'metakirby5/codi.vim'
+" Plug 'mhinz/vim-grepper'
+" Plug 'tweekmonster/nvim-api-viewer'
+" Plug 'tommcdo/vim-exchange'
+" Plug 'alok/notational-fzf-vim'
 
 call plug#end()
+
+" enable true color for nvim
+if has('nvim')
+    set termguicolors
+endif
 
 set directory^=$HOME/.vim/.swap//   " put all swap files in one place
 let mapleader="\<space>"            " set mapleader
@@ -134,7 +141,7 @@ set formatoptions+=rj               " auto insert comments from insert mode,
 " appearance
 " set fillchars=                      " remove the fillchars from folds and splits
 set listchars=tab:>-,trail:–,nbsp:• " custom list chars
-set nostartofline                   " keep the cursor at the current column when moving
+" set nostartofline                   " keep the cursor at the current column when moving
 set scrolloff=4                     " keep a distance of from the cursor when scrolling
 set nowrap                          " don't wrap words
 set linebreak                       " break at word boundries for wrapped text
@@ -163,9 +170,9 @@ set lazyredraw                      " don't redraw screen for macros
 " indenting/formating
 set autoindent                      " indent even if we have no filetype rules
 set smarttab
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set expandtab                       " use whitespace instead of tabs
 set shiftround                      " round indent to multiples of 'shiftwidth'
 
@@ -191,9 +198,6 @@ endif
 if executable("par")
     set formatprg=par\ -w80qr
 endif
-
-" source the manpage plugin
-source $VIMRUNTIME/ftplugin/man.vim
 
 " }}}
 " ==============================================================================
@@ -238,6 +242,7 @@ com! -nargs=0 -range Justify '<,'>!par \-w80j
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 com! SudoWrite w !sudo tee > /dev/null %
+
 
 " }}}
 " ==============================================================================
@@ -379,6 +384,9 @@ if has('nvim')
     nnoremap <A-c> :ToggleCalculator<cr>
 endif
 
+nnoremap <A-Enter> :TREPLSend<cr>
+xnoremap <A-Enter> :TREPLSend<cr>
+
 " }}}
 " ==============================================================================
 " LANGUAGE SETTINGS
@@ -404,6 +412,7 @@ if has("autocmd")
     " haskell
     augroup dkg_haskell
         autocmd!
+        let g:haskellmode_completion_ghc = 0
         autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
     augroup END
 
@@ -420,7 +429,7 @@ if has("autocmd")
         autocmd FileType javascript.jsx setlocal filetype=javascript
         autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
         autocmd FileType javascript,typescript, setlocal ts=2 sts=2 sw=2
-        autocmd FileType css,less setlocal ts=2 sts=2 sw=2
+        autocmd FileType css,less,scss,sass setlocal ts=2 sts=2 sw=2
     augroup END
 
     " python
@@ -483,7 +492,7 @@ augroup my_dirvish_autocmds
     autocmd FileType dirvish nnoremap <buffer> <C-R> :<C-U>Dirvish %<CR>
 
     " Map gh to hide 'hidden' files.
-    autocmd FileType dirvish nnoremap <buffer> gh 
+    autocmd FileType dirvish nnoremap <buffer> gh
         \ :g@\v/\.[^\/]+/?$@d<cr>
 
     autocmd FileType dirvish nnoremap <buffer> s :<C-U>sort r /[^\/]$/<CR>
@@ -582,8 +591,13 @@ endfunction
 " ------------------------------------------------------------------------------
 " -- vim-tern ------------------------------------------------------------------
 
-let tern_show_argument_hints = 0
-let tern_show_signature_in_pum = 1
+let g:tern_request_timeout = 1
+let g:tern_show_signature_in_pum = 0
+" let g:tern_show_argument_hints = 0
+let g:tern#filetypes = [
+                \ 'jsx',
+                \ 'javascript.jsx',
+                \ ]
 
 " ------------------------------------------------------------------------------
 " -- deoplete ------------------------------------------------------------------
@@ -591,6 +605,7 @@ let tern_show_signature_in_pum = 1
 if has('nvim')
     let g:deoplete#enable_at_startup = 1
     let g:deoplete#enable_smart_case = 1
+    let g:deoplete#auto_complete_delay = 25
 
     inoremap <silent> <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
     inoremap <expr><C-h> deolete#mappings#smart_close_popup()."\<C-h>"
@@ -618,6 +633,8 @@ xmap gs <plug>(GrepperOperator)
 " -- Ale -----------------------------------------------------------------------
 
 let g:ale_linters = {'javascript': ['eslint']}
+" let g:ale_linters = {'cpp': ['cppcheck']}
+let g:ale_c_cppcheck_options = '--enable=style -I../include'
 
 " ------------------------------------------------------------------------------
 " -- Notational-fzf ------------------------------------------------------------
@@ -629,6 +646,48 @@ let g:nv_directories = ['~/wiki']
 " -- misc ----------------------------------------------------------------------
 
 let g:vim_markdown_conceal = 0
+let g:far#source = 'agnvim'
+
+" ------------------------------------------------------------------------------
+" -- tidal ---------------------------------------------------------------------
+
+let g:tidal_no_mappings = 1
+
+augroup dkg_tidalvim
+  autocmd!
+  autocmd FileType haskell.tidal xmap <C-e> <Plug>TidalRegionSend
+  autocmd FileType haskell.tidal nmap <C-e> <Plug>TidalLineSend
+  autocmd FileType haskell.tidal imap <C-e> <esc>:<C-u>TidalSend<cr>
+  autocmd FileType haskell.tidal nmap <C-b> <Plug>TidalParagraphSend
+  autocmd FileType haskell.tidal nmap <C-t> <Plug>TidalPrintType
+augroup END
+
+" ------------------------------------------------------------------------------
+" -- Neoterm -------------------------------------------------------------------
+
+nnoremap <silent> <F8> :TREPLSendFile<cr>
+nnoremap <silent> <F9> :TREPLSendLine<cr>
+vnoremap <silent> <F9> :TREPLSendSelection<cr>
+
+autocmd! FileType haskell nnoremap <silent><C-e> :TREPLSendLine<cr>
+autocmd! FileType haskell vnoremap <silent><C-e> :TREPLSendSelection<cr>
+
+" hide/close terminal
+nnoremap <silent> <leader><BS> :call neoterm#close()<cr>
+" clear terminal
+nnoremap <silent> <leader>l :call neoterm#clear()<cr>
+" kills the current job (send a <c-c>)
+nnoremap <silent> <leader>qc :call neoterm#kill()<cr>
+
+
+" ------------------------------------------------------------------------------
+" -- misc ----------------------------------------------------------------------
+
+" tweekmonster/wstrip.vim
+let g:wstrip_auto = 1
+
+let g:python_host_prog = '/usr/local/bin/python2'
+let g:python3_host_prog = '/usr/local/bin/python3'
 
 " ==========================================================================={{{
 " vim:foldmethod=marker colorcolumn=80 textwidth=80
