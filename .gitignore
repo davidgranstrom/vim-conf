@@ -2,4 +2,5 @@ bundle/
 shada/
 spell/
 autoload/
+rplugin/
 .swap/
