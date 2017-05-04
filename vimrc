@@ -359,10 +359,10 @@ endif
 " ==============================================================================
 " {{{
 
-let s:scvimrc = '~/.vim/bundle/vim-dkg/supercollider/scvim_init.vim'
-if filereadable(s:scvimrc)
+let s:dkg_scvimrc = '~/.vim/bundle/vim-dkg/supercollider/scvim_init.vim'
+if filereadable(expand(s:dkg_scvimrc))
   " supercollider
-  source s:scvimrc
+  source ~/.vim/bundle/vim-dkg/supercollider/scvim_init.vim
 endif
 
 if has('autocmd')
