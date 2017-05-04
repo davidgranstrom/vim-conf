@@ -19,7 +19,7 @@ Plug 'tpope/vim-surround'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'cohama/lexima.vim'
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'brooth/far.vim'
+" Plug 'brooth/far.vim'
 Plug 'tweekmonster/wstrip.vim'
 
 if has('nvim')
@@ -44,9 +44,6 @@ Plug 'junegunn/vim-slash'
 Plug 'kassio/neoterm'
 
 if has('nvim')
-    Plug 'neovim/node-host', { 'do' : 'npm install' }
-    " make autoread behave as expected (neovim only)
-    au! FocusGained * if &autoread | silent checktime | endif
 endif
 
 " language
@@ -87,42 +84,19 @@ Plug 'tpope/vim-unimpaired'
 Plug 'davidgranstrom/vim-dkg'
 Plug 'tpope/vim-scriptease', { 'on': 'Runtime' }
 
-" unused
-" Plug 'Shougo/vimproc.vim', { 'do': 'make -f make_mac.mak' }
-" Plug 'fmoralesc/vim-pad'
-" Plug 'Quramy/tsuquyomi', { 'for': 'typescript', 'do': 'make -f make_mac.mak' }
-" Plug 'derekwyatt/vim-fswitch'
-" Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
-" Plug 'scrooloose/nerdtree'
-" Plug 'vim-airline/vim-airline'
-" Plug 'gavocanov/vim-js-indent', { 'for': 'javascript' }
-" Plug 'marijnh/tern_for_vim', { 'for': 'javascript', 'do': 'npm install' }
-" Plug 'othree/yajs.vim', { 'for': 'javascript' }
-" Plug 'othree/jspc.vim', { 'for': 'javascript' }
-" Plug 'moll/vim-node', { 'for': 'javascript' }
-" Plug 'Shougo/unite.vim'
-" Plug 'Shougo/unite-outline'
-" Plug 'ryotakato/unite-outline-objc', { 'for': 'obj-c' }
-" Plug 'tmux-plugins/vim-tmux-focus-events'
-" Plug 'roxma/vim-tmux-clipboard'
-" Plug 'neomake/neomake'
-" Plug 'Yggdroot/indentLine'
-" Plug 'jalvesaq/vimcmdline'
-" Plug 'ludovicchabant/vim-gutentags'
-" Plug 'metakirby5/codi.vim'
-" Plug 'mhinz/vim-grepper'
-" Plug 'tweekmonster/nvim-api-viewer'
-" Plug 'tommcdo/vim-exchange'
-" Plug 'alok/notational-fzf-vim'
-
 call plug#end()
+
+set runtimepath+=~/.vim,~/.vim/after
+set packpath+=~/.vim
 
 " enable true color for nvim
 if has('nvim')
     set termguicolors
+  else
+    " neovim already does this by default, ~/.local/share/nvim/swap
+    set directory^=$HOME/.vim/.swap//   " put all swap files in one place
 endif
 
-set directory^=$HOME/.vim/.swap//   " put all swap files in one place
 let mapleader="\<space>"            " set mapleader
 set mouse=a                         " enable mouse
 
@@ -343,11 +317,6 @@ if has('nvim')
     " save buffer
     nnoremap <A-s> :<C-u>w<cr>
 
-    " augroup neovim
-    "     au!
-    "     au BufEnter * if &buftype == 'terminal' | :startinsert | endif
-    " augroup   END
-
     " visor style terminal buffer
     let s:termbuf = 0
     function! ToggleTerm()
@@ -384,24 +353,23 @@ if has('nvim')
     nnoremap <A-c> :ToggleCalculator<cr>
 endif
 
-nnoremap <A-Enter> :TREPLSend<cr>
-xnoremap <A-Enter> :TREPLSend<cr>
-
 " }}}
 " ==============================================================================
 " LANGUAGE SETTINGS
 " ==============================================================================
 " {{{
 
-" supercollider
-source ~/.vim/bundle/vim-dkg/supercollider/scvim_init.vim
+let s:scvimrc = '~/.vim/bundle/vim-dkg/supercollider/scvim_init.vim'
+if filereadable(s:scvimrc)
+  " supercollider
+  source s:scvimrc
+endif
 
-if has("autocmd")
-    " neomake
-    " augroup dkg_neomake
-    "     autocmd!
-    "     autocmd BufWritePost * Neomake
-    " augroup END
+if has('autocmd')
+    if has('nvim')
+      " make autoread behave as expected (neovim only)
+      au! FocusGained * if &autoread | silent checktime | endif
+    endif
 
     " c
     augroup dkg_c
@@ -544,11 +512,6 @@ nnoremap <Leader>fs :Gstatus<CR><C-w>K
 nnoremap <F5> :Gblame<cr>
 
 " ------------------------------------------------------------------------------
-" -- indentLine  ---------------------------------------------------------------
-
-" let g:indentLine_char = '┊'
-
-" ------------------------------------------------------------------------------
 " -- fzf -----------------------------------------------------------------------
 
 " search for file
@@ -618,35 +581,11 @@ endif
 let g:highlightedyank_highlight_duration = 100
 
 " ------------------------------------------------------------------------------
-" -- Neomake -------------------------------------------------------------------
-
-" let g:neomake_open_list = 2
-" let g:neomake_javascript_enabled_makers = ['eslint']
-
-" ------------------------------------------------------------------------------
-" -- Grepper -------------------------------------------------------------------
-
-nmap gs <plug>(GrepperOperator)
-xmap gs <plug>(GrepperOperator)
-
-" ------------------------------------------------------------------------------
 " -- Ale -----------------------------------------------------------------------
 
 let g:ale_linters = {'javascript': ['eslint']}
 " let g:ale_linters = {'cpp': ['cppcheck']}
 let g:ale_c_cppcheck_options = '--enable=style -I../include'
-
-" ------------------------------------------------------------------------------
-" -- Notational-fzf ------------------------------------------------------------
-
-nnoremap <leader>n :NV<cr>
-let g:nv_directories = ['~/wiki']
-
-" ------------------------------------------------------------------------------
-" -- misc ----------------------------------------------------------------------
-
-let g:vim_markdown_conceal = 0
-let g:far#source = 'agnvim'
 
 " ------------------------------------------------------------------------------
 " -- tidal ---------------------------------------------------------------------
@@ -679,7 +618,6 @@ nnoremap <silent> <leader>l :call neoterm#clear()<cr>
 " kills the current job (send a <c-c>)
 nnoremap <silent> <leader>qc :call neoterm#kill()<cr>
 
-
 " ------------------------------------------------------------------------------
 " -- misc ----------------------------------------------------------------------
 
@@ -688,6 +626,9 @@ let g:wstrip_auto = 1
 
 let g:python_host_prog = '/usr/local/bin/python2'
 let g:python3_host_prog = '/usr/local/bin/python3'
+
+let g:vim_markdown_conceal = 0
+let g:far#source = 'agnvim'
 
 " ==========================================================================={{{
 " vim:foldmethod=marker colorcolumn=80 textwidth=80

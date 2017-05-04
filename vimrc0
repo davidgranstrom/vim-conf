@@ -8,7 +8,7 @@ colorscheme default
 set background=dark
 
 set directory^=$HOME/.vim/.swap// " put all swap files in one place
-let mapleader=","                 " set mapleader
+let mapleader="\<space>"          " set mapleader
 set mouse=a                       " enable mouse
 set clipboard=unnamed             " yank to system-wide clipboard
 set timeout timeoutlen=600        " shorter timeout lenght for keystrokes
@@ -30,15 +30,34 @@ set diffopt+=vertical             " use vertical diffs by default
 set laststatus=2                  " always display a status line
 " turn off all alerts
 set visualbell                    " turn off error beep/flash
-set visualbell t_vb=              " turn off error beep/flash
-set autochdir                     " change to cwd of current file
 
 " indenting
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set expandtab
 set shiftround
 
 " key mappings
 imap jk <ESC>
+
+if has('nvim')
+    " remap esc in terminal mode
+    tnoremap <Esc> <C-\><C-n>
+    " navigating terminal splits
+    tnoremap <A-h> <C-\><C-n><C-w>h
+    tnoremap <A-j> <C-\><C-n><C-w>j
+    tnoremap <A-k> <C-\><C-n><C-w>k
+    tnoremap <A-l> <C-\><C-n><C-w>l
+    nnoremap <A-h> <C-w>h
+    nnoremap <A-j> <C-w>j
+    nnoremap <A-k> <C-w>k
+    nnoremap <A-l> <C-w>l
+    " navigate tab pages (like chrome)
+    for i in range(1, 9)
+        execute 'nnoremap <silent><A-' . i . '> :tabnext ' . i . ' <cr>'
+    endfor
+
+    " save buffer
+    nnoremap <A-s> :<C-u>w<cr>
+endif
