@@ -29,3 +29,20 @@
 " Plug 'tommcdo/vim-exchange'
 " Plug 'alok/notational-fzf-vim'
 " Plug 'neovim/node-host', { 'do' : 'npm install' }
+"
+"
+" Colorschemes
+"
+" Plug 'morhetz/gruvbox'
+" Plug 'junegunn/seoul256.vim'
+" Plug 'tomasr/molokai'
+" Plug 'freeo/vim-kalisi'
+" Plug 'w0ng/vim-hybrid'
+" Plug 'NLKNguyen/papercolor-theme'
+" Plug 'mhartington/oceanic-next'
+" Plug 'jacoborus/tender'
+" Plug 'machakann/vim-highlightedyank'
+" Plug 'rakr/vim-one'
+" Plug 'pgdouyon/vim-yin-yang'
+" Plug 'ewilazarus/preto'
+" Plug 'bluz71/vim-moonfly-colors'

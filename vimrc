@@ -21,12 +21,7 @@ Plug 'cohama/lexima.vim'
 Plug 'AndrewRadev/splitjoin.vim'
 " Plug 'brooth/far.vim'
 Plug 'tweekmonster/wstrip.vim'
-
-if has('nvim')
-    Plug 'Shougo/deoplete.nvim' | Plug 'Shougo/context_filetype.vim'
-else
-    Plug 'ervandew/supertab'
-endif
+Plug 'Shougo/deoplete.nvim' | Plug 'Shougo/context_filetype.vim'
 
 " navigation
 Plug 'justinmk/vim-dirvish'
@@ -42,9 +37,7 @@ Plug 'w0rp/ale'
 Plug 'simnalamburt/vim-mundo'
 Plug 'junegunn/vim-slash'
 Plug 'kassio/neoterm'
-
-if has('nvim')
-endif
+Plug 'joereynolds/gtags-scope'
 
 " language
 Plug 'sheerun/vim-polyglot'
@@ -56,27 +49,17 @@ Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
 " javascript
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
 Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' }
+Plug 'mxw/vim-jsx'
 
 " langs not included in polyglot
 Plug 'sophacles/vim-processing', { 'for': 'processing' }
-Plug 'sbl/scvim'
+Plug 'supercollider/scvim'
 Plug '~/code/vim/vim-tidal'
 " Plug 'munshkr/vim-tidal'
 
 " color schemes / appearance
 Plug 'itchyny/lightline.vim'
-Plug 'morhetz/gruvbox'
-Plug 'junegunn/seoul256.vim'
-Plug 'tomasr/molokai'
-Plug 'freeo/vim-kalisi'
-Plug 'w0ng/vim-hybrid'
-Plug 'NLKNguyen/papercolor-theme'
-Plug 'mhartington/oceanic-next'
-Plug 'jacoborus/tender'
-Plug 'machakann/vim-highlightedyank'
-Plug 'rakr/vim-one'
-Plug 'pgdouyon/vim-yin-yang'
-Plug 'ewilazarus/preto'
+Plug 'trevordmiller/nova-vim'
 
 " misc
 Plug 'tpope/vim-repeat'
@@ -121,6 +104,7 @@ set nowrap                          " don't wrap words
 set linebreak                       " break at word boundries for wrapped text
 " set list                            " show unprintable characters
 set relativenumber
+set noshowmode                      " get mode indication from lightline instead
 
 " searching
 set ignorecase                      " ignore case in search patterns
@@ -137,9 +121,11 @@ set laststatus=2                    " always display a status line
 " set autochdir                       " change to cwd of current file
 set visualbell                      " turn off error beep/flash
 set regexpengine=0                  " auto-switch regexp engines
-set timeoutlen=1000                 " shorter timeout lenght for keystrokes
-set ttimeoutlen=50                  " make esc work faster
-set lazyredraw                      " don't redraw screen for macros
+" set timeoutlen=1000                 " shorter timeout lenght for keystrokes
+" set ttimeoutlen=-1                  " make esc work faster
+set nolazyredraw                      " don't redraw screen for macros
+set noshowcmd                       " don't display partial commands (g,c etc.)
+set cscopetag
 
 " indenting/formating
 set autoindent                      " indent even if we have no filetype rules
@@ -149,6 +135,7 @@ set softtabstop=2
 set shiftwidth=2
 set expandtab                       " use whitespace instead of tabs
 set shiftround                      " round indent to multiples of 'shiftwidth'
+set nojoinspaces                    " only insert one space after a join command
 
 " colorscheme/appearance
 if has("gui_running")
@@ -165,7 +152,7 @@ if has("gui_running")
     set guioptions+=c
 else
     set background=dark
-    colorscheme tender
+    colorscheme nova
 endif
 
 " use par to format text
@@ -179,18 +166,8 @@ endif
 " ==============================================================================
 " {{{
 
-" toggle the quickfix window
-let g:dkg_quickFixIsOpen = 0
-function! ToggleQuickFix()
-    if g:dkg_quickFixIsOpen == 0
-        copen
-        let g:dkg_quickFixIsOpen = 1
-    else
-        cclose
-        let g:dkg_quickFixIsOpen = 0
-    endif
-endfunction
-nnoremap <silent><leader>qf :call ToggleQuickFix()<cr>
+" toggle location list
+nnoremap <silent><leader>l :lw<cr>
 
 " delete trailing whitespace in the whole buffer
 function! DeleteTrailingWS()
@@ -398,6 +375,8 @@ if has('autocmd')
         autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
         autocmd FileType javascript,typescript, setlocal ts=2 sts=2 sw=2
         autocmd FileType css,less,scss,sass setlocal ts=2 sts=2 sw=2
+        autocmd FileType javascript set nowritebackup
+        autocmd FileType javascript nnoremap <leader>f :ALEFix<cr>
     augroup END
 
     " python
@@ -468,13 +447,6 @@ augroup my_dirvish_autocmds
 augroup END
 
 " ------------------------------------------------------------------------------
-" -- SuperTab  -----------------------------------------------------------------
-
-let g:SuperTabDefaultCompletionType = "context"
-let g:SuperTabContextDefaultCompletionType = "<c-n>"
-let g:SuperTabCrMapping = 0
-
-" ------------------------------------------------------------------------------
 " -- Mundo  --------------------------------------------------------------------
 
 nnoremap <F4> :MundoToggle<CR>
@@ -498,7 +470,6 @@ let g:UltiSnipsUsePythonVersion    = 2
 if has('nvim')
     let g:UltiSnipsUsePythonVersion = 3
 endif
-
 
 " ------------------------------------------------------------------------------
 " -- Surround  -----------------------------------------------------------------
@@ -583,9 +554,10 @@ let g:highlightedyank_highlight_duration = 100
 " ------------------------------------------------------------------------------
 " -- Ale -----------------------------------------------------------------------
 
-let g:ale_linters = {'javascript': ['eslint']}
+let g:ale_linters = { 'javascript': ['eslint'] }
+let g:ale_fixers = { 'javascript': ['eslint'] }
 " let g:ale_linters = {'cpp': ['cppcheck']}
-let g:ale_c_cppcheck_options = '--enable=style -I../include'
+" let g:ale_c_cppcheck_options = '--enable=style -I../include'
 
 " ------------------------------------------------------------------------------
 " -- tidal ---------------------------------------------------------------------
@@ -604,19 +576,13 @@ augroup END
 " ------------------------------------------------------------------------------
 " -- Neoterm -------------------------------------------------------------------
 
-nnoremap <silent> <F8> :TREPLSendFile<cr>
-nnoremap <silent> <F9> :TREPLSendLine<cr>
-vnoremap <silent> <F9> :TREPLSendSelection<cr>
+let g:neoterm_size = 15
+let g:neoterm_autoscroll = 1
 
-autocmd! FileType haskell nnoremap <silent><C-e> :TREPLSendLine<cr>
-autocmd! FileType haskell vnoremap <silent><C-e> :TREPLSendSelection<cr>
-
-" hide/close terminal
-nnoremap <silent> <leader><BS> :call neoterm#close()<cr>
-" clear terminal
-nnoremap <silent> <leader>l :call neoterm#clear()<cr>
-" kills the current job (send a <c-c>)
-nnoremap <silent> <leader>qc :call neoterm#kill()<cr>
+nnoremap <silent><M-t> :Ttoggle<cr>
+nnoremap <silent><F8> :TREPLSendFile<cr>
+nnoremap <silent><M-e> :TREPLSendLine<cr>
+vnoremap <silent><M-e> :TREPLSendSelection<cr>
 
 " ------------------------------------------------------------------------------
 " -- misc ----------------------------------------------------------------------
@@ -628,7 +594,9 @@ let g:python_host_prog = '/usr/local/bin/python2'
 let g:python3_host_prog = '/usr/local/bin/python3'
 
 let g:vim_markdown_conceal = 0
-let g:far#source = 'agnvim'
+" let g:far#source = 'agnvim'
+" supercollider
+let g:scFlash = 1
 
 " ==========================================================================={{{
 " vim:foldmethod=marker colorcolumn=80 textwidth=80
