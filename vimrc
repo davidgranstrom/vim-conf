@@ -59,6 +59,7 @@ Plug '~/code/vim/vim-tidal'
 
 " color schemes / appearance
 Plug 'itchyny/lightline.vim'
+Plug 'machakann/vim-highlightedyank'
 Plug 'trevordmiller/nova-vim'
 
 " misc

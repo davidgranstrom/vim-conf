@@ -41,7 +41,6 @@
 " Plug 'NLKNguyen/papercolor-theme'
 " Plug 'mhartington/oceanic-next'
 " Plug 'jacoborus/tender'
-" Plug 'machakann/vim-highlightedyank'
 " Plug 'rakr/vim-one'
 " Plug 'pgdouyon/vim-yin-yang'
 " Plug 'ewilazarus/preto'
