@@ -294,40 +294,9 @@ if has('nvim')
   " save buffer
   nnoremap <A-s> :<C-u>w<cr>
 
-  " visor style terminal buffer
-  let s:termbuf = 0
-  function! ToggleTerm()
-    topleft 15 split
-    try
-      exe 'buffer' . s:termbuf
-      startinsert
-    catch
-      terminal
-      let s:termbuf=bufnr('%')
-      tnoremap <buffer> <A-t>  <C-\><C-n>:close<cr>
-    endtry
-  endfunction
-
-  com! ToggleTerm call ToggleTerm()
-  nnoremap <A-t> :ToggleTerm<cr>
-
-  " toggle calculator
-  let s:calcbuf = 0
-
-  function! ToggleCalculator()
-    topleft 10 split
-    try
-      exe 'buffer' . s:calcbuf
-      startinsert
-    catch
-      terminal calc
-      let s:calcbuf=bufnr('%')
-      tnoremap <buffer> <A-c> <C-\><C-n>:close<cr>
-    endtry
-  endfunction
-
-  com! ToggleCalculator call ToggleCalculator()
-  nnoremap <A-c> :ToggleCalculator<cr>
+  " always enter insert mode
+  " autocmd! BufWinEnter,WinEnter term://* startinsert
+  " autocmd! BufLeave term://* stopinsert
 endif
 
 " }}}
@@ -567,10 +536,22 @@ augroup END
 let g:neoterm_size = 15
 let g:neoterm_autoscroll = 1
 
-nnoremap <silent><M-t> :Ttoggle<cr>
-nnoremap <silent><F8> :TREPLSendFile<cr>
-nnoremap <silent><M-e> :TREPLSendLine<cr>
-vnoremap <silent><M-e> :TREPLSendSelection<cr>
+function! ToggleTerm()
+  if &buftype != 'terminal'
+    execute 'Ttoggle'
+    wincmd j
+    startinsert
+  else
+    stopinsert
+    execute 'Ttoggle'
+  endif
+endfunction
+
+nnoremap <silent> <A-t> :call ToggleTerm()<cr>
+tnoremap <silent> <A-t> <C-\><C-n>:call ToggleTerm()<cr>
+nnoremap <silent> <F8> :TREPLSendFile<cr>
+nnoremap <silent> <A-e> :TREPLSendLine<cr>
+vnoremap <silent> <A-e> :TREPLSendSelection<cr>
 
 " ------------------------------------------------------------------------------
 " -- misc ----------------------------------------------------------------------
