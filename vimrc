@@ -69,18 +69,18 @@ Plug 'tpope/vim-scriptease', { 'on': 'Runtime' }
 
 call plug#end()
 
+let mapleader="\<space>"            " set mapleader
+set mouse=a                         " enable mouse
+
 " enable true color for nvim
 if has('nvim')
-  " set runtimepath^=~/.vim runtimepath+=~/.vim/after
-  " let &packpath = &runtimepath
+  set inccommand=nosplit " preview changes (:s/) incrementally
   set termguicolors
 else
   " neovim already does this by default, ~/.local/share/nvim/swap
   set directory^=$HOME/.vim/.swap//   " put all swap files in one place
+  set ttyfast " assume fast terminal connection
 endif
-
-let mapleader="\<space>"            " set mapleader
-set mouse=a                         " enable mouse
 
 " editing
 set backspace=2                     " allow backspacing over indent, eol, and the start of an insert
@@ -90,20 +90,16 @@ set complete-=i                     " where to look for auto-completion
 set clipboard=unnamed               " yank to system-wide clipboard
 set autoread                        " reload buffers changed from the outside
 set completeopt-=preview            " don't display scratch buffer for completion
-set inccommand=nosplit              " preview changes (:s/) incrementally
-set formatoptions+=rj               " auto insert comments from insert mode,
-" remove comment leader when joining lines
+set formatoptions+=rj               " auto insert comments from insert mode, remove comment leader when joining lines
 
 " appearance
-" set fillchars=                      " remove the fillchars from folds and splits
 set listchars=tab:>-,trail:–,nbsp:• " custom list chars
-" set nostartofline                   " keep the cursor at the current column when moving
 set scrolloff=4                     " keep a distance of from the cursor when scrolling
 set nowrap                          " don't wrap words
 set linebreak                       " break at word boundries for wrapped text
-" set list                            " show unprintable characters
-set relativenumber
 set noshowmode                      " get mode indication from lightline instead
+set relativenumber
+set number
 
 " searching
 set ignorecase                      " ignore case in search patterns
@@ -112,17 +108,13 @@ set smartcase                       " overrides 'ignorecase' if search pattern c
 set showmatch                       " highlight search matches while typing
 
 " misc
-set ttyfast                         " assume fast terminal connection
 set wildmenu                        " enhanced command line completion
 set wildignorecase                  " be smart case-sensitive
 set diffopt+=vertical               " use vertical diffs by default
 set laststatus=2                    " always display a status line
-" set autochdir                       " change to cwd of current file
 set visualbell                      " turn off error beep/flash
 set regexpengine=0                  " auto-switch regexp engines
-" set timeoutlen=1000                 " shorter timeout lenght for keystrokes
-" set ttimeoutlen=-1                  " make esc work faster
-set nolazyredraw                      " don't redraw screen for macros
+set nolazyredraw                    " don't redraw screen for macros
 set noshowcmd                       " don't display partial commands (g,c etc.)
 set cscopetag
 
