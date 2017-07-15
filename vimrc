@@ -69,11 +69,10 @@ Plug 'tpope/vim-scriptease', { 'on': 'Runtime' }
 
 call plug#end()
 
-set runtimepath+=~/.vim,~/.vim/after
-set packpath+=~/.vim
-
 " enable true color for nvim
 if has('nvim')
+  " set runtimepath^=~/.vim runtimepath+=~/.vim/after
+  " let &packpath = &runtimepath
   set termguicolors
 else
   " neovim already does this by default, ~/.local/share/nvim/swap
@@ -207,11 +206,11 @@ nnoremap <leader>ev :tabe $MYVIMRC<CR>
 augroup vimrc_reload
   autocmd!
   " save and source current file
-  autocmd FileType vim nnoremap <buffer> <leader>so :w<cr>:so%<cr>
+  autocmd FileType vim nnoremap <buffer> <leader>so :w \| so%<cr>
 augroup END
 
 " change to current dir
-nnoremap <leader>c :cd %:p:h\|pwd<cr>
+nnoremap <leader>c :cd %:p:h \| pwd<cr>
 
 " unmap help, and replace with <Esc>
 noremap <F1> <Esc>
@@ -254,8 +253,8 @@ inoremap <expr> <C-c> pumvisible() ? "\<C-e>" : "\<C-c>"
 " edit current buffer in a new tab
 nnoremap <silent><leader>z :tabedit!%<cr>
 " move between tabs
-nnoremap <silent><C-n> :tabn<cr>
-nnoremap <silent><C-p> :tabp<cr>
+" nnoremap <silent><C-n> :tabn<cr>
+" nnoremap <silent><C-p> :tabp<cr>
 " nnoremap <silent><leader>n :tabnew \| Files<cr>
 
 " CTRL-U in insert mode deletes a lot. Use CTRL-G u to first break undo,
@@ -268,24 +267,25 @@ nnoremap <silent><right> :3wincmd ><cr>
 nnoremap <silent><up>    :3wincmd +<cr>
 nnoremap <silent><down>  :3wincmd -<cr>
 
-" Move visual block
-vnoremap <C-j> :m '>+1<CR>gv=gv
-vnoremap <C-k> :m '<-2<CR>gv=gv
-
+" never enter Ex mode
 nnoremap Q q:
 
 if has('nvim')
   " remap esc in terminal mode
   tnoremap <Esc> <C-\><C-n>
+
   " navigating terminal splits
   tnoremap <A-h> <C-\><C-n><C-w>h
   tnoremap <A-j> <C-\><C-n><C-w>j
   tnoremap <A-k> <C-\><C-n><C-w>k
   tnoremap <A-l> <C-\><C-n><C-w>l
+
+  " navigate window splits
   nnoremap <A-h> <C-w>h
   nnoremap <A-j> <C-w>j
   nnoremap <A-k> <C-w>k
   nnoremap <A-l> <C-w>l
+
   " navigate tab pages (like chrome)
   for i in range(1, 9)
     execute 'nnoremap <silent><A-' . i . '> :tabnext ' . i . ' <cr>'
@@ -357,6 +357,7 @@ if has('autocmd')
   " fugitive
   augroup dkg_fugitive
     autocmd!
+    " enable spell checking in commit messages
     autocmd BufEnter,BufWinEnter */.git/index set spell | set spelllang=en
   augroup END
 
