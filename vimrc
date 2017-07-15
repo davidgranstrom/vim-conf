@@ -74,10 +74,10 @@ set packpath+=~/.vim
 
 " enable true color for nvim
 if has('nvim')
-    set termguicolors
-  else
-    " neovim already does this by default, ~/.local/share/nvim/swap
-    set directory^=$HOME/.vim/.swap//   " put all swap files in one place
+  set termguicolors
+else
+  " neovim already does this by default, ~/.local/share/nvim/swap
+  set directory^=$HOME/.vim/.swap//   " put all swap files in one place
 endif
 
 let mapleader="\<space>"            " set mapleader
@@ -93,7 +93,7 @@ set autoread                        " reload buffers changed from the outside
 set completeopt-=preview            " don't display scratch buffer for completion
 set inccommand=nosplit              " preview changes (:s/) incrementally
 set formatoptions+=rj               " auto insert comments from insert mode,
-                                    " remove comment leader when joining lines
+" remove comment leader when joining lines
 
 " appearance
 " set fillchars=                      " remove the fillchars from folds and splits
@@ -139,25 +139,25 @@ set nojoinspaces                    " only insert one space after a join command
 
 " colorscheme/appearance
 if has("gui_running")
-    set background=dark
-    let g:gruvbox_contrast_dark='hard'
-    colorscheme gruvbox
+  set background=dark
+  let g:gruvbox_contrast_dark='hard'
+  colorscheme gruvbox
 
-    set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h14,Monospace
-    " style guicursor
-    set guicursor=n-c-v:block-Cursor-blinkOn0
-    " get rid of all scrollbars and the toolbar
-    set guioptions-=TRLrlbme
-    " use console dialogs for simple choices
-    set guioptions+=c
+  set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h14,Monospace
+  " style guicursor
+  set guicursor=n-c-v:block-Cursor-blinkOn0
+  " get rid of all scrollbars and the toolbar
+  set guioptions-=TRLrlbme
+  " use console dialogs for simple choices
+  set guioptions+=c
 else
-    set background=dark
-    colorscheme nova
+  set background=dark
+  colorscheme nova
 endif
 
 " use par to format text
 if executable("par")
-    set formatprg=par\ -w80qr
+  set formatprg=par\ -w80qr
 endif
 
 " }}}
@@ -182,10 +182,10 @@ nnoremap __ :s/\s\+$//ge<cr>
 
 " format json
 if executable('jq')
-    com! JSONPretty %!jq '.'
-    com! JSONUgly %!jq -c '.'
+  com! JSONPretty %!jq '.'
+  com! JSONUgly %!jq -c '.'
 else
-    com! JSONPretty %!python -m json.tool
+  com! JSONPretty %!python -m json.tool
 endif
 
 " justify selected text
@@ -205,9 +205,9 @@ com! SudoWrite w !sudo tee > /dev/null %
 nnoremap <leader>ev :tabe $MYVIMRC<CR>
 
 augroup vimrc_reload
-    autocmd!
-    " save and source current file
-    autocmd FileType vim nnoremap <buffer> <leader>so :w<cr>:so%<cr>
+  autocmd!
+  " save and source current file
+  autocmd FileType vim nnoremap <buffer> <leader>so :w<cr>:so%<cr>
 augroup END
 
 " change to current dir
@@ -275,59 +275,59 @@ vnoremap <C-k> :m '<-2<CR>gv=gv
 nnoremap Q q:
 
 if has('nvim')
-    " remap esc in terminal mode
-    tnoremap <Esc> <C-\><C-n>
-    " navigating terminal splits
-    tnoremap <A-h> <C-\><C-n><C-w>h
-    tnoremap <A-j> <C-\><C-n><C-w>j
-    tnoremap <A-k> <C-\><C-n><C-w>k
-    tnoremap <A-l> <C-\><C-n><C-w>l
-    nnoremap <A-h> <C-w>h
-    nnoremap <A-j> <C-w>j
-    nnoremap <A-k> <C-w>k
-    nnoremap <A-l> <C-w>l
-    " navigate tab pages (like chrome)
-    for i in range(1, 9)
-        execute 'nnoremap <silent><A-' . i . '> :tabnext ' . i . ' <cr>'
-    endfor
+  " remap esc in terminal mode
+  tnoremap <Esc> <C-\><C-n>
+  " navigating terminal splits
+  tnoremap <A-h> <C-\><C-n><C-w>h
+  tnoremap <A-j> <C-\><C-n><C-w>j
+  tnoremap <A-k> <C-\><C-n><C-w>k
+  tnoremap <A-l> <C-\><C-n><C-w>l
+  nnoremap <A-h> <C-w>h
+  nnoremap <A-j> <C-w>j
+  nnoremap <A-k> <C-w>k
+  nnoremap <A-l> <C-w>l
+  " navigate tab pages (like chrome)
+  for i in range(1, 9)
+    execute 'nnoremap <silent><A-' . i . '> :tabnext ' . i . ' <cr>'
+  endfor
 
-    " save buffer
-    nnoremap <A-s> :<C-u>w<cr>
+  " save buffer
+  nnoremap <A-s> :<C-u>w<cr>
 
-    " visor style terminal buffer
-    let s:termbuf = 0
-    function! ToggleTerm()
-        topleft 15 split
-        try
-            exe 'buffer' . s:termbuf
-            startinsert
-        catch
-            terminal
-            let s:termbuf=bufnr('%')
-            tnoremap <buffer> <A-t>  <C-\><C-n>:close<cr>
-        endtry
-    endfunction
+  " visor style terminal buffer
+  let s:termbuf = 0
+  function! ToggleTerm()
+    topleft 15 split
+    try
+      exe 'buffer' . s:termbuf
+      startinsert
+    catch
+      terminal
+      let s:termbuf=bufnr('%')
+      tnoremap <buffer> <A-t>  <C-\><C-n>:close<cr>
+    endtry
+  endfunction
 
-    com! ToggleTerm call ToggleTerm()
-    nnoremap <A-t> :ToggleTerm<cr>
+  com! ToggleTerm call ToggleTerm()
+  nnoremap <A-t> :ToggleTerm<cr>
 
-    " toggle calculator
-    let s:calcbuf = 0
+  " toggle calculator
+  let s:calcbuf = 0
 
-    function! ToggleCalculator()
-        topleft 10 split
-        try
-            exe 'buffer' . s:calcbuf
-            startinsert
-        catch
-            terminal calc
-            let s:calcbuf=bufnr('%')
-            tnoremap <buffer> <A-c> <C-\><C-n>:close<cr>
-        endtry
-    endfunction
+  function! ToggleCalculator()
+    topleft 10 split
+    try
+      exe 'buffer' . s:calcbuf
+      startinsert
+    catch
+      terminal calc
+      let s:calcbuf=bufnr('%')
+      tnoremap <buffer> <A-c> <C-\><C-n>:close<cr>
+    endtry
+  endfunction
 
-    com! ToggleCalculator call ToggleCalculator()
-    nnoremap <A-c> :ToggleCalculator<cr>
+  com! ToggleCalculator call ToggleCalculator()
+  nnoremap <A-c> :ToggleCalculator<cr>
 endif
 
 " }}}
@@ -343,68 +343,68 @@ if filereadable(expand(s:dkg_scvimrc))
 endif
 
 if has('autocmd')
-    if has('nvim')
-      " make autoread behave as expected (neovim only)
-      au! FocusGained * if &autoread | silent checktime | endif
+  if has('nvim')
+    " make autoread behave as expected (neovim only)
+    au! FocusGained * if &autoread | silent checktime | endif
+  endif
+
+  " c
+  augroup dkg_c
+    autocmd!
+    autocmd FileType c set commentstring=\/\/\ %s
+  augroup END
+
+  " haskell
+  augroup dkg_haskell
+    autocmd!
+    let g:haskellmode_completion_ghc = 0
+    autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+  augroup END
+
+  " markdown
+  augroup dkg_markdown
+    autocmd!
+    autocmd BufEnter,BufWinEnter,BufNewFile,BufRead *.md,*.markdown set filetype=markdown
+    autocmd BufEnter,BufWinEnter,BufNewFile,BufRead *.md,*.markdown set commentstring=<!--%s-->
+  augroup END
+
+  " javascript
+  augroup dkg_javascript
+    autocmd!
+    autocmd FileType javascript.jsx setlocal filetype=javascript
+    autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
+    autocmd FileType javascript,typescript, setlocal ts=2 sts=2 sw=2
+    autocmd FileType css,less,scss,sass setlocal ts=2 sts=2 sw=2
+    autocmd FileType javascript set nowritebackup
+    autocmd FileType javascript nnoremap <leader>f :ALEFix<cr>
+  augroup END
+
+  " python
+  augroup dkg_python
+    autocmd!
+    autocmd FileType python setlocal ts=4 sts=4 sw=4
+  augroup END
+
+  " fugitive
+  augroup dkg_fugitive
+    autocmd!
+    autocmd BufEnter,BufWinEnter */.git/index set spell | set spelllang=en
+  augroup END
+
+  " php
+  function! TogglePhpHtml()
+    if &ft == "php"
+      set ft=html
+    else
+      set ft=php
     endif
+  endfunction
 
-    " c
-    augroup dkg_c
-        autocmd!
-        autocmd FileType c set commentstring=\/\/\ %s
-    augroup END
-
-    " haskell
-    augroup dkg_haskell
-        autocmd!
-        let g:haskellmode_completion_ghc = 0
-        autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-    augroup END
-
-    " markdown
-    augroup dkg_markdown
-        autocmd!
-        autocmd BufEnter,BufWinEnter,BufNewFile,BufRead *.md,*.markdown set filetype=markdown
-        autocmd BufEnter,BufWinEnter,BufNewFile,BufRead *.md,*.markdown set commentstring=<!--%s-->
-    augroup END
-
-    " javascript
-    augroup dkg_javascript
-        autocmd!
-        autocmd FileType javascript.jsx setlocal filetype=javascript
-        autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
-        autocmd FileType javascript,typescript, setlocal ts=2 sts=2 sw=2
-        autocmd FileType css,less,scss,sass setlocal ts=2 sts=2 sw=2
-        autocmd FileType javascript set nowritebackup
-        autocmd FileType javascript nnoremap <leader>f :ALEFix<cr>
-    augroup END
-
-    " python
-    augroup dkg_python
-        autocmd!
-        autocmd FileType python setlocal ts=4 sts=4 sw=4
-    augroup END
-
-    " fugitive
-    augroup dkg_fugitive
-        autocmd!
-        autocmd BufEnter,BufWinEnter */.git/index set spell | set spelllang=en
-    augroup END
-
-    " php
-    function! TogglePhpHtml()
-        if &ft == "php"
-            set ft=html
-        else
-            set ft=php
-        endif
-    endfunction
-
-    augroup dkg_php
-        autocmd!
-        autocmd FileType php nnoremap <leader>s :call TogglePhpHtml()<cr>
-        " autocmd FileType html nnoremap <leader>s :set ft=html
-    augroup END
+  augroup dkg_php
+    autocmd!
+    autocmd FileType php nnoremap <leader>s :call TogglePhpHtml()<cr>
+    " autocmd FileType html nnoremap <leader>s :set ft=html
+  augroup END
 endif
 
 " }}}
@@ -414,24 +414,24 @@ endif
 " {{{
 
 augroup my_dirvish_autocmds
-    autocmd!
-    " Map t to "open in new tab".
-    autocmd FileType dirvish
-          \  nnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
-          \ |xnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
+  autocmd!
+  " Map t to "open in new tab".
+  autocmd FileType dirvish
+        \  nnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
+        \ |xnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
 
-    " Enable :Gstatus and friends.
-    autocmd FileType dirvish call fugitive#detect(@%)
+  " Enable :Gstatus and friends.
+  autocmd FileType dirvish call fugitive#detect(@%)
 
-    " Map CTRL-R to reload the Dirvish buffer.
-    autocmd FileType dirvish nnoremap <buffer> <C-R> :<C-U>Dirvish %<CR>
+  " Map CTRL-R to reload the Dirvish buffer.
+  autocmd FileType dirvish nnoremap <buffer> <C-R> :<C-U>Dirvish %<CR>
 
-    " Map gh to hide 'hidden' files.
-    autocmd FileType dirvish nnoremap <buffer> gh
-          \ :g@\v/\.[^\/]+/?$@d<cr>
+  " Map gh to hide 'hidden' files.
+  autocmd FileType dirvish nnoremap <buffer> gh
+        \ :g@\v/\.[^\/]+/?$@d<cr>
 
-    autocmd FileType dirvish nnoremap <buffer> s :<C-U>sort r /[^\/]$/<CR>
-    autocmd FileType dirvish nnoremap <buffer> S :<C-U>sort r /\/$/<CR>
+  autocmd FileType dirvish nnoremap <buffer> s :<C-U>sort r /[^\/]$/<CR>
+  autocmd FileType dirvish nnoremap <buffer> S :<C-U>sort r /\/$/<CR>
 augroup END
 
 " ------------------------------------------------------------------------------
@@ -456,7 +456,7 @@ let g:UltiSnipsJumpForwardTrigger  = "<C-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 let g:UltiSnipsUsePythonVersion    = 2
 if has('nvim')
-    let g:UltiSnipsUsePythonVersion = 3
+  let g:UltiSnipsUsePythonVersion = 3
 endif
 
 " ------------------------------------------------------------------------------
@@ -495,19 +495,19 @@ let g:fzf_action = {
       \ }
 
 function! SearchWordWithAg()
-    execute 'Ag' expand('<cword>')
+  execute 'Ag' expand('<cword>')
 endfunction
 
 function! SearchVisualSelectionWithAg() range
-    let old_reg = getreg('"')
-    let old_regtype = getregtype('"')
-    let old_clipboard = &clipboard
-    set clipboard&
-    normal! ""gvy
-    let selection = getreg('"')
-    call setreg('"', old_reg, old_regtype)
-    let &clipboard = old_clipboard
-    execute 'Ag' selection
+  let old_reg = getreg('"')
+  let old_regtype = getregtype('"')
+  let old_clipboard = &clipboard
+  set clipboard&
+  normal! ""gvy
+  let selection = getreg('"')
+  call setreg('"', old_reg, old_regtype)
+  let &clipboard = old_clipboard
+  execute 'Ag' selection
 endfunction
 
 " ------------------------------------------------------------------------------
@@ -517,21 +517,21 @@ let g:tern_request_timeout = 1
 let g:tern_show_signature_in_pum = 0
 " let g:tern_show_argument_hints = 0
 let g:tern#filetypes = [
-                \ 'jsx',
-                \ 'javascript.jsx',
-                \ ]
+      \ 'jsx',
+      \ 'javascript.jsx',
+      \ ]
 
 " ------------------------------------------------------------------------------
 " -- deoplete ------------------------------------------------------------------
 
 if has('nvim')
-    let g:deoplete#enable_at_startup = 1
-    let g:deoplete#enable_smart_case = 1
-    let g:deoplete#auto_complete_delay = 25
+  let g:deoplete#enable_at_startup = 1
+  let g:deoplete#enable_smart_case = 1
+  let g:deoplete#auto_complete_delay = 25
 
-    inoremap <silent> <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-    inoremap <expr><C-h> deolete#mappings#smart_close_popup()."\<C-h>"
-    inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
+  inoremap <silent> <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+  inoremap <expr><C-h> deolete#mappings#smart_close_popup()."\<C-h>"
+  inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
 endif
 
 " ------------------------------------------------------------------------------
