@@ -297,8 +297,9 @@ endif
 " ==============================================================================
 " {{{
 
-if filereadable('./autocmds.vim')
-  source ./autocmds.vim
+let s:autocmd_path = expand('~/.vim/autocmds.vim')
+if filereadable(s:autocmd_path)
+  execute 'source' s:autocmd_path
 endif
 
 " }}}
