@@ -29,6 +29,9 @@
 " Plug 'tommcdo/vim-exchange'
 " Plug 'alok/notational-fzf-vim'
 " Plug 'neovim/node-host', { 'do' : 'npm install' }
+" Plug 'justinmk/vim-sneak'
+" Plug 'blindFS/vim-taskwarrior', { 'on': 'TW' }
+" Plug 'johngrib/vim-game-code-break'
 "
 "
 " Colorschemes

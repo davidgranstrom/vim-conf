@@ -27,7 +27,6 @@ Plug 'Shougo/deoplete.nvim' | Plug 'Shougo/context_filetype.vim'
 Plug 'justinmk/vim-dirvish'
 Plug 'kopischke/vim-fetch'
 Plug 'vim-scripts/matchit.zip'
-Plug 'justinmk/vim-sneak'
 
 " util
 Plug 'tpope/vim-fugitive'
@@ -37,7 +36,7 @@ Plug 'w0rp/ale'
 Plug 'simnalamburt/vim-mundo'
 Plug 'junegunn/vim-slash'
 Plug 'kassio/neoterm'
-Plug 'joereynolds/gtags-scope'
+Plug 'joereynolds/gtags-scope', { 'on': 'GtagsCscope' }
 
 " language
 Plug 'sheerun/vim-polyglot'
@@ -49,7 +48,7 @@ Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
 " javascript
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
 Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' }
-Plug 'mxw/vim-jsx'
+Plug 'mxw/vim-jsx', { 'for': 'javascript' }
 
 " langs not included in polyglot
 Plug 'sophacles/vim-processing', { 'for': 'processing' }
@@ -414,24 +413,12 @@ endif
 " ==============================================================================
 " {{{
 
-" -- Dirvish  ------------------------------------------------------------------
-
-function! OpenDirvish()
-    if &filetype == ''
-        Dirvish
-    else
-        Dirvish %
-    endif
-endfunction
-
-nnoremap <silent> <F1> :call OpenDirvish()<cr>
-
 augroup my_dirvish_autocmds
     autocmd!
     " Map t to "open in new tab".
     autocmd FileType dirvish
-    \  nnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
-    \ |xnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
+          \  nnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
+          \ |xnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
 
     " Enable :Gstatus and friends.
     autocmd FileType dirvish call fugitive#detect(@%)
@@ -441,7 +428,7 @@ augroup my_dirvish_autocmds
 
     " Map gh to hide 'hidden' files.
     autocmd FileType dirvish nnoremap <buffer> gh
-        \ :g@\v/\.[^\/]+/?$@d<cr>
+          \ :g@\v/\.[^\/]+/?$@d<cr>
 
     autocmd FileType dirvish nnoremap <buffer> s :<C-U>sort r /[^\/]$/<CR>
     autocmd FileType dirvish nnoremap <buffer> S :<C-U>sort r /\/$/<CR>
