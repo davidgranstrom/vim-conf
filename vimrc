@@ -201,7 +201,7 @@ com! SudoWrite w !sudo tee > /dev/null %
 " {{{
 
 " edit vimrc
-nnoremap <leader>ev :tabe $MYVIMRC<CR>
+nnoremap <leader>ev :tabedit ~/.vim/vimrc<cr>
 
 augroup vimrc_reload
   autocmd!

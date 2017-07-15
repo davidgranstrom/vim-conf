@@ -1,1 +1,0 @@
-/Users/dkg/.vim/vimrc
