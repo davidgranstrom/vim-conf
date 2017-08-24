@@ -420,9 +420,14 @@ let g:tern#filetypes = [
 " -- deoplete ------------------------------------------------------------------
 
 if has('nvim')
-  let g:deoplete#enable_at_startup = 1
   let g:deoplete#enable_smart_case = 1
   let g:deoplete#auto_complete_delay = 25
+  " fix issue with large tag files
+  let deoplete#tag#cache_limit_size = 5000000
+
+  " Enable deoplete on InsertEnter
+  let g:deoplete#enable_at_startup = 0
+  autocmd! InsertEnter * call deoplete#enable()
 
   inoremap <silent> <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
   inoremap <expr><C-h> deolete#mappings#smart_close_popup()."\<C-h>"
@@ -484,9 +489,6 @@ vnoremap <silent> <A-e> :TREPLSendSelection<cr>
 
 " tweekmonster/wstrip.vim
 let g:wstrip_auto = 1
-
-let g:python_host_prog = '/usr/local/bin/python2'
-let g:python3_host_prog = '/usr/local/bin/python3'
 
 let g:vim_markdown_conceal = 0
 " let g:far#source = 'agnvim'
