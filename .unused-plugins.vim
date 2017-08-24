@@ -32,6 +32,8 @@
 " Plug 'justinmk/vim-sneak'
 " Plug 'blindFS/vim-taskwarrior', { 'on': 'TW' }
 " Plug 'johngrib/vim-game-code-break'
+" Plug 'junegunn/vim-slash'
+" Plug 'brooth/far.vim'
 "
 "
 " Colorschemes

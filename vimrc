@@ -19,7 +19,6 @@ Plug 'tpope/vim-surround'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'cohama/lexima.vim'
 Plug 'AndrewRadev/splitjoin.vim'
-" Plug 'brooth/far.vim'
 Plug 'tweekmonster/wstrip.vim'
 Plug 'Shougo/deoplete.nvim' | Plug 'Shougo/context_filetype.vim'
 
@@ -34,7 +33,6 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'w0rp/ale'
 Plug 'simnalamburt/vim-mundo'
-Plug 'junegunn/vim-slash'
 Plug 'kassio/neoterm'
 Plug 'joereynolds/gtags-scope', { 'on': 'GtagsCscope' }
 
@@ -53,8 +51,7 @@ Plug 'mxw/vim-jsx', { 'for': 'javascript' }
 " langs not included in polyglot
 Plug 'sophacles/vim-processing', { 'for': 'processing' }
 Plug 'supercollider/scvim'
-Plug '~/code/vim/vim-tidal'
-" Plug 'munshkr/vim-tidal'
+Plug 'munshkr/vim-tidal', { 'for': 'haskell.tidal' }
 
 " color schemes / appearance
 Plug 'itchyny/lightline.vim'
