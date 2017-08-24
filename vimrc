@@ -69,6 +69,9 @@ Plug 'tpope/vim-scriptease', { 'on': 'Runtime' }
 
 call plug#end()
 
+let g:python_host_prog = '/usr/local/bin/python2'
+let g:python3_host_prog = '/usr/local/bin/python3'
+
 let mapleader="\<space>"            " set mapleader
 set mouse=a                         " enable mouse
 
@@ -245,8 +248,8 @@ inoremap <expr> <C-c> pumvisible() ? "\<C-e>" : "\<C-c>"
 " edit current buffer in a new tab
 nnoremap <silent><leader>z :tabedit!%<cr>
 " move between tabs
-" nnoremap <silent><C-n> :tabn<cr>
-" nnoremap <silent><C-p> :tabp<cr>
+nnoremap <silent> <C-n> :tabn<cr>
+nnoremap <silent> <C-p> :tabp<cr>
 " nnoremap <silent><leader>n :tabnew \| Files<cr>
 
 " CTRL-U in insert mode deletes a lot. Use CTRL-G u to first break undo,
@@ -261,6 +264,9 @@ nnoremap <silent><down>  :3wincmd -<cr>
 
 " never enter Ex mode
 nnoremap Q q:
+
+" easy renaming
+nnoremap <leader>R *``cgn
 
 if has('nvim')
   " remap esc in terminal mode
