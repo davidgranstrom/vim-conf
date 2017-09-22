@@ -34,7 +34,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'w0rp/ale'
 Plug 'simnalamburt/vim-mundo'
 Plug 'kassio/neoterm'
-Plug 'joereynolds/gtags-scope', { 'on': 'GtagsCscope' }
 
 " language
 Plug 'sheerun/vim-polyglot'
@@ -42,6 +41,7 @@ Plug 'neovimhaskell/haskell-vim', { 'for': [ 'haskell', 'haskell.tidal' ] }
 Plug 'eagletmt/neco-ghc', { 'for': [ 'haskell', 'haskell.tidal' ] }
 Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
+Plug 'racer-rust/vim-racer', { 'for': 'rust' }
 
 " javascript
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
@@ -51,6 +51,7 @@ Plug 'mxw/vim-jsx', { 'for': 'javascript' }
 " langs not included in polyglot
 Plug 'sophacles/vim-processing', { 'for': 'processing' }
 Plug 'supercollider/scvim'
+" Plug '~/src/sc3/supercollider/editors/scvim/'
 Plug 'munshkr/vim-tidal', { 'for': 'haskell.tidal' }
 
 " color schemes / appearance
@@ -64,10 +65,19 @@ Plug 'tpope/vim-unimpaired'
 Plug 'davidgranstrom/vim-dkg'
 Plug 'tpope/vim-scriptease', { 'on': 'Runtime' }
 
-call plug#end()
+function! BuildComposer(info)
+  if a:info.status != 'unchanged' || a:info.force
+    if has('nvim')
+      !cargo build --release
+    else
+      !cargo build --release --no-default-features --features json-rpc
+    endif
+  endif
+endfunction
 
-let g:python_host_prog = '/usr/local/bin/python2'
-let g:python3_host_prog = '/usr/local/bin/python3'
+Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
+
+call plug#end()
 
 let mapleader="\<space>"            " set mapleader
 set mouse=a                         " enable mouse
@@ -263,7 +273,7 @@ nnoremap <silent><down>  :3wincmd -<cr>
 nnoremap Q q:
 
 " easy renaming
-nnoremap <leader>R *``cgn
+nnoremap <leader>r *``cgn
 
 if has('nvim')
   " remap esc in terminal mode
@@ -490,13 +500,20 @@ vnoremap <silent> <A-e> :TREPLSendSelection<cr>
 " ------------------------------------------------------------------------------
 " -- misc ----------------------------------------------------------------------
 
+let g:python_host_prog = '/usr/local/bin/python2'
+let g:python3_host_prog = '/usr/local/bin/python3'
+
 " tweekmonster/wstrip.vim
 let g:wstrip_auto = 1
 
-let g:vim_markdown_conceal = 0
-" let g:far#source = 'agnvim'
 " supercollider
 let g:scFlash = 1
+
+let g:vim_markdown_conceal = 0
+
+let g:racer_cmd = $HOME . "/.cargo/bin/racer"
+au! FileType rust nmap gd <Plug>(rust-def)
+au! FileType rust nmap K <Plug>(rust-doc)
 
 " ==========================================================================={{{
 " vim:foldmethod=marker colorcolumn=80 textwidth=80

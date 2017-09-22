@@ -34,7 +34,7 @@
 " Plug 'johngrib/vim-game-code-break'
 " Plug 'junegunn/vim-slash'
 " Plug 'brooth/far.vim'
-"
+" Plug 'joereynolds/gtags-scope', { 'on': 'GtagsCscope' }
 "
 " Colorschemes
 "
