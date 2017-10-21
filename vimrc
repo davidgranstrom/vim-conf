@@ -518,10 +518,8 @@ if has('nvim')
   inoremap <expr><C-h> deolete#mappings#smart_close_popup()."\<C-h>"
   inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
 
-  " Set bin if you have many instalations
-  let g:deoplete#sources#ternjs#tern_bin = '/path/to/tern_bin'
+  let g:deoplete#sources#ternjs#tern_bin = '/usr/local/bin/tern'
   let g:deoplete#sources#ternjs#timeout = 1
-
   " Whether to include the types of the completions in the result data. Default: 0
   let g:deoplete#sources#ternjs#types = 1
 endif
