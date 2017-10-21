@@ -21,11 +21,15 @@ Plug 'cohama/lexima.vim'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'tweekmonster/wstrip.vim'
 Plug 'Shougo/deoplete.nvim' | Plug 'Shougo/context_filetype.vim'
+Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'roxma/nvim-completion-manager'
+" Plug 'roxma/nvim-cm-tern', {'do': 'npm install'}
 
 " navigation
 Plug 'justinmk/vim-dirvish'
 Plug 'kopischke/vim-fetch'
 Plug 'vim-scripts/matchit.zip'
+Plug 'justinmk/vim-sneak'
 
 " util
 Plug 'tpope/vim-fugitive'
@@ -58,6 +62,7 @@ Plug 'munshkr/vim-tidal', { 'for': 'haskell.tidal' }
 Plug 'itchyny/lightline.vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'trevordmiller/nova-vim'
+Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 
 " misc
 Plug 'tpope/vim-repeat'
@@ -75,7 +80,7 @@ function! BuildComposer(info)
   endif
 endfunction
 
-Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
+Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer'), 'for': 'markdown' }
 
 call plug#end()
 
@@ -96,7 +101,7 @@ endif
 set backspace=2                     " allow backspacing over indent, eol, and the start of an insert
 set virtualedit=all                 " be able to access all areas of the buffer
 set hidden                          " be able to hide modified buffers
-set complete-=i                     " where to look for auto-completion
+" set complete-=i                     " where to look for auto-completion
 set clipboard=unnamed               " yank to system-wide clipboard
 set autoread                        " reload buffers changed from the outside
 set completeopt-=preview            " don't display scratch buffer for completion
@@ -261,7 +266,7 @@ nnoremap <silent> <C-p> :tabp<cr>
 
 " CTRL-U in insert mode deletes a lot. Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
-inoremap <C-U> <C-G>u<C-U>
+" inoremap <C-U> <C-G>u<C-U>
 
 " resize windows with arrow-keys
 nnoremap <silent><left>  :3wincmd <<cr>
@@ -310,10 +315,88 @@ endif
 " ==============================================================================
 " {{{
 
-let s:autocmd_path = expand('~/.vim/autocmds.vim')
-if filereadable(s:autocmd_path)
-  execute 'source' s:autocmd_path
+if has('nvim')
+  " make autoread behave as expected (neovim only)
+  au! FocusGained * if &autoread | silent checktime | endif
 endif
+
+let s:dkg_scvimrc = '~/.vim/bundle/vim-dkg/supercollider/scvim_init.vim'
+if filereadable(expand(s:dkg_scvimrc))
+  " supercollider
+  source ~/.vim/bundle/vim-dkg/supercollider/scvim_init.vim
+endif
+
+" c
+augroup dkg_c
+  autocmd!
+  autocmd FileType c setlocal commentstring=\/\/\ %s
+augroup END
+
+" " haskell
+" augroup dkg_haskell
+"   autocmd!
+"   let g:haskellmode_completion_ghc = 0
+"   autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+" augroup END
+
+" markdown
+augroup dkg_markdown
+  autocmd!
+  " autocmd BufEnter,BufWinEnter,BufNewFile,BufRead *.md, *.markdown set filetype=markdown
+  autocmd FileType markdown setlocal commentstring=<!--%s-->
+  " break undo sequence into smaller chunks for prose
+  autocmd FileType markdown inoremap <buffer> . .<c-g>u
+  autocmd FileType markdown inoremap <buffer> ? ?<c-g>u
+  autocmd FileType markdown inoremap <buffer> ! !<c-g>u
+  autocmd FileType markdown inoremap <buffer> , ,<c-g>u
+augroup END
+
+" javascript
+augroup dkg_javascript
+  autocmd!
+  autocmd FileType javascript.jsx setlocal filetype=javascript
+  autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
+  autocmd FileType javascript,typescript, setlocal ts=2 sts=2 sw=2
+  autocmd FileType css,less,scss,sass setlocal ts=2 sts=2 sw=2
+  autocmd FileType javascript setlocal nowritebackup
+  autocmd FileType javascript nnoremap <buffer><leader>f :ALEFix<cr>
+  autocmd FileType javascript nnoremap <buffer><silent> K :call LanguageClient_textDocument_hover()<CR>
+  autocmd FileType javascript nnoremap <buffer><silent> gd :call LanguageClient_textDocument_definition()<CR>
+  autocmd FileType javascript nnoremap <buffer><silent> <leader>r :call LanguageClient_textDocument_rename()<CR>
+augroup END
+
+" python
+augroup dkg_python
+  autocmd!
+  autocmd FileType python setlocal ts=4 sts=4 sw=4
+augroup END
+
+" fugitive
+augroup dkg_fugitive
+  autocmd!
+  " enable spell checking in commit messages
+  autocmd BufEnter,BufWinEnter */.git/index setlocal spell | setlocal spelllang=en
+augroup END
+
+" php
+function! TogglePhpHtml()
+  if &ft == "php"
+    set ft=html
+  else
+    set ft=php
+  endif
+endfunction
+
+augroup dkg_php
+  autocmd!
+  autocmd FileType php nnoremap <leader>s :call TogglePhpHtml()<cr>
+  " autocmd FileType html nnoremap <leader>s :set ft=html
+augroup END
+
+augroup dkg_terminal
+  au!
+  au TermOpen * let g:last_terminal_job_id = b:terminal_job_id
+augroup END
 
 " }}}
 " ==============================================================================
@@ -350,9 +433,9 @@ nnoremap <F4> :MundoToggle<CR>
 " ------------------------------------------------------------------------------
 " -- EasyAlign  ----------------------------------------------------------------
 
-vmap <leader><space> <Plug>(EasyAlign)
+vmap <leader>a <Plug>(EasyAlign)
 " For normal mode, with Vim movement (e.g. <Leader>aip)
-nmap <leader><space> <Plug>(EasyAlign)
+" nmap <leader><space> <Plug>(EasyAlign)
 
 " ------------------------------------------------------------------------------
 " -- UltiSnips  ----------------------------------------------------------------
@@ -419,22 +502,11 @@ function! SearchVisualSelectionWithAg() range
 endfunction
 
 " ------------------------------------------------------------------------------
-" -- vim-tern ------------------------------------------------------------------
-
-let g:tern_request_timeout = 1
-let g:tern_show_signature_in_pum = 0
-" let g:tern_show_argument_hints = 0
-let g:tern#filetypes = [
-      \ 'jsx',
-      \ 'javascript.jsx',
-      \ ]
-
-" ------------------------------------------------------------------------------
 " -- deoplete ------------------------------------------------------------------
 
 if has('nvim')
   let g:deoplete#enable_smart_case = 1
-  let g:deoplete#auto_complete_delay = 25
+  let g:deoplete#auto_complete_delay = 15
   " fix issue with large tag files
   let deoplete#tag#cache_limit_size = 5000000
 
@@ -445,6 +517,13 @@ if has('nvim')
   inoremap <silent> <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
   inoremap <expr><C-h> deolete#mappings#smart_close_popup()."\<C-h>"
   inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
+
+  " Set bin if you have many instalations
+  let g:deoplete#sources#ternjs#tern_bin = '/path/to/tern_bin'
+  let g:deoplete#sources#ternjs#timeout = 1
+
+  " Whether to include the types of the completions in the result data. Default: 0
+  let g:deoplete#sources#ternjs#types = 1
 endif
 
 " ------------------------------------------------------------------------------
@@ -457,22 +536,9 @@ let g:highlightedyank_highlight_duration = 100
 
 let g:ale_linters = { 'javascript': ['eslint'] }
 let g:ale_fixers = { 'javascript': ['eslint'] }
+nmap <leader><space> <Plug>(ale_fix)
 " let g:ale_linters = {'cpp': ['cppcheck']}
 " let g:ale_c_cppcheck_options = '--enable=style -I../include'
-
-" ------------------------------------------------------------------------------
-" -- tidal ---------------------------------------------------------------------
-
-let g:tidal_no_mappings = 1
-
-augroup dkg_tidalvim
-  autocmd!
-  autocmd FileType haskell.tidal xmap <C-e> <Plug>TidalRegionSend
-  autocmd FileType haskell.tidal nmap <C-e> <Plug>TidalLineSend
-  autocmd FileType haskell.tidal imap <C-e> <esc>:<C-u>TidalSend<cr>
-  autocmd FileType haskell.tidal nmap <C-b> <Plug>TidalParagraphSend
-  autocmd FileType haskell.tidal nmap <C-t> <Plug>TidalPrintType
-augroup END
 
 " ------------------------------------------------------------------------------
 " -- Neoterm -------------------------------------------------------------------
@@ -514,6 +580,13 @@ let g:vim_markdown_conceal = 0
 let g:racer_cmd = $HOME . "/.cargo/bin/racer"
 au! FileType rust nmap gd <Plug>(rust-def)
 au! FileType rust nmap K <Plug>(rust-doc)
+
+let g:LanguageClient_serverCommands = {
+    \ 'javascript': ['~/src/javascript-typescript-langserver/lib/language-server-stdio.js'],
+    \ }
+
+map f <Plug>Sneak_s
+map F <Plug>Sneak_S
 
 " ==========================================================================={{{
 " vim:foldmethod=marker colorcolumn=80 textwidth=80
