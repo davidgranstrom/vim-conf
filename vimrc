@@ -20,16 +20,17 @@ Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'cohama/lexima.vim'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'tweekmonster/wstrip.vim'
-Plug 'Shougo/deoplete.nvim' | Plug 'Shougo/context_filetype.vim'
-Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'roxma/nvim-completion-manager'
-" Plug 'roxma/nvim-cm-tern', {'do': 'npm install'}
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim' | Plug 'Shougo/context_filetype.vim'
+  " Plug 'roxma/nvim-completion-manager'
+  " Plug 'roxma/nvim-cm-tern', {'do': 'npm install'}
+  Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+endif
 
 " navigation
 Plug 'justinmk/vim-dirvish'
 Plug 'kopischke/vim-fetch'
 Plug 'vim-scripts/matchit.zip'
-Plug 'justinmk/vim-sneak'
 
 " util
 Plug 'tpope/vim-fugitive'
@@ -38,6 +39,9 @@ Plug 'junegunn/fzf.vim'
 Plug 'w0rp/ale'
 Plug 'simnalamburt/vim-mundo'
 Plug 'kassio/neoterm'
+if has('nvim')
+  Plug 'bfredl/nvim-miniyank'
+endif
 
 " language
 Plug 'sheerun/vim-polyglot'
@@ -47,6 +51,15 @@ Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
 Plug 'racer-rust/vim-racer', { 'for': 'rust' }
 
+" clojure
+Plug 'guns/vim-sexp', { 'for': 'clojure' }
+Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for': 'clojure' }
+Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
+Plug 'tpope/vim-salve', { 'for': 'clojure' }
+Plug 'clojure-vim/async-clj-omni', { 'for': 'clojure' }
+" Plug 'clojure-vim/acid.nvim'
+
 " javascript
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
 Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' }
@@ -54,15 +67,18 @@ Plug 'mxw/vim-jsx', { 'for': 'javascript' }
 
 " langs not included in polyglot
 Plug 'sophacles/vim-processing', { 'for': 'processing' }
-Plug 'supercollider/scvim'
-" Plug '~/src/sc3/supercollider/editors/scvim/'
+" Plug 'supercollider/scvim'
+Plug '~/src/sc3/supercollider/editors/scvim/'
+Plug '~/code/vim/scvim-reload'
 Plug 'munshkr/vim-tidal', { 'for': 'haskell.tidal' }
 
 " color schemes / appearance
 Plug 'itchyny/lightline.vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'trevordmiller/nova-vim'
+
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
+Plug '~/code/vim/colors/preto'
 
 " misc
 Plug 'tpope/vim-repeat'
