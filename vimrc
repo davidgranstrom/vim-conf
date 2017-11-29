@@ -141,13 +141,12 @@ set showmatch                       " highlight search matches while typing
 " misc
 set wildmenu                        " enhanced command line completion
 set wildignorecase                  " be smart case-sensitive
+" set wildmode=list:full
 set diffopt+=vertical               " use vertical diffs by default
 set laststatus=2                    " always display a status line
 set visualbell                      " turn off error beep/flash
-set regexpengine=0                  " auto-switch regexp engines
-set nolazyredraw                    " don't redraw screen for macros
+set lazyredraw                      " don't redraw screen for macros
 set noshowcmd                       " don't display partial commands (g,c etc.)
-set cscopetag
 
 " indenting/formating
 set autoindent                      " indent even if we have no filetype rules
@@ -291,7 +290,8 @@ nnoremap <silent><up>    :3wincmd +<cr>
 nnoremap <silent><down>  :3wincmd -<cr>
 
 " never enter Ex mode
-nnoremap Q q:
+" nnoremap Q q:
+nnoremap Q <Nop>
 
 " easy renaming
 nnoremap <leader>r *``cgn
