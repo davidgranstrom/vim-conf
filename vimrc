@@ -336,8 +336,8 @@ if has('nvim')
   au! FocusGained * if &autoread | silent checktime | endif
 endif
 
-let s:dkg_scvimrc = '~/.vim/bundle/vim-dkg/supercollider/scvim_init.vim'
-if filereadable(expand(s:dkg_scvimrc))
+let s:scvim_init = '~/.vim/bundle/vim-dkg/supercollider/scvim_init.vim'
+if filereadable(expand(s:scvim_init))
   " supercollider
   source ~/.vim/bundle/vim-dkg/supercollider/scvim_init.vim
 endif
@@ -409,10 +409,12 @@ augroup dkg_php
   " autocmd FileType html nnoremap <leader>s :set ft=html
 augroup END
 
-augroup dkg_terminal
-  au!
-  au TermOpen * let g:last_terminal_job_id = b:terminal_job_id
-augroup END
+if has('nvim')
+  augroup dkg_terminal
+    au!
+    au TermOpen * let g:last_terminal_job_id = b:terminal_job_id
+  augroup END
+endif
 
 " }}}
 " ==============================================================================
@@ -543,7 +545,7 @@ endif
 " ------------------------------------------------------------------------------
 " -- Highlighted Yank ----------------------------------------------------------
 
-let g:highlightedyank_highlight_duration = 100
+let g:highlightedyank_highlight_duration = 130
 
 " ------------------------------------------------------------------------------
 " -- Ale -----------------------------------------------------------------------
@@ -556,26 +558,27 @@ nmap <leader><space> <Plug>(ale_fix)
 
 " ------------------------------------------------------------------------------
 " -- Neoterm -------------------------------------------------------------------
+if has('nvim')
+  let g:neoterm_size = 15
+  let g:neoterm_autoscroll = 1
 
-let g:neoterm_size = 15
-let g:neoterm_autoscroll = 1
+  function! ToggleTerm()
+    if &buftype != 'terminal'
+      execute 'Ttoggle'
+      wincmd j
+      startinsert
+    else
+      stopinsert
+      execute 'Ttoggle'
+    endif
+  endfunction
 
-function! ToggleTerm()
-  if &buftype != 'terminal'
-    execute 'Ttoggle'
-    wincmd j
-    startinsert
-  else
-    stopinsert
-    execute 'Ttoggle'
-  endif
-endfunction
-
-nnoremap <silent> <A-t> :call ToggleTerm()<cr>
-tnoremap <silent> <A-t> <C-\><C-n>:call ToggleTerm()<cr>
-nnoremap <silent> <F8> :TREPLSendFile<cr>
-nnoremap <silent> <A-e> :TREPLSendLine<cr>
-vnoremap <silent> <A-e> :TREPLSendSelection<cr>
+  nnoremap <silent> <A-t> :call ToggleTerm()<cr>
+  tnoremap <silent> <A-t> <C-\><C-n>:call ToggleTerm()<cr>
+  nnoremap <silent> <F8> :TREPLSendFile<cr>
+  nnoremap <silent> <A-e> :TREPLSendLine<cr>
+  vnoremap <silent> <A-e> :TREPLSendSelection<cr>
+endif
 
 " ------------------------------------------------------------------------------
 " -- misc ----------------------------------------------------------------------
@@ -599,8 +602,15 @@ let g:LanguageClient_serverCommands = {
     \ 'javascript': ['~/src/javascript-typescript-langserver/lib/language-server-stdio.js'],
     \ }
 
-map f <Plug>Sneak_s
-map F <Plug>Sneak_S
+let g:deoplete#keyword_patterns = {}
+let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
+
+" miniyank
+map p <Plug>(miniyank-autoput)
+map P <Plug>(miniyank-autoPut)
+map <leader>p <Plug>(miniyank-cycle)
+
+nmap <Enter> <Plug>(scvim-reload)
 
 " ==========================================================================={{{
 " vim:foldmethod=marker colorcolumn=80 textwidth=80
