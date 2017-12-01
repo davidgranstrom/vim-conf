@@ -83,8 +83,8 @@ Plug '~/code/vim/colors/preto'
 " misc
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
-Plug 'davidgranstrom/vim-dkg'
 Plug 'tpope/vim-scriptease', { 'on': 'Runtime' }
+Plug '~/code/vim/vim-dkg'
 
 function! BuildComposer(info)
   if a:info.status != 'unchanged' || a:info.force
@@ -334,12 +334,6 @@ endif
 if has('nvim')
   " make autoread behave as expected (neovim only)
   au! FocusGained * if &autoread | silent checktime | endif
-endif
-
-let s:scvim_init = '~/.vim/bundle/vim-dkg/supercollider/scvim_init.vim'
-if filereadable(expand(s:scvim_init))
-  " supercollider
-  source ~/.vim/bundle/vim-dkg/supercollider/scvim_init.vim
 endif
 
 " c
@@ -609,8 +603,6 @@ let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 map p <Plug>(miniyank-autoput)
 map P <Plug>(miniyank-autoPut)
 map <leader>p <Plug>(miniyank-cycle)
-
-nmap <Enter> <Plug>(scvim-reload)
 
 " ==========================================================================={{{
 " vim:foldmethod=marker colorcolumn=80 textwidth=80
