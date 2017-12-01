@@ -76,9 +76,11 @@ Plug 'munshkr/vim-tidal', { 'for': 'haskell.tidal' }
 Plug 'itchyny/lightline.vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'trevordmiller/nova-vim'
-
+Plug 'yuttie/hydrangea-vim'
+Plug 'arcticicestudio/nord-vim'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug '~/code/vim/colors/preto'
+
 
 " misc
 Plug 'tpope/vim-repeat'
@@ -173,7 +175,8 @@ if has("gui_running")
   set guioptions+=c
 else
   set background=dark
-  colorscheme nova
+  " colorscheme nova
+  colorscheme hydrangea
 endif
 
 " use par to format text
@@ -573,6 +576,20 @@ if has('nvim')
   nnoremap <silent> <A-e> :TREPLSendLine<cr>
   vnoremap <silent> <A-e> :TREPLSendSelection<cr>
 endif
+
+" ------------------------------------------------------------------------------
+" -- lightline -----------------------------------------------------------------
+
+let g:lightline = {
+      \ 'colorscheme': 'hydrangea',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \  },
+      \  'component_function': {
+      \   'gitbranch': 'fugitive#head'
+      \ },
+      \}
 
 " ------------------------------------------------------------------------------
 " -- misc ----------------------------------------------------------------------
