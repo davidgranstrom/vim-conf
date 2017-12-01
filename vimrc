@@ -385,7 +385,7 @@ augroup END
 augroup dkg_fugitive
   autocmd!
   " enable spell checking in commit messages
-  autocmd BufEnter,BufWinEnter */.git/index setlocal spell | setlocal spelllang=en
+  autocmd FileType gitcommit setlocal spell | setlocal spelllang=en
 augroup END
 
 " php
