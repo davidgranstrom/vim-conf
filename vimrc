@@ -118,7 +118,7 @@ endif
 set backspace=2                     " allow backspacing over indent, eol, and the start of an insert
 set virtualedit=all                 " be able to access all areas of the buffer
 set hidden                          " be able to hide modified buffers
-" set complete-=i                     " where to look for auto-completion
+set complete-=i                     " where to look for auto-completion
 set clipboard=unnamed               " yank to system-wide clipboard
 set autoread                        " reload buffers changed from the outside
 set completeopt-=preview            " don't display scratch buffer for completion
@@ -130,6 +130,7 @@ set scrolloff=4                     " keep a distance of from the cursor when sc
 set nowrap                          " don't wrap words
 set linebreak                       " break at word boundries for wrapped text
 set noshowmode                      " get mode indication from lightline instead
+set noshowcmd                       " don't display partial commands (g,c etc.)
 set relativenumber
 set number
 
@@ -147,7 +148,6 @@ set diffopt+=vertical               " use vertical diffs by default
 set laststatus=2                    " always display a status line
 set visualbell                      " turn off error beep/flash
 set lazyredraw                      " don't redraw screen for macros
-set noshowcmd                       " don't display partial commands (g,c etc.)
 
 " indenting/formating
 set autoindent                      " indent even if we have no filetype rules
