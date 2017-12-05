@@ -76,11 +76,10 @@ Plug 'munshkr/vim-tidal', { 'for': 'haskell.tidal' }
 Plug 'itchyny/lightline.vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'trevordmiller/nova-vim'
-Plug 'yuttie/hydrangea-vim'
 Plug 'arcticicestudio/nord-vim'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug '~/code/vim/colors/preto'
-
+Plug '~/code/vim/hydrangea-vim'
 
 " misc
 Plug 'tpope/vim-repeat'
