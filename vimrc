@@ -228,12 +228,6 @@ com! SudoWrite w !sudo tee > /dev/null %
 " edit vimrc
 nnoremap <leader>ev :tabedit ~/.vim/vimrc<cr>
 
-augroup vimrc_reload
-  autocmd!
-  " save and source current file
-  autocmd FileType vim nnoremap <buffer> <leader>so :w \| so%<cr>
-augroup END
-
 " change to current dir
 nnoremap <leader>c :cd %:p:h \| pwd<cr>
 
@@ -322,10 +316,6 @@ if has('nvim')
 
   " save buffer
   nnoremap <A-s> :<C-u>w<cr>
-
-  " always enter insert mode
-  " autocmd! BufWinEnter,WinEnter term://* startinsert
-  " autocmd! BufLeave term://* stopinsert
 endif
 
 " }}}
@@ -334,84 +324,71 @@ endif
 " ==============================================================================
 " {{{
 
-if has('nvim')
-  " make autoread behave as expected (neovim only)
-  au! FocusGained * if &autoread | silent checktime | endif
-endif
-
-" c
-augroup dkg_c
+augroup vimrc
   autocmd!
-  autocmd FileType c setlocal commentstring=\/\/\ %s
 augroup END
 
-" " haskell
-" augroup dkg_haskell
-"   autocmd!
-"   let g:haskellmode_completion_ghc = 0
-"   autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-" augroup END
+augroup vimrc
+  " vim
+  " ---
+  " save and source current file
+  autocmd FileType vim nnoremap <buffer> <leader>so :w \| so%<cr>
 
-" markdown
-augroup dkg_markdown
-  autocmd!
-  " autocmd BufEnter,BufWinEnter,BufNewFile,BufRead *.md, *.markdown set filetype=markdown
+  if has('nvim')
+    " make autoread behave as expected (neovim only)
+    autocmd FocusGained * if &autoread | silent checktime | endif
+    " save last terminal job id
+    autocmd TermOpen * let g:last_terminal_job_id = b:terminal_job_id
+  endif
+
+  " c
+  " -
+  autocmd FileType c setlocal commentstring=\/\/\ %s
+
+  " haskell
+  " -------
+  let g:haskellmode_completion_ghc = 0
+  autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+
+  " markdown
+  "---------
   autocmd FileType markdown setlocal commentstring=<!--%s-->
   " break undo sequence into smaller chunks for prose
   autocmd FileType markdown inoremap <buffer> . .<c-g>u
   autocmd FileType markdown inoremap <buffer> ? ?<c-g>u
   autocmd FileType markdown inoremap <buffer> ! !<c-g>u
   autocmd FileType markdown inoremap <buffer> , ,<c-g>u
-augroup END
 
-" javascript
-augroup dkg_javascript
-  autocmd!
+  " javascript
+  " ----------
   autocmd FileType javascript.jsx setlocal filetype=javascript
   autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
+
   autocmd FileType javascript,typescript, setlocal ts=2 sts=2 sw=2
   autocmd FileType css,less,scss,sass setlocal ts=2 sts=2 sw=2
+
   autocmd FileType javascript setlocal nowritebackup
   autocmd FileType javascript nnoremap <buffer><leader>f :ALEFix<cr>
   autocmd FileType javascript nnoremap <buffer><silent> K :call LanguageClient_textDocument_hover()<CR>
   autocmd FileType javascript nnoremap <buffer><silent> gd :call LanguageClient_textDocument_definition()<CR>
   autocmd FileType javascript nnoremap <buffer><silent> <leader>r :call LanguageClient_textDocument_rename()<CR>
-augroup END
 
-" python
-augroup dkg_python
-  autocmd!
+  " python
+  " ------
   autocmd FileType python setlocal ts=4 sts=4 sw=4
-augroup END
 
-" fugitive
-augroup dkg_fugitive
-  autocmd!
-  " enable spell checking in commit messages
-  autocmd FileType gitcommit setlocal spell | setlocal spelllang=en
-augroup END
+  " php
+  " ---
+  function! TogglePhpHtml()
+    if &ft == "php"
+      set ft=html
+    else
+      set ft=php
+    endif
+  endfunction
 
-" php
-function! TogglePhpHtml()
-  if &ft == "php"
-    set ft=html
-  else
-    set ft=php
-  endif
-endfunction
-
-augroup dkg_php
-  autocmd!
   autocmd FileType php nnoremap <leader>s :call TogglePhpHtml()<cr>
-  " autocmd FileType html nnoremap <leader>s :set ft=html
 augroup END
-
-if has('nvim')
-  augroup dkg_terminal
-    au!
-    au TermOpen * let g:last_terminal_job_id = b:terminal_job_id
-  augroup END
-endif
 
 " }}}
 " ==============================================================================
@@ -419,8 +396,7 @@ endif
 " ==============================================================================
 " {{{
 
-augroup my_dirvish_autocmds
-  autocmd!
+augroup vimrc
   " Map t to "open in new tab".
   autocmd FileType dirvish
         \  nnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
@@ -475,6 +451,11 @@ xmap s <plug>VSurround
 
 nnoremap <Leader>fs :Gstatus<CR><C-w>K
 nnoremap <F5> :Gblame<cr>
+
+augroup vimrc
+  " enable spell checking in commit messages
+  autocmd FileType gitcommit setlocal spell | setlocal spelllang=en
+augroup END
 
 " ------------------------------------------------------------------------------
 " -- fzf -----------------------------------------------------------------------
