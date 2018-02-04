@@ -1,10 +1,10 @@
-#vim-config
+# vim-config
 
-##Info
+My vim configuration.
 
 Plugins are managed using [vim-plug](https://github.com/junegunn/vim-plug)
 
-##Install
+## Install
 
     git clone https://github.com/davidgranstrom/vim-conf.git
 
