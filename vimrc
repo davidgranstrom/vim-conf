@@ -20,17 +20,23 @@ Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'cohama/lexima.vim'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'tweekmonster/wstrip.vim'
+Plug 'AndrewRadev/switch.vim'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim' | Plug 'Shougo/context_filetype.vim'
   " Plug 'roxma/nvim-completion-manager'
   " Plug 'roxma/nvim-cm-tern', {'do': 'npm install'}
-  Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'autozimu/LanguageClient-neovim', {
+        \ 'branch': 'next',
+        \ 'do': 'bash install.sh',
+        \ }
 endif
 
 " navigation
 Plug 'justinmk/vim-dirvish'
 Plug 'kopischke/vim-fetch'
 Plug 'vim-scripts/matchit.zip'
+Plug 'justinmk/vim-sneak'
+Plug 'christoomey/vim-tmux-navigator'
 
 " util
 Plug 'tpope/vim-fugitive'
@@ -38,18 +44,15 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'w0rp/ale'
 Plug 'simnalamburt/vim-mundo'
-Plug 'kassio/neoterm'
 if has('nvim')
-  Plug 'bfredl/nvim-miniyank'
+  Plug 'kassio/neoterm'
 endif
 
 " language
 Plug 'sheerun/vim-polyglot'
 Plug 'neovimhaskell/haskell-vim', { 'for': [ 'haskell', 'haskell.tidal' ] }
 Plug 'eagletmt/neco-ghc', { 'for': [ 'haskell', 'haskell.tidal' ] }
-Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
-Plug 'racer-rust/vim-racer', { 'for': 'rust' }
 
 " clojure
 Plug 'guns/vim-sexp', { 'for': 'clojure' }
@@ -62,7 +65,6 @@ Plug 'clojure-vim/async-clj-omni', { 'for': 'clojure' }
 
 " javascript
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
-Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' }
 Plug 'mxw/vim-jsx', { 'for': 'javascript' }
 
 " langs not included in polyglot
@@ -78,6 +80,7 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'trevordmiller/nova-vim'
 Plug 'arcticicestudio/nord-vim'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
+Plug 'tyrannicaltoucan/vim-deep-space'
 Plug '~/code/vim/colors/preto'
 Plug '~/code/vim/hydrangea-vim'
 
@@ -97,7 +100,8 @@ function! BuildComposer(info)
   endif
 endfunction
 
-Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer'), 'for': 'markdown' }
+Plug 'euclio/vim-markdown-composer', {
+      \ 'do': function('BuildComposer'), 'for': 'markdown' }
 
 call plug#end()
 
@@ -288,6 +292,7 @@ nnoremap <silent><down>  :3wincmd -<cr>
 " never enter Ex mode
 " nnoremap Q q:
 nnoremap Q <Nop>
+nnoremap q: <Nop>
 
 " easy renaming
 nnoremap <leader>r *``cgn
@@ -301,12 +306,6 @@ if has('nvim')
   tnoremap <A-j> <C-\><C-n><C-w>j
   tnoremap <A-k> <C-\><C-n><C-w>k
   tnoremap <A-l> <C-\><C-n><C-w>l
-
-  " navigate window splits
-  nnoremap <A-h> <C-w>h
-  nnoremap <A-j> <C-w>j
-  nnoremap <A-k> <C-w>k
-  nnoremap <A-l> <C-w>l
 
   " navigate tab pages (like chrome)
   for i in range(1, 9)
@@ -366,11 +365,8 @@ augroup vimrc
   autocmd FileType javascript,typescript, setlocal ts=2 sts=2 sw=2
   autocmd FileType css,less,scss,sass setlocal ts=2 sts=2 sw=2
 
+  " hack to make development servers not rebuild twice
   autocmd FileType javascript setlocal nowritebackup
-  autocmd FileType javascript nnoremap <buffer><leader>f :ALEFix<cr>
-  autocmd FileType javascript nnoremap <buffer><silent> K :call LanguageClient_textDocument_hover()<CR>
-  autocmd FileType javascript nnoremap <buffer><silent> gd :call LanguageClient_textDocument_definition()<CR>
-  autocmd FileType javascript nnoremap <buffer><silent> <leader>r :call LanguageClient_textDocument_rename()<CR>
 
   " python
   " ------
@@ -500,23 +496,24 @@ endfunction
 " -- deoplete ------------------------------------------------------------------
 
 if has('nvim')
+  " Enable deoplete on InsertEnter
+  let g:deoplete#enable_at_startup = 0
+  autocmd! InsertEnter * call deoplete#enable()
+
   let g:deoplete#enable_smart_case = 1
   let g:deoplete#auto_complete_delay = 15
   " fix issue with large tag files
   let deoplete#tag#cache_limit_size = 5000000
 
-  " Enable deoplete on InsertEnter
-  let g:deoplete#enable_at_startup = 0
-  autocmd! InsertEnter * call deoplete#enable()
-
   inoremap <silent> <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-  inoremap <expr><C-h> deolete#mappings#smart_close_popup()."\<C-h>"
-  inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
+	inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
+	inoremap <expr><BS>  deoplete#smart_close_popup()."\<C-h>"
 
-  let g:deoplete#sources#ternjs#tern_bin = '/usr/local/bin/tern'
-  let g:deoplete#sources#ternjs#timeout = 1
-  " Whether to include the types of the completions in the result data. Default: 0
-  let g:deoplete#sources#ternjs#types = 1
+	" <CR>: close popup and save indent.
+	inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+	function! s:my_cr_function() abort
+	  return deoplete#close_popup() . "\<CR>"
+	endfunction
 endif
 
 " ------------------------------------------------------------------------------
@@ -529,7 +526,6 @@ let g:highlightedyank_highlight_duration = 130
 
 let g:ale_linters = { 'javascript': ['eslint'] }
 let g:ale_fixers = { 'javascript': ['eslint'] }
-nmap <leader><space> <Plug>(ale_fix)
 " let g:ale_linters = {'cpp': ['cppcheck']}
 " let g:ale_c_cppcheck_options = '--enable=style -I../include'
 
@@ -585,21 +581,31 @@ let g:scFlash = 1
 
 let g:vim_markdown_conceal = 0
 
-let g:racer_cmd = $HOME . "/.cargo/bin/racer"
-au! FileType rust nmap gd <Plug>(rust-def)
-au! FileType rust nmap K <Plug>(rust-doc)
+augroup vimrc
+  let g:LanguageClient_serverCommands = {
+        \ 'javascript': ['javascript-typescript-stdio'],
+        \ 'javascript.jsx': ['javascript-typescript-stdio'],
+        \ }
 
-let g:LanguageClient_serverCommands = {
-    \ 'javascript': ['~/src/javascript-typescript-langserver/lib/language-server-stdio.js'],
-    \ }
+  autocmd FileType javascript nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+  autocmd FileType javascript nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+  autocmd FileType javascript nnoremap <silent> <leader>r :call LanguageClient_textDocument_rename()<CR>
+augroup END
 
-let g:deoplete#keyword_patterns = {}
-let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
+" let g:deoplete#keyword_patterns = {}
+" let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 
-" miniyank
-map p <Plug>(miniyank-autoput)
-map P <Plug>(miniyank-autoPut)
-map <leader>p <Plug>(miniyank-cycle)
+map S <Plug>Sneak_s
+
+let g:scvim_no_mappings = 1
+let g:tmux_navigator_no_mappings = 1
+
+" tmux navigator custom mappings
+nnoremap <silent> <A-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <A-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <A-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <A-l> :TmuxNavigateRight<cr>
+" nnoremap <silent> <A-o> :TmuxNavigatePrevious<cr>
 
 " ==========================================================================={{{
 " vim:foldmethod=marker colorcolumn=80 textwidth=80

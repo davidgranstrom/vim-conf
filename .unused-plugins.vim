@@ -50,3 +50,5 @@
 " Plug 'pgdouyon/vim-yin-yang'
 " Plug 'ewilazarus/preto'
 " Plug 'bluz71/vim-moonfly-colors'
+" Plug 'sunaku/vim-dasht'
+" Plug 'bfredl/nvim-miniyank'
