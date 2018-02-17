@@ -301,6 +301,9 @@ nnoremap q: <Nop>
 " easy renaming
 nnoremap <leader>r *``cgn
 
+" don't move cursor after visual selection yank
+vnoremap <expr>y "my\"" . v:register . "y`y"
+
 if has('nvim')
   " remap esc in terminal mode
   tnoremap <Esc> <C-\><C-n>
