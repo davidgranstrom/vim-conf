@@ -296,7 +296,7 @@ nnoremap <silent><down>  :3wincmd -<cr>
 " never enter Ex mode
 " nnoremap Q q:
 nnoremap Q <Nop>
-nnoremap q: <Nop>
+" nnoremap q: <Nop>
 
 " easy renaming
 nnoremap <leader>r *``cgn
@@ -596,7 +596,7 @@ augroup vimrc
 
   autocmd FileType javascript nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
   autocmd FileType javascript nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-  autocmd FileType javascript nnoremap <silent> <leader>r :call LanguageClient_textDocument_rename()<CR>
+  " autocmd FileType javascript nnoremap <silent> <leader>r :call LanguageClient_textDocument_rename()<CR>
 augroup END
 
 " let g:deoplete#keyword_patterns = {}
