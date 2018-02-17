@@ -137,6 +137,10 @@ set noshowmode                      " get mode indication from lightline instead
 set noshowcmd                       " don't display partial commands (g,c etc.)
 set relativenumber
 set number
+set sidescroll=1
+set sidescrolloff=1
+set listchars+=extends:>,precedes:<
+set fillchars=vert:│,fold:·
 
 " searching
 set ignorecase                      " ignore case in search patterns
