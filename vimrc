@@ -40,7 +40,6 @@ Plug 'christoomey/vim-tmux-navigator'
 
 " util
 Plug 'tpope/vim-fugitive'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'w0rp/ale'
 Plug 'simnalamburt/vim-mundo'
@@ -77,12 +76,10 @@ Plug 'munshkr/vim-tidal', { 'for': 'haskell.tidal' }
 " color schemes / appearance
 Plug 'itchyny/lightline.vim'
 Plug 'machakann/vim-highlightedyank'
-Plug 'trevordmiller/nova-vim'
-Plug 'arcticicestudio/nord-vim'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
-Plug 'tyrannicaltoucan/vim-deep-space'
-Plug '~/code/vim/colors/preto'
-Plug '~/code/vim/hydrangea-vim'
+" Plug '~/code/vim/colors/preto'
+" Plug '~/code/vim/hydrangea-vim'
+Plug 'yuttie/hydrangea-vim'
 
 " misc
 Plug 'tpope/vim-repeat'
