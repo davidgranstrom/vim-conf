@@ -233,7 +233,7 @@ com! SudoWrite w !sudo tee > /dev/null %
 " {{{
 
 " edit vimrc
-nnoremap <leader>ev :tabedit ~/.vim/vimrc<cr>
+nnoremap <leader>ev :tabedit $MYVIMRC<cr>
 
 " change to current dir
 nnoremap <leader>c :cd %:p:h \| pwd<cr>
