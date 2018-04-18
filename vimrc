@@ -10,7 +10,7 @@ filetype plugin indent on  " detect plugin filetypes
 syntax enable              " syntax highlighting
 
 " vim-plug
-call plug#begin('~/.vim/bundle')
+call plug#begin('~/.config/nvim/bundle')
 
 " editing
 Plug 'junegunn/vim-easy-align'
