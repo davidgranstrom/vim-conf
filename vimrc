@@ -23,8 +23,6 @@ Plug 'tweekmonster/wstrip.vim'
 Plug 'AndrewRadev/switch.vim'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim' | Plug 'Shougo/context_filetype.vim'
-  " Plug 'roxma/nvim-completion-manager'
-  " Plug 'roxma/nvim-cm-tern', {'do': 'npm install'}
   Plug 'autozimu/LanguageClient-neovim', {
         \ 'branch': 'next',
         \ 'do': 'bash install.sh',
@@ -40,6 +38,7 @@ Plug 'christoomey/vim-tmux-navigator'
 
 " util
 Plug 'tpope/vim-fugitive'
+Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'w0rp/ale'
 Plug 'simnalamburt/vim-mundo'
@@ -54,12 +53,12 @@ Plug 'eagletmt/neco-ghc', { 'for': [ 'haskell', 'haskell.tidal' ] }
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
 
 " clojure
-Plug 'guns/vim-sexp', { 'for': 'clojure' }
-Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for': 'clojure' }
-Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
-Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
-Plug 'tpope/vim-salve', { 'for': 'clojure' }
-Plug 'clojure-vim/async-clj-omni', { 'for': 'clojure' }
+" Plug 'guns/vim-sexp', { 'for': 'clojure' }
+" Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for': 'clojure' }
+" Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+" Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
+" Plug 'tpope/vim-salve', { 'for': 'clojure' }
+" Plug 'clojure-vim/async-clj-omni', { 'for': 'clojure' }
 " Plug 'clojure-vim/acid.nvim'
 
 " javascript
@@ -69,36 +68,24 @@ Plug 'mxw/vim-jsx', { 'for': 'javascript' }
 " langs not included in polyglot
 Plug 'sophacles/vim-processing', { 'for': 'processing' }
 " Plug 'supercollider/scvim'
-Plug '~/src/sc3/supercollider/editors/scvim/'
-Plug '~/code/vim/scvim-reload'
+Plug '~/src/sc/supercollider/editors/scvim/'
+Plug 'davidgranstrom/scvim-reload'
 Plug 'munshkr/vim-tidal', { 'for': 'haskell.tidal' }
 
 " color schemes / appearance
 Plug 'itchyny/lightline.vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
-" Plug '~/code/vim/colors/preto'
-" Plug '~/code/vim/hydrangea-vim'
 Plug 'yuttie/hydrangea-vim'
+Plug '~/code/vim/colorschemes/vim-colors-plain'
 
 " misc
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-apathy'
 Plug 'tpope/vim-scriptease', { 'on': 'Runtime' }
 Plug '~/code/vim/vim-dkg'
-
-function! BuildComposer(info)
-  if a:info.status != 'unchanged' || a:info.force
-    if has('nvim')
-      !cargo build --release
-    else
-      !cargo build --release --no-default-features --features json-rpc
-    endif
-  endif
-endfunction
-
-Plug 'euclio/vim-markdown-composer', {
-      \ 'do': function('BuildComposer'), 'for': 'markdown' }
+Plug '~/code/vim/nvim-markdown-preview'
 
 call plug#end()
 
