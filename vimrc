@@ -539,7 +539,7 @@ endif
 " -- lightline -----------------------------------------------------------------
 
 let g:lightline = {
-      \ 'colorscheme': 'hydrangea',
+      \ 'colorscheme': 'monochrome',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
