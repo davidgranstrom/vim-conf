@@ -312,6 +312,9 @@ augroup vimrc
     autocmd FocusGained * if &autoread | silent checktime | endif
     " save last terminal job id
     autocmd TermOpen * let g:last_terminal_job_id = b:terminal_job_id
+
+    " fix a bug where the first line in window is corrupted after resize
+    autocmd VimResized * redraw!
   endif
 
   " c
