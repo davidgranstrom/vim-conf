@@ -151,24 +151,8 @@ set expandtab                       " use whitespace instead of tabs
 set shiftround                      " round indent to multiples of 'shiftwidth'
 set nojoinspaces                    " only insert one space after a join command
 
-" colorscheme/appearance
-if has("gui_running")
-  set background=dark
-  let g:gruvbox_contrast_dark='hard'
-  colorscheme gruvbox
-
-  set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h14,Monospace
-  " style guicursor
-  set guicursor=n-c-v:block-Cursor-blinkOn0
-  " get rid of all scrollbars and the toolbar
-  set guioptions-=TRLrlbme
-  " use console dialogs for simple choices
-  set guioptions+=c
-else
-  set background=dark
-  " colorscheme nova
-  colorscheme hydrangea
-endif
+set background=dark
+colorscheme plain
 
 " use par to format text
 if executable("par")
