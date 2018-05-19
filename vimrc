@@ -579,6 +579,9 @@ augroup END
 
 map S <Plug>Sneak_s
 
+" unimpaired original mapping
+nmap co yo
+
 let g:scvim_no_mappings = 1
 let g:tmux_navigator_no_mappings = 1
 
