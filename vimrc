@@ -20,7 +20,6 @@ Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'cohama/lexima.vim'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'tweekmonster/wstrip.vim'
-Plug 'AndrewRadev/switch.vim'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim' | Plug 'Shougo/context_filetype.vim'
   Plug 'autozimu/LanguageClient-neovim', {
@@ -32,8 +31,6 @@ endif
 " navigation
 Plug 'justinmk/vim-dirvish'
 Plug 'kopischke/vim-fetch'
-Plug 'vim-scripts/matchit.zip'
-Plug 'justinmk/vim-sneak'
 Plug 'christoomey/vim-tmux-navigator'
 
 " util
@@ -42,9 +39,6 @@ Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'w0rp/ale'
 Plug 'simnalamburt/vim-mundo'
-if has('nvim')
-  Plug 'kassio/neoterm'
-endif
 
 " language
 Plug 'sheerun/vim-polyglot'
@@ -52,30 +46,18 @@ Plug 'neovimhaskell/haskell-vim', { 'for': [ 'haskell', 'haskell.tidal' ] }
 Plug 'eagletmt/neco-ghc', { 'for': [ 'haskell', 'haskell.tidal' ] }
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
 
-" clojure
-" Plug 'guns/vim-sexp', { 'for': 'clojure' }
-" Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for': 'clojure' }
-" Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
-" Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
-" Plug 'tpope/vim-salve', { 'for': 'clojure' }
-" Plug 'clojure-vim/async-clj-omni', { 'for': 'clojure' }
-" Plug 'clojure-vim/acid.nvim'
-
 " javascript
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
 Plug 'mxw/vim-jsx', { 'for': 'javascript' }
 
 " langs not included in polyglot
 Plug 'sophacles/vim-processing', { 'for': 'processing' }
-" Plug 'supercollider/scvim'
 Plug '~/src/sc/supercollider/editors/scvim/'
-Plug 'davidgranstrom/scvim-reload'
 Plug 'munshkr/vim-tidal', { 'for': 'haskell.tidal' }
 
 " color schemes / appearance
 Plug 'itchyny/lightline.vim'
 Plug 'machakann/vim-highlightedyank'
-Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'yuttie/hydrangea-vim'
 Plug '~/code/vim/colorschemes/vim-colors-plain'
 
@@ -86,6 +68,7 @@ Plug 'tpope/vim-apathy'
 Plug 'tpope/vim-scriptease', { 'on': 'Runtime' }
 Plug '~/code/vim/vim-dkg'
 Plug '~/code/vim/nvim-markdown-preview'
+Plug '~/code/vim/scvim-reload'
 
 call plug#end()
 
@@ -249,11 +232,6 @@ nnoremap <silent><leader>z :tabedit!%<cr>
 " move between tabs
 nnoremap <silent> <C-n> :tabn<cr>
 nnoremap <silent> <C-p> :tabp<cr>
-" nnoremap <silent><leader>n :tabnew \| Files<cr>
-
-" CTRL-U in insert mode deletes a lot. Use CTRL-G u to first break undo,
-" so that you can undo CTRL-U after inserting a line break.
-" inoremap <C-U> <C-G>u<C-U>
 
 " resize windows with arrow-keys
 nnoremap <silent><left>  :3wincmd <<cr>
@@ -361,6 +339,9 @@ augroup vimrc
   endfunction
 
   autocmd FileType php nnoremap <leader>s :call TogglePhpHtml()<cr>
+
+  autocmd BufEnter,BufNewFile ~/Documents/cv/**/* source ~/code/vim/vim-dkg/scripts/async-make.vim
+  autocmd BufEnter,BufNewFile ~/Documents/cv/**/* nnoremap <cr> :<c-u>Make<cr>
 augroup END
 
 " }}}
@@ -397,9 +378,9 @@ nnoremap <F4> :MundoToggle<CR>
 " ------------------------------------------------------------------------------
 " -- EasyAlign  ----------------------------------------------------------------
 
-vmap <leader>a <Plug>(EasyAlign)
+vmap <leader><space> <Plug>(EasyAlign)
 " For normal mode, with Vim movement (e.g. <Leader>aip)
-" nmap <leader><space> <Plug>(EasyAlign)
+nmap <leader><space> <Plug>(EasyAlign)
 
 " ------------------------------------------------------------------------------
 " -- UltiSnips  ----------------------------------------------------------------
@@ -508,33 +489,6 @@ let g:ale_fixers = {
       \ 'c': ['clang-format']
       \ }
 
-" let g:ale_linters = {'cpp': ['cppcheck']}
-" let g:ale_c_cppcheck_options = '--enable=style -I../include'
-
-" ------------------------------------------------------------------------------
-" -- Neoterm -------------------------------------------------------------------
-if has('nvim')
-  let g:neoterm_size = 15
-  let g:neoterm_autoscroll = 1
-
-  function! ToggleTerm()
-    if &buftype != 'terminal'
-      execute 'Ttoggle'
-      wincmd j
-      startinsert
-    else
-      stopinsert
-      execute 'Ttoggle'
-    endif
-  endfunction
-
-  nnoremap <silent> <A-t> :call ToggleTerm()<cr>
-  tnoremap <silent> <A-t> <C-\><C-n>:call ToggleTerm()<cr>
-  nnoremap <silent> <F8> :TREPLSendFile<cr>
-  nnoremap <silent> <A-e> :TREPLSendLine<cr>
-  vnoremap <silent> <A-e> :TREPLSendSelection<cr>
-endif
-
 " ------------------------------------------------------------------------------
 " -- lightline -----------------------------------------------------------------
 
@@ -574,11 +528,6 @@ augroup vimrc
   " autocmd FileType javascript nnoremap <silent> <leader>r :call LanguageClient_textDocument_rename()<CR>
 augroup END
 
-" let g:deoplete#keyword_patterns = {}
-" let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
-
-map S <Plug>Sneak_s
-
 " unimpaired original mapping
 nmap co yo
 
@@ -590,7 +539,6 @@ nnoremap <silent> <A-h> :TmuxNavigateLeft<cr>
 nnoremap <silent> <A-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <A-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <A-l> :TmuxNavigateRight<cr>
-" nnoremap <silent> <A-o> :TmuxNavigatePrevious<cr>
 
 " ==========================================================================={{{
 " vim:foldmethod=marker colorcolumn=80 textwidth=80

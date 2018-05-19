@@ -35,6 +35,11 @@
 " Plug 'junegunn/vim-slash'
 " Plug 'brooth/far.vim'
 " Plug 'joereynolds/gtags-scope', { 'on': 'GtagsCscope' }
+" Plug 'sunaku/vim-dasht'
+" Plug 'bfredl/nvim-miniyank'
+" Plug 'AndrewRadev/switch.vim'
+" Plug 'justinmk/vim-sneak'
+" Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 "
 " Colorschemes
 "
@@ -50,5 +55,14 @@
 " Plug 'pgdouyon/vim-yin-yang'
 " Plug 'ewilazarus/preto'
 " Plug 'bluz71/vim-moonfly-colors'
-" Plug 'sunaku/vim-dasht'
-" Plug 'bfredl/nvim-miniyank'
+"
+"
+" clojure
+" Plug 'guns/vim-sexp', { 'for': 'clojure' }
+" Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for': 'clojure' }
+" Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+" Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
+" Plug 'tpope/vim-salve', { 'for': 'clojure' }
+" Plug 'clojure-vim/async-clj-omni', { 'for': 'clojure' }
+" Plug 'clojure-vim/acid.nvim'
+
