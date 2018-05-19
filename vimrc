@@ -503,7 +503,11 @@ let g:highlightedyank_highlight_duration = 130
 " -- Ale -----------------------------------------------------------------------
 
 let g:ale_linters = { 'javascript': ['eslint'] }
-let g:ale_fixers = { 'javascript': ['eslint'] }
+let g:ale_fixers = {
+      \ 'javascript': ['eslint'],
+      \ 'c': ['clang-format']
+      \ }
+
 " let g:ale_linters = {'cpp': ['cppcheck']}
 " let g:ale_c_cppcheck_options = '--enable=style -I../include'
 
