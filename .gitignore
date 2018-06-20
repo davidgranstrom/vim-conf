@@ -4,3 +4,4 @@ spell/
 autoload/
 rplugin/
 .swap/
+init.vim
