@@ -96,8 +96,9 @@ if has('nvim')
   set inccommand=nosplit " preview changes (:s/) incrementally
   set termguicolors
 else
+  " put all swap files in one place
   " neovim already does this by default, ~/.local/share/nvim/swap
-  set directory^=$HOME/.vim/.swap//   " put all swap files in one place
+  set directory^=$HOME/.vim/.swap//
   set ttyfast " assume fast terminal connection
 endif
 
@@ -118,8 +119,8 @@ set nowrap                          " don't wrap words
 set linebreak                       " break at word boundries for wrapped text
 set noshowmode                      " get mode indication from lightline instead
 set noshowcmd                       " don't display partial commands (g,c etc.)
-set relativenumber
-set number
+" set relativenumber
+" set number
 set sidescroll=1
 set sidescrolloff=1
 set listchars+=extends:>,precedes:<
@@ -134,14 +135,13 @@ set showmatch                       " highlight search matches while typing
 " misc
 set wildmenu                        " enhanced command line completion
 set wildignorecase                  " be smart case-sensitive
-" set wildmode=list:full
 set diffopt+=vertical               " use vertical diffs by default
 set laststatus=2                    " always display a status line
 set visualbell                      " turn off error beep/flash
 set lazyredraw                      " don't redraw screen for macros
 
 " indenting/formating
-set autoindent                      " indent even if we have no filetype rules
+" set autoindent                      " indent even if we have no filetype rules
 set smarttab
 set tabstop=2
 set softtabstop=2
@@ -306,7 +306,6 @@ augroup vimrc
     autocmd FocusGained * if &autoread | silent checktime | endif
     " save last terminal job id
     autocmd TermOpen * let g:last_terminal_job_id = b:terminal_job_id
-
     " fix a bug where the first line in window is corrupted after resize
     autocmd VimResized * redraw!
   endif
