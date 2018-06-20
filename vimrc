@@ -77,6 +77,20 @@ call plug#end()
 let mapleader="\<space>"            " set mapleader
 set mouse=a                         " enable mouse
 
+" performance
+
+" avoid menu.vim (saves ~100ms)
+let g:did_install_default_menus = 1
+let g:did_install_syntax_menu = 1
+
+" disable netrw, but autoload it for `gx`.
+let g:loaded_netrwPlugin = 0
+nmap gx <Plug>NetrwBrowseX
+nnoremap <silent> <Plug>
+      \ NetrwBrowseX :call netrw#BrowseX(
+      \ expand((exists("g:netrw_gx")? g:netrw_gx : '<cfile>')),
+      \ netrw#CheckIfRemote())<CR>
+
 " enable true color for nvim
 if has('nvim')
   set inccommand=nosplit " preview changes (:s/) incrementally
