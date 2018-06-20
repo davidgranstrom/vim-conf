@@ -13,13 +13,14 @@ syntax enable              " syntax highlighting
 call plug#begin('~/.config/nvim/bundle')
 
 " editing
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+Plug 'cohama/lexima.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-Plug 'cohama/lexima.vim'
-Plug 'AndrewRadev/splitjoin.vim'
 Plug 'tweekmonster/wstrip.vim'
+
 if has('nvim')
   Plug 'Shougo/deoplete.nvim' | Plug 'Shougo/context_filetype.vim'
   Plug 'autozimu/LanguageClient-neovim', {
@@ -29,31 +30,32 @@ if has('nvim')
 endif
 
 " navigation
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'derekwyatt/vim-fswitch', { 'for': [ 'c', 'cpp', 'objc' ] }
 Plug 'justinmk/vim-dirvish'
 Plug 'kopischke/vim-fetch'
-Plug 'christoomey/vim-tmux-navigator'
 
 " util
-Plug 'tpope/vim-fugitive'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'w0rp/ale'
 Plug 'simnalamburt/vim-mundo'
+Plug 'tpope/vim-fugitive'
+Plug 'w0rp/ale'
 
 " language
-Plug 'sheerun/vim-polyglot'
-Plug 'neovimhaskell/haskell-vim', { 'for': [ 'haskell', 'haskell.tidal' ] }
 Plug 'eagletmt/neco-ghc', { 'for': [ 'haskell', 'haskell.tidal' ] }
+Plug 'neovimhaskell/haskell-vim', { 'for': [ 'haskell', 'haskell.tidal' ] }
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
+Plug 'sheerun/vim-polyglot'
 
 " javascript
-Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
 Plug 'mxw/vim-jsx', { 'for': 'javascript' }
+Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
 
 " langs not included in polyglot
+Plug 'munshkr/vim-tidal', { 'for': 'haskell.tidal' }
 Plug 'sophacles/vim-processing', { 'for': 'processing' }
 Plug '~/src/sc/supercollider/editors/scvim/'
-Plug 'munshkr/vim-tidal', { 'for': 'haskell.tidal' }
 
 " color schemes / appearance
 Plug 'itchyny/lightline.vim'
@@ -62,13 +64,13 @@ Plug 'yuttie/hydrangea-vim'
 Plug '~/code/vim/colorschemes/vim-colors-plain'
 
 " misc
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-apathy'
+Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-scriptease', { 'on': 'Runtime' }
-Plug '~/code/vim/vim-dkg'
+Plug 'tpope/vim-unimpaired'
 Plug '~/code/vim/nvim-markdown-preview'
 Plug '~/code/vim/scvim-reload'
+Plug '~/code/vim/vim-dkg'
 
 call plug#end()
 
