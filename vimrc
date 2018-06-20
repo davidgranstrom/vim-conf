@@ -357,6 +357,8 @@ augroup vimrc
 
   autocmd BufEnter,BufNewFile ~/Documents/cv/**/* source ~/code/vim/vim-dkg/scripts/async-make.vim
   autocmd BufEnter,BufNewFile ~/Documents/cv/**/* nnoremap <cr> :<c-u>Make<cr>
+
+  autocmd FileType cmake setlocal commentstring=#%s
 augroup END
 
 " }}}
