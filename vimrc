@@ -2,7 +2,7 @@
 " vimrc
 "
 " ==============================================================================
-" GLOBAL
+" PLUGINS
 " ==============================================================================
 " {{{
 
@@ -77,7 +77,11 @@ call plug#end()
 let mapleader="\<space>"            " set mapleader
 set mouse=a                         " enable mouse
 
-" performance
+" }}}
+" ==============================================================================
+" PERFORMANCE
+" ==============================================================================
+" {{{
 
 " avoid menu.vim (saves ~100ms)
 let g:did_install_default_menus = 1
@@ -90,6 +94,15 @@ nnoremap <silent> <Plug>
       \ NetrwBrowseX :call netrw#BrowseX(
       \ expand((exists("g:netrw_gx")? g:netrw_gx : '<cfile>')),
       \ netrw#CheckIfRemote())<CR>
+
+let g:python_host_prog = '/usr/local/bin/python2'
+let g:python3_host_prog = '/usr/local/bin/python3'
+
+" }}}
+" ==============================================================================
+" SETTINGS
+" ==============================================================================
+" {{{
 
 " enable true color for nvim
 if has('nvim')
@@ -164,9 +177,6 @@ endif
 " ==============================================================================
 " {{{
 
-" toggle location list
-nnoremap <silent><leader>l :lw<cr>
-
 " delete trailing whitespace in the whole buffer
 function! DeleteTrailingWS()
   normal! m`
@@ -191,7 +201,6 @@ com! -nargs=0 -range Justify '<,'>!par \-w80j
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 com! SudoWrite w !sudo tee > /dev/null %
-
 
 " }}}
 " ==============================================================================
@@ -437,15 +446,11 @@ nnoremap <silent> <leader>t :<C-u>GitFiles<cr>
 nnoremap <silent> <leader>b :<C-u>Buffers<cr>
 " search in current dir
 nnoremap <silent> <leader>g/ :<C-u>Ag<cr>
-" search in loaded buffers
-nnoremap <silent> <leader>a/ :<C-u>Lines<cr>
 " search in current buffer
 nnoremap <silent> <leader>/ :<C-u>BLines<cr>
 " search for current word in pwd
 nnoremap <silent> <leader>i :<C-u>call SearchWordWithAg()<cr>
 xnoremap <silent> <leader>i :<C-u>call SearchVisualSelectionWithAg()<cr>
-" filter (vim) commands
-nnoremap <silent> <leader>: :<C-u>Commands<cr>
 
 let g:fzf_action = {
       \ 'ctrl-s': 'split',
@@ -503,7 +508,9 @@ let g:highlightedyank_highlight_duration = 130
 let g:ale_linters = { 'javascript': ['eslint'] }
 let g:ale_fixers = {
       \ 'javascript': ['eslint'],
-      \ 'c': ['clang-format']
+      \ 'c': ['clang-format','clang'],
+      \ 'cpp': ['clang-format','clang'],
+      \ 'json': ['jq']
       \ }
 
 " ------------------------------------------------------------------------------
@@ -523,9 +530,6 @@ let g:lightline = {
 " ------------------------------------------------------------------------------
 " -- misc ----------------------------------------------------------------------
 
-let g:python_host_prog = '/usr/local/bin/python2'
-let g:python3_host_prog = '/usr/local/bin/python3'
-
 " tweekmonster/wstrip.vim
 let g:wstrip_auto = 1
 
@@ -538,6 +542,8 @@ augroup vimrc
   let g:LanguageClient_serverCommands = {
         \ 'javascript': ['javascript-typescript-stdio'],
         \ 'javascript.jsx': ['javascript-typescript-stdio'],
+        \ 'c': ['cquery'],
+        \ 'cpp': ['cquery'],
         \ }
 
   autocmd FileType javascript nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
@@ -557,5 +563,11 @@ nnoremap <silent> <A-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <A-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <A-l> :TmuxNavigateRight<cr>
 
-" ==========================================================================={{{
+
+" fswitch
+nmap <silent> <Leader>a :FSHere<cr>
+
+" ===========================================================================
+" }}}
+
 " vim:foldmethod=marker colorcolumn=80 textwidth=80
