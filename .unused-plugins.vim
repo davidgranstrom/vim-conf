@@ -40,6 +40,7 @@
 " Plug 'AndrewRadev/switch.vim'
 " Plug 'justinmk/vim-sneak'
 " Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
+" Plug 'tweekmonster/wstrip.vim'
 "
 " Colorschemes
 "

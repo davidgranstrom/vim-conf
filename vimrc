@@ -19,7 +19,6 @@ Plug 'cohama/lexima.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
-Plug 'tweekmonster/wstrip.vim'
 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim' | Plug 'Shougo/context_filetype.vim'
@@ -31,7 +30,7 @@ endif
 
 " navigation
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'derekwyatt/vim-fswitch', { 'for': [ 'c', 'cpp', 'objc' ] }
+Plug 'derekwyatt/vim-fswitch'
 Plug 'justinmk/vim-dirvish'
 Plug 'kopischke/vim-fetch'
 
@@ -64,6 +63,7 @@ Plug 'yuttie/hydrangea-vim'
 Plug '~/code/vim/colorschemes/vim-colors-plain'
 
 " misc
+Plug 'editorconfig/editorconfig-vim'
 Plug 'tpope/vim-apathy'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-scriptease', { 'on': 'Runtime' }
@@ -563,6 +563,7 @@ nnoremap <silent> <A-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <A-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <A-l> :TmuxNavigateRight<cr>
 
+let g:EditorConfig_core_mode = 'external_command'
 
 " fswitch
 nmap <silent> <Leader>a :FSHere<cr>
