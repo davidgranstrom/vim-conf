@@ -391,13 +391,6 @@ augroup END
 nnoremap <F4> :MundoToggle<CR>
 
 " ------------------------------------------------------------------------------
-" -- EasyAlign  ----------------------------------------------------------------
-
-vmap <leader><space> <Plug>(EasyAlign)
-" For normal mode, with Vim movement (e.g. <Leader>aip)
-nmap <leader><space> <Plug>(EasyAlign)
-
-" ------------------------------------------------------------------------------
 " -- UltiSnips  ----------------------------------------------------------------
 
 let g:UltiSnipsListSnippets        = "<c-\\>"
