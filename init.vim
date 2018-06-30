@@ -237,8 +237,8 @@ nnoremap <BS> ^
 nnoremap <leader>sn :SCNewScratchBuf<CR>
 
 " use <esc> to cancel completion
-inoremap <expr> <Esc> pumvisible() ? "\<C-y>" : "\<Esc>"
-inoremap <expr> <C-c> pumvisible() ? "\<C-e>" : "\<C-c>"
+" inoremap <expr> <Esc> pumvisible() ? "\<C-y>" : "\<Esc>"
+" inoremap <expr> <C-c> pumvisible() ? "\<C-e>" : "\<C-c>"
 
 " edit current buffer in a new tab
 nnoremap <silent><leader>z :tabedit!%<cr>
@@ -253,9 +253,7 @@ nnoremap <silent><up>    :3wincmd +<cr>
 nnoremap <silent><down>  :3wincmd -<cr>
 
 " never enter Ex mode
-" nnoremap Q q:
 nnoremap Q <Nop>
-" nnoremap q: <Nop>
 
 " easy renaming
 nnoremap <leader>r *``cgn
@@ -267,13 +265,13 @@ if has('nvim')
   " remap esc in terminal mode
   tnoremap <Esc> <C-\><C-n>
 
-  " navigating terminal splits
+  " navigate from terminal buffers
   tnoremap <A-h> <C-\><C-n><C-w>h
   tnoremap <A-j> <C-\><C-n><C-w>j
   tnoremap <A-k> <C-\><C-n><C-w>k
   tnoremap <A-l> <C-\><C-n><C-w>l
 
-  " navigate tab pages (like chrome)
+  " navigate tab pages with A-<number>
   for i in range(1, 9)
     execute 'nnoremap <silent><A-' . i . '> :tabnext ' . i . ' <cr>'
   endfor
@@ -512,12 +510,11 @@ let g:lightline = {
 " ------------------------------------------------------------------------------
 " -- misc ----------------------------------------------------------------------
 
-" tweekmonster/wstrip.vim
-let g:wstrip_auto = 1
-
 " supercollider
 let g:scFlash = 1
+let g:scvim_no_mappings = 1
 
+" dont' conceal text in markdown files
 let g:vim_markdown_conceal = 0
 
 augroup vimrc
@@ -543,22 +540,20 @@ augroup END
 " unimpaired original mapping
 nmap co yo
 
-let g:scvim_no_mappings = 1
+" seamless tmux navigation
 let g:tmux_navigator_no_mappings = 1
 
-" tmux navigator custom mappings
 nnoremap <silent> <A-h> :TmuxNavigateLeft<cr>
 nnoremap <silent> <A-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <A-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <A-l> :TmuxNavigateRight<cr>
 
+" use external EditorConfig program
 let g:EditorConfig_core_mode = 'external_command'
 
 " fswitch
 nmap <silent> <Leader>ao :FSHere<cr>
 nmap <silent> <Leader>as :FSSplitAbove<cr>
-
-" "ayiwlvey:%s/a//g
 
 " ===========================================================================
 " }}}
