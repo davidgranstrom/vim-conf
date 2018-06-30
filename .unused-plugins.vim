@@ -41,6 +41,17 @@
 " Plug 'justinmk/vim-sneak'
 " Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 " Plug 'tweekmonster/wstrip.vim'
+" Plug 'junegunn/vim-easy-align'
+" Plug 'kopischke/vim-fetch'
+" Plug 'eagletmt/neco-ghc', { 'for': [ 'haskell', 'haskell.tidal' ] }
+" Plug 'neovimhaskell/haskell-vim', { 'for': [ 'haskell', 'haskell.tidal' ] }
+" javascript
+" Plug 'mxw/vim-jsx', { 'for': 'javascript' }
+" Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
+" Plug 'sophacles/vim-processing', { 'for': 'processing' }
+" Plug 'tpope/vim-scriptease', { 'on': 'Runtime' }
+" Plug 'AndrewRadev/splitjoin.vim'
+
 "
 " Colorschemes
 "
@@ -56,6 +67,7 @@
 " Plug 'pgdouyon/vim-yin-yang'
 " Plug 'ewilazarus/preto'
 " Plug 'bluz71/vim-moonfly-colors'
+" Plug 'yuttie/hydrangea-vim'
 "
 "
 " clojure

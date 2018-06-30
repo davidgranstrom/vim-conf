@@ -13,10 +13,8 @@ syntax enable              " syntax highlighting
 call plug#begin('~/.config/nvim/bundle')
 
 " editing
-Plug 'AndrewRadev/splitjoin.vim'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'cohama/lexima.vim'
-Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 
@@ -32,7 +30,6 @@ endif
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'derekwyatt/vim-fswitch'
 Plug 'justinmk/vim-dirvish'
-Plug 'kopischke/vim-fetch'
 
 " util
 Plug '/usr/local/opt/fzf'
@@ -42,31 +39,22 @@ Plug 'tpope/vim-fugitive'
 Plug 'w0rp/ale'
 
 " language
-Plug 'eagletmt/neco-ghc', { 'for': [ 'haskell', 'haskell.tidal' ] }
-Plug 'neovimhaskell/haskell-vim', { 'for': [ 'haskell', 'haskell.tidal' ] }
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
 Plug 'sheerun/vim-polyglot'
 
-" javascript
-Plug 'mxw/vim-jsx', { 'for': 'javascript' }
-Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
-
 " langs not included in polyglot
 Plug 'munshkr/vim-tidal', { 'for': 'haskell.tidal' }
-Plug 'sophacles/vim-processing', { 'for': 'processing' }
 Plug '~/src/sc/supercollider/editors/scvim/'
 
 " color schemes / appearance
 Plug 'itchyny/lightline.vim'
 Plug 'machakann/vim-highlightedyank'
-Plug 'yuttie/hydrangea-vim'
 Plug '~/code/vim/colorschemes/vim-colors-plain'
 
 " misc
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tpope/vim-apathy'
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-scriptease', { 'on': 'Runtime' }
 Plug 'tpope/vim-unimpaired'
 Plug '~/code/vim/nvim-markdown-preview'
 Plug '~/code/vim/scvim-reload'
@@ -321,7 +309,8 @@ augroup vimrc
 
   " c
   " -
-  autocmd FileType c setlocal commentstring=\/\/\ %s
+  autocmd BufRead,BufNewFile *.h,*.c set filetype=c.doxygen
+  autocmd FileType c set commentstring=\/\/\ %s
 
   " haskell
   " -------
@@ -543,12 +532,19 @@ augroup vimrc
         \ 'javascript': ['javascript-typescript-stdio'],
         \ 'javascript.jsx': ['javascript-typescript-stdio'],
         \ 'c': ['cquery'],
+        \ 'c.doxygen': ['cquery'],
         \ 'cpp': ['cquery'],
         \ }
 
-  autocmd FileType javascript nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-  autocmd FileType javascript nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-  " autocmd FileType javascript nnoremap <silent> <leader>r :call LanguageClient_textDocument_rename()<CR>
+  nnoremap <silent> go :call LanguageClient_contextMenu()<cr>
+  nnoremap <silent> K :call LanguageClient#textDocument_hover()<cr>
+  nnoremap <silent> gd :call LanguageClient#textDocument_definition()<cr>
+
+  " autocmd FileType javascript nnoremap <silent> <leader>r 
+  "       \:call LanguageClient#textDocument_rename()<cr>
+
+  " autocmd FileType javascript nnoremap <silent> <leader>i
+  "       \ :call LanguageClient#textDocument_references()<cr>
 augroup END
 
 " unimpaired original mapping
@@ -566,7 +562,10 @@ nnoremap <silent> <A-l> :TmuxNavigateRight<cr>
 let g:EditorConfig_core_mode = 'external_command'
 
 " fswitch
-nmap <silent> <Leader>a :FSHere<cr>
+nmap <silent> <Leader>ao :FSHere<cr>
+nmap <silent> <Leader>as :FSSplitAbove<cr>
+
+" "ayiwlvey:%s/a//g
 
 " ===========================================================================
 " }}}
