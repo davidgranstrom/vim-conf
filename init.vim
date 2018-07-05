@@ -13,10 +13,10 @@ syntax enable              " syntax highlighting
 call plug#begin('~/.config/nvim/bundle')
 
 " editing
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'cohama/lexima.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim' | Plug 'Shougo/context_filetype.vim'
@@ -39,10 +39,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'w0rp/ale'
 
 " language
-Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
 Plug 'sheerun/vim-polyglot'
-
-" langs not included in polyglot
+" extra
 Plug 'munshkr/vim-tidal', { 'for': 'haskell.tidal' }
 Plug '~/src/sc/supercollider/editors/scvim/'
 

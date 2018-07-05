@@ -68,6 +68,7 @@
 " Plug 'ewilazarus/preto'
 " Plug 'bluz71/vim-moonfly-colors'
 " Plug 'yuttie/hydrangea-vim'
+" Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
 "
 "
 " clojure
