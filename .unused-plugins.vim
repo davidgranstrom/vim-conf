@@ -51,6 +51,7 @@
 " Plug 'sophacles/vim-processing', { 'for': 'processing' }
 " Plug 'tpope/vim-scriptease', { 'on': 'Runtime' }
 " Plug 'AndrewRadev/splitjoin.vim'
+" Plug 'alok/notational-fzf-vim'
 
 "
 " Colorschemes

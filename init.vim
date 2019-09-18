@@ -13,41 +13,35 @@ syntax enable              " syntax highlighting
 call plug#begin('~/.config/nvim/bundle')
 
 " editing
-Plug 'cohama/lexima.vim'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'SirVer/ultisnips'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim' | Plug 'Shougo/context_filetype.vim'
-  Plug 'autozimu/LanguageClient-neovim', {
-        \ 'branch': 'next',
-        \ 'do': 'bash install.sh',
-        \ }
-endif
+Plug 'tmsvg/pear-tree'
 
 " navigation
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'derekwyatt/vim-fswitch'
 Plug 'justinmk/vim-dirvish'
+Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/context_filetype.vim'
 
 " util
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'simnalamburt/vim-mundo'
 Plug 'tpope/vim-fugitive'
 Plug 'w0rp/ale'
+Plug 'sakhnik/nvim-gdb'
 
 " language
 Plug 'sheerun/vim-polyglot'
 " extra
-Plug 'munshkr/vim-tidal', { 'for': 'haskell.tidal' }
-Plug '~/src/sc/supercollider/editors/scvim/'
+Plug '~/code/vim/scnvim'
 
 " color schemes / appearance
 Plug 'itchyny/lightline.vim'
 Plug 'machakann/vim-highlightedyank'
 Plug '~/code/vim/colorschemes/vim-colors-plain'
+Plug 'noahfrederick/vim-noctu'
 
 " misc
 Plug 'editorconfig/editorconfig-vim'
@@ -55,10 +49,13 @@ Plug 'tpope/vim-apathy'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug '~/code/vim/nvim-markdown-preview'
-Plug '~/code/vim/scvim-reload'
 Plug '~/code/vim/vim-dkg'
 
 call plug#end()
+
+augroup vimrc
+  autocmd!
+augroup END
 
 let mapleader="\<space>"            " set mapleader
 set mouse=a                         " enable mouse
@@ -73,16 +70,25 @@ set mouse=a                         " enable mouse
 let g:did_install_default_menus = 1
 let g:did_install_syntax_menu = 1
 
-" disable netrw, but autoload it for `gx`.
-let g:loaded_netrwPlugin = 0
-nmap gx <Plug>NetrwBrowseX
-nnoremap <silent> <Plug>
-      \ NetrwBrowseX :call netrw#BrowseX(
-      \ expand((exists("g:netrw_gx")? g:netrw_gx : '<cfile>')),
-      \ netrw#CheckIfRemote())<CR>
+" disable netrw
+let g:loaded_netrw       = 1
+let g:loaded_netrwPlugin = 1
 
 let g:python_host_prog = '/usr/local/bin/python2'
 let g:python3_host_prog = '/usr/local/bin/python3'
+
+let g:clipboard = {
+\ 'name': 'pbcopy',
+\ 'copy': {
+\    '+': 'pbcopy',
+\    '*': 'pbcopy',
+\  },
+\ 'paste': {
+\    '+': 'pbpaste',
+\    '*': 'pbpaste',
+\ },
+\ 'cache_enabled': 0,
+\ }
 
 " }}}
 " ==============================================================================
@@ -112,7 +118,7 @@ set completeopt-=preview            " don't display scratch buffer for completio
 set formatoptions+=rj               " auto insert comments from insert mode, remove comment leader when joining lines
 
 " appearance
-set listchars=tab:>-,trail:–,nbsp:• " custom list chars
+" set listchars=tab:>-,trail:–,nbsp:• " custom list chars
 set scrolloff=4                     " keep a distance of from the cursor when scrolling
 set nowrap                          " don't wrap words
 set linebreak                       " break at word boundries for wrapped text
@@ -136,11 +142,13 @@ set wildmenu                        " enhanced command line completion
 set wildignorecase                  " be smart case-sensitive
 set diffopt+=vertical               " use vertical diffs by default
 set laststatus=2                    " always display a status line
-set visualbell                      " turn off error beep/flash
+set novisualbell                    " turn off error beep/flash
 set lazyredraw                      " don't redraw screen for macros
 
 " indenting/formating
-" set autoindent                      " indent even if we have no filetype rules
+set autoindent                      " indent even if we have no filetype rules
+" set smartindent                     " be smarter
+set copyindent                      " copy indent chars from previous line
 set smarttab
 set tabstop=2
 set softtabstop=2
@@ -151,6 +159,7 @@ set nojoinspaces                    " only insert one space after a join command
 
 set background=dark
 colorscheme plain
+" colorscheme snow
 
 " use par to format text
 if executable("par")
@@ -284,13 +293,10 @@ endif
 " ==============================================================================
 " {{{
 
-augroup vimrc
+augroup vimrc_filetype
   autocmd!
-augroup END
 
-augroup vimrc
   " vim
-  " ---
   " save and source current file
   autocmd FileType vim nnoremap <buffer> <leader>so :w \| so%<cr>
 
@@ -299,22 +305,16 @@ augroup vimrc
     autocmd FocusGained * if &autoread | silent checktime | endif
     " save last terminal job id
     autocmd TermOpen * let g:last_terminal_job_id = b:terminal_job_id
-    " fix a bug where the first line in window is corrupted after resize
-    autocmd VimResized * redraw!
   endif
 
-  " c
-  " -
-  autocmd BufRead,BufNewFile *.h,*.c set filetype=c.doxygen
-  autocmd FileType c set commentstring=\/\/\ %s
+  " c/cpp
+  autocmd BufEnter,BufReadPre,BufNewFile *.h,*.c setlocal filetype=c.doxygen
+  " autocmd FileType cpp set commentstring=\/\/\ %s
 
-  " haskell
-  " -------
-  let g:haskellmode_completion_ghc = 0
-  autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+  " c#
+  autocmd FileType cs set tabstop=4 softtabstop=4 shiftwidth=4
 
   " markdown
-  "---------
   autocmd FileType markdown setlocal commentstring=<!--%s-->
   " break undo sequence into smaller chunks for prose
   autocmd FileType markdown inoremap <buffer> . .<c-g>u
@@ -323,7 +323,6 @@ augroup vimrc
   autocmd FileType markdown inoremap <buffer> , ,<c-g>u
 
   " javascript
-  " ----------
   autocmd FileType javascript.jsx setlocal filetype=javascript
   autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
 
@@ -336,22 +335,6 @@ augroup vimrc
   " python
   " ------
   autocmd FileType python setlocal ts=4 sts=4 sw=4
-
-  " php
-  " ---
-  function! TogglePhpHtml()
-    if &ft == "php"
-      set ft=html
-    else
-      set ft=php
-    endif
-  endfunction
-
-  autocmd FileType php nnoremap <leader>s :call TogglePhpHtml()<cr>
-
-  autocmd BufEnter,BufNewFile ~/Documents/cv/**/* source ~/code/vim/vim-dkg/scripts/async-make.vim
-  autocmd BufEnter,BufNewFile ~/Documents/cv/**/* nnoremap <cr> :<c-u>Make<cr>
-
   autocmd FileType cmake setlocal commentstring=#%s
 augroup END
 
@@ -361,7 +344,8 @@ augroup END
 " ==============================================================================
 " {{{
 
-augroup vimrc
+augroup vimrc_dirvish
+  autocmd!
   " Map t to "open in new tab".
   autocmd FileType dirvish
         \  nnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
@@ -371,7 +355,7 @@ augroup vimrc
   autocmd FileType dirvish call fugitive#detect(@%)
 
   " Map CTRL-R to reload the Dirvish buffer.
-  autocmd FileType dirvish nnoremap <buffer> <C-R> :<C-U>Dirvish %<CR>
+  autocmd FileType dirvish nnoremap <buffer> <C-r> :<C-U>Dirvish %<CR>
 
   " Map gh to hide 'hidden' files.
   autocmd FileType dirvish nnoremap <buffer> gh
@@ -389,7 +373,7 @@ nnoremap <F4> :MundoToggle<CR>
 " ------------------------------------------------------------------------------
 " -- UltiSnips  ----------------------------------------------------------------
 
-let g:UltiSnipsListSnippets        = "<c-\\>"
+" let g:UltiSnipsListSnippets        = "<c-\\>"
 let g:UltiSnips_Author             = "David Granström"
 let g:UltiSnipsExpandTrigger       = "<C-j>"
 let g:UltiSnipsJumpForwardTrigger  = "<C-j>"
@@ -410,7 +394,8 @@ xmap s <plug>VSurround
 nnoremap <Leader>fs :Gstatus<CR><C-w>K
 nnoremap <F5> :Gblame<cr>
 
-augroup vimrc
+augroup vimrc_git
+  autocmd!
   " enable spell checking in commit messages
   autocmd FileType gitcommit setlocal spell | setlocal spelllang=en
 augroup END
@@ -430,10 +415,10 @@ nnoremap <silent> <leader>/ :<C-u>BLines<cr>
 nnoremap <silent> <leader>i :<C-u>call SearchWordWithAg()<cr>
 xnoremap <silent> <leader>i :<C-u>call SearchVisualSelectionWithAg()<cr>
 
-let g:fzf_action = {
-      \ 'ctrl-s': 'split',
-      \ 'ctrl-v': 'vsplit'
-      \ }
+" let g:fzf_action = {
+"       \ 'ctrl-s': 'split',
+"       \ 'ctrl-v': 'vsplit'
+"       \ }
 
 function! SearchWordWithAg()
   execute 'Ag' expand('<cword>')
@@ -457,16 +442,22 @@ endfunction
 if has('nvim')
   " Enable deoplete on InsertEnter
   let g:deoplete#enable_at_startup = 0
-  autocmd! InsertEnter * call deoplete#enable()
+  autocmd vimrc InsertEnter * call deoplete#enable()
 
-  let g:deoplete#enable_smart_case = 1
-  let g:deoplete#auto_complete_delay = 15
-  " fix issue with large tag files
-  let deoplete#tag#cache_limit_size = 5000000
+  call deoplete#custom#option({
+  \ 'auto_complete_delay': 0,
+  \ 'smart_case': v:true,
+  \ 'camel_case': v:true,
+  \ 'refresh_always': v:false,
+  \ })
+
+  " call deoplete#custom#option('sources', {
+  "       \ 'supercollider': ['buffer', 'tag'],
+  "       \})
 
   inoremap <silent> <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-  inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
-  inoremap <expr><BS>  deoplete#smart_close_popup()."\<C-h>"
+  inoremap <expr><C-h> deoplete#smart_close_popup() . "\<C-h>"
+  inoremap <expr><BS>  deoplete#smart_close_popup() . "\<C-h>"
 
   " <CR>: close popup and save indent.
   inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
@@ -483,27 +474,105 @@ let g:highlightedyank_highlight_duration = 130
 " ------------------------------------------------------------------------------
 " -- Ale -----------------------------------------------------------------------
 
-let g:ale_linters = { 'javascript': ['eslint'] }
+let g:ale_set_signs = 0
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_delay = 0
+let g:ale_completion_enabled = 0
+let g:ale_c_parse_compile_commands = 1
+
+hi link ALEErrorLine ErrorMsg
+hi link ALEWarningLine WarningMsg
+
+let g:ale_linters = {
+      \ 'javascript': ['eslint'],
+      \ 'c': ['clang'],
+      \ 'c.doxygen': ['clang'],
+      \ }
+
 let g:ale_fixers = {
       \ 'javascript': ['eslint'],
-      \ 'c': ['clang-format','clang'],
-      \ 'cpp': ['clang-format','clang'],
       \ 'json': ['jq']
       \ }
+
+let g:ale_c_clang_options = '-std=c99 -Iinclude -I../include -Wall -Wextra -pedantic'
+let g:ale_c_parse_compile_commands = 1
 
 " ------------------------------------------------------------------------------
 " -- lightline -----------------------------------------------------------------
 
-let g:lightline = {
-      \ 'colorscheme': 'monochrome',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-      \  },
-      \  'component_function': {
-      \   'gitbranch': 'fugitive#head'
-      \ },
-      \}
+let g:lightline = {}
+let g:lightline.colorscheme = 'monochrome'
+let g:lightline.component_function = {
+\ 'server_status': 'scnvim#statusline#server_status',
+\ 'gitbranch': 'fugitive#head',
+\ }
+
+let g:lightline.active = {
+      \ 'left':  [ [ 'mode', 'paste' ],
+      \          [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+      \ 'right': [ [ 'lineinfo' ],
+      \            [ 'percent' ],
+      \            [ 'fileformat', 'fileencoding', 'filetype' ] ]
+      \ }
+
+function! s:set_sclang_stl()
+  let g:lightline.active = {
+        \ 'left':  [ [ 'mode', 'paste' ],
+        \          [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+        \ 'right': [ [ 'lineinfo' ],
+        \            [ 'percent' ],
+        \            [ 'server_status'] ]
+        \ }
+endfunction
+
+augroup scnvim_stl
+  autocmd!
+  autocmd FileType supercollider call <SID>set_sclang_stl()
+augroup END
+
+" autocmd FileType scnvim setlocal wrap
+
+" ------------------------------------------------------------------------------
+" -- easy-align ----------------------------------------------------------------
+
+" visual mode
+vmap <leader>= <Plug>(EasyAlign)
+" motions
+nmap <leader>= <Plug>(EasyAlign)
+
+" ------------------------------------------------------------------------------
+" -- scnvim --------------------------------------------------------------------
+
+let g:scnvim_sclang_executable = '~/bin/sclang'
+let g:scnvim_scdoc = 1
+let g:scnvim_arghints_float = 1
+" let g:scnvim_postwin_size = 25
+" let g:scnvim_postwin_fixed_size = 25
+" let g:scnvim_postwin_orientation = 'h'
+
+nnoremap <leader>st :SCNvimStart<cr>
+nnoremap <leader>sk :SCNvimRecompile<cr>
+
+" snippet support
+let g:UltiSnipsSnippetDirectories = ['UltiSnips', 'scnvim-data']
+
+" ------------------------------------------------------------------------------
+" -- nvim-gdb ------------------------------------------------------------------
+
+function! NvimGdbNoTKeymaps()
+  tnoremap <silent> <buffer> <esc> <c-\><c-n>
+endfunction
+
+let g:nvimgdb_config_override = {
+      \ 'key_next': 'n',
+      \ 'key_step': 's',
+      \ 'key_finish': 'f',
+      \ 'key_continue': 'c',
+      \ 'key_until': 'u',
+      \ 'key_breakpoint': 'b',
+      \ 'set_tkeymaps': "NvimGdbNoTKeymaps",
+      \ }
 
 " ------------------------------------------------------------------------------
 " -- misc ----------------------------------------------------------------------
@@ -511,29 +580,10 @@ let g:lightline = {
 " supercollider
 let g:scFlash = 1
 let g:scvim_no_mappings = 1
+let g:scSplitDirection = "v"
 
 " dont' conceal text in markdown files
 let g:vim_markdown_conceal = 0
-
-augroup vimrc
-  let g:LanguageClient_serverCommands = {
-        \ 'javascript': ['javascript-typescript-stdio'],
-        \ 'javascript.jsx': ['javascript-typescript-stdio'],
-        \ 'c': ['cquery'],
-        \ 'c.doxygen': ['cquery'],
-        \ 'cpp': ['cquery'],
-        \ }
-
-  nnoremap <silent> go :call LanguageClient_contextMenu()<cr>
-  nnoremap <silent> K :call LanguageClient#textDocument_hover()<cr>
-  nnoremap <silent> gd :call LanguageClient#textDocument_definition()<cr>
-
-  " autocmd FileType javascript nnoremap <silent> <leader>r 
-  "       \:call LanguageClient#textDocument_rename()<cr>
-
-  " autocmd FileType javascript nnoremap <silent> <leader>i
-  "       \ :call LanguageClient#textDocument_references()<cr>
-augroup END
 
 " unimpaired original mapping
 nmap co yo
@@ -546,12 +596,28 @@ nnoremap <silent> <A-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <A-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <A-l> :TmuxNavigateRight<cr>
 
-" use external EditorConfig program
-let g:EditorConfig_core_mode = 'external_command'
+" file switching based on tags
+function! s:switch_tag() abort
+  let name = expand("%:t:r")
+  let ext = expand("%:e")
+  if ext == "h"
+    let dest = name . ".c"
+  else
+    let dest = name . ".h"
+  endif
+  try
+    execute "tag " . dest
+  catch
+    echoerr printf("tag %s not found", name)
+  endtry
+endfunction
 
-" fswitch
-nmap <silent> <Leader>ao :FSHere<cr>
-nmap <silent> <Leader>as :FSSplitAbove<cr>
+nnoremap <silent> <Leader>a :call <SID>switch_tag()<cr>
+
+let g:nv_search_paths = ['~/wiki']
+nnoremap <silent> <leader><Enter> :NV<cr>
+
+let g:pear_tree_repeatable_expand = 0
 
 " ===========================================================================
 " }}}
