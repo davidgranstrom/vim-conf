@@ -402,11 +402,6 @@ nnoremap <silent> <leader>/ :<C-u>BLines<cr>
 nnoremap <silent> <leader>i :<C-u>call SearchWordWithAg()<cr>
 xnoremap <silent> <leader>i :<C-u>call SearchVisualSelectionWithAg()<cr>
 
-" let g:fzf_action = {
-"       \ 'ctrl-s': 'split',
-"       \ 'ctrl-v': 'vsplit'
-"       \ }
-
 function! SearchWordWithAg()
   execute 'Rg' expand('<cword>')
 endfunction
@@ -487,40 +482,6 @@ let g:ale_c_clang_options = '-std=c99 -Iinclude -I../include -Wall -Wextra -peda
 let g:ale_c_parse_compile_commands = 1
 
 " ------------------------------------------------------------------------------
-" -- lightline -----------------------------------------------------------------
-
-let g:lightline = {}
-let g:lightline.component_function = {
-      \ 'server_status': 'scnvim#statusline#server_status',
-      \ 'gitbranch': 'fugitive#head',
-      \ }
-
-let g:lightline.active = {
-      \ 'left':  [ [ 'mode', 'paste' ],
-      \          [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
-      \ 'right': [ [ 'lineinfo' ],
-      \            [ 'percent' ],
-      \            [ 'fileformat', 'fileencoding', 'filetype' ] ]
-      \ }
-
-function! s:set_sclang_stl()
-  let g:lightline.active = {
-        \ 'left':  [ [ 'mode', 'paste' ],
-        \          [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
-        \ 'right': [ [ 'lineinfo' ],
-        \            [ 'percent' ],
-        \            [ 'server_status'] ]
-        \ }
-endfunction
-
-augroup scnvim_stl
-  autocmd!
-  autocmd FileType supercollider call <SID>set_sclang_stl()
-augroup END
-
-" autocmd FileType scnvim setlocal wrap
-
-" ------------------------------------------------------------------------------
 " -- easy-align ----------------------------------------------------------------
 
 " visual mode
@@ -543,6 +504,11 @@ nnoremap <leader>sk :SCNvimRecompile<cr>
 
 " snippet support
 let g:UltiSnipsSnippetDirectories = ['UltiSnips', 'scnvim-data']
+
+" augroup scnvim_stl
+"   autocmd!
+"   autocmd FileType supercollider call <SID>set_sclang_stl()
+" augroup END
 
 " ------------------------------------------------------------------------------
 " -- nvim-gdb ------------------------------------------------------------------
