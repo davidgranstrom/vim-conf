@@ -13,7 +13,6 @@ syntax enable              " syntax highlighting
 call plug#begin('~/.config/nvim/bundle')
 
 " editing
-Plug 'AndrewRadev/splitjoin.vim'
 Plug 'SirVer/ultisnips'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
@@ -38,10 +37,9 @@ Plug 'sheerun/vim-polyglot'
 Plug '~/code/vim/scnvim'
 
 " color schemes / appearance
-Plug 'itchyny/lightline.vim'
 Plug 'machakann/vim-highlightedyank'
-Plug '~/code/vim/colorschemes/vim-colors-plain'
-Plug 'noahfrederick/vim-noctu'
+Plug 'andreypopp/vim-colors-plain'
+Plug 'arzg/vim-substrata'
 
 " misc
 Plug 'editorconfig/editorconfig-vim'
@@ -71,24 +69,24 @@ let g:did_install_default_menus = 1
 let g:did_install_syntax_menu = 1
 
 " disable netrw
-let g:loaded_netrw       = 1
+let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
 
 let g:python_host_prog = '/usr/local/bin/python2'
 let g:python3_host_prog = '/usr/local/bin/python3'
 
 let g:clipboard = {
-\ 'name': 'pbcopy',
-\ 'copy': {
-\    '+': 'pbcopy',
-\    '*': 'pbcopy',
-\  },
-\ 'paste': {
-\    '+': 'pbpaste',
-\    '*': 'pbpaste',
-\ },
-\ 'cache_enabled': 0,
-\ }
+      \ 'name': 'pbcopy',
+      \ 'copy': {
+      \    '+': 'pbcopy',
+      \    '*': 'pbcopy',
+      \  },
+      \ 'paste': {
+      \    '+': 'pbpaste',
+      \    '*': 'pbpaste',
+      \ },
+      \ 'cache_enabled': 0,
+      \ }
 
 " }}}
 " ==============================================================================
@@ -118,14 +116,10 @@ set completeopt-=preview            " don't display scratch buffer for completio
 set formatoptions+=rj               " auto insert comments from insert mode, remove comment leader when joining lines
 
 " appearance
-" set listchars=tab:>-,trail:–,nbsp:• " custom list chars
 set scrolloff=4                     " keep a distance of from the cursor when scrolling
 set nowrap                          " don't wrap words
 set linebreak                       " break at word boundries for wrapped text
-set noshowmode                      " get mode indication from lightline instead
 set noshowcmd                       " don't display partial commands (g,c etc.)
-" set relativenumber
-" set number
 set sidescroll=1
 set sidescrolloff=1
 set listchars+=extends:>,precedes:<
@@ -159,7 +153,6 @@ set nojoinspaces                    " only insert one space after a join command
 
 set background=dark
 colorscheme plain
-" colorscheme snow
 
 " use par to format text
 if executable("par")
@@ -243,15 +236,11 @@ nnoremap <BS> ^
 " create an empty buffer for SuperCollider code
 nnoremap <leader>sn :SCNewScratchBuf<CR>
 
-" use <esc> to cancel completion
-" inoremap <expr> <Esc> pumvisible() ? "\<C-y>" : "\<Esc>"
-" inoremap <expr> <C-c> pumvisible() ? "\<C-e>" : "\<C-c>"
-
 " edit current buffer in a new tab
 nnoremap <silent><leader>z :tabedit!%<cr>
 " move between tabs
-nnoremap <silent> <C-n> :tabn<cr>
-nnoremap <silent> <C-p> :tabp<cr>
+" nnoremap <silent> <C-n> :tabn<cr>
+" nnoremap <silent> <C-p> :tabp<cr>
 
 " resize windows with arrow-keys
 nnoremap <silent><left>  :3wincmd <<cr>
@@ -309,7 +298,6 @@ augroup vimrc_filetype
 
   " c/cpp
   autocmd BufEnter,BufReadPre,BufNewFile *.h,*.c setlocal filetype=c.doxygen
-  " autocmd FileType cpp set commentstring=\/\/\ %s
 
   " c#
   autocmd FileType cs set tabstop=4 softtabstop=4 shiftwidth=4
@@ -373,7 +361,6 @@ nnoremap <F4> :MundoToggle<CR>
 " ------------------------------------------------------------------------------
 " -- UltiSnips  ----------------------------------------------------------------
 
-" let g:UltiSnipsListSnippets        = "<c-\\>"
 let g:UltiSnips_Author             = "David Granström"
 let g:UltiSnipsExpandTrigger       = "<C-j>"
 let g:UltiSnipsJumpForwardTrigger  = "<C-j>"
@@ -408,7 +395,7 @@ nnoremap <silent> <leader>t :<C-u>GitFiles<cr>
 " select buffers
 nnoremap <silent> <leader>b :<C-u>Buffers<cr>
 " search in current dir
-nnoremap <silent> <leader>g/ :<C-u>Ag<cr>
+nnoremap <silent> <leader>g/ :<C-u>Rg<cr>
 " search in current buffer
 nnoremap <silent> <leader>/ :<C-u>BLines<cr>
 " search for current word in pwd
@@ -421,7 +408,7 @@ xnoremap <silent> <leader>i :<C-u>call SearchVisualSelectionWithAg()<cr>
 "       \ }
 
 function! SearchWordWithAg()
-  execute 'Ag' expand('<cword>')
+  execute 'Rg' expand('<cword>')
 endfunction
 
 function! SearchVisualSelectionWithAg() range
@@ -433,7 +420,7 @@ function! SearchVisualSelectionWithAg() range
   let selection = getreg('"')
   call setreg('"', old_reg, old_regtype)
   let &clipboard = old_clipboard
-  execute 'Ag' selection
+  execute 'Rg' selection
 endfunction
 
 " ------------------------------------------------------------------------------
@@ -488,6 +475,7 @@ let g:ale_linters = {
       \ 'javascript': ['eslint'],
       \ 'c': ['clang'],
       \ 'c.doxygen': ['clang'],
+      \ 'cpp': ['clang']
       \ }
 
 let g:ale_fixers = {
@@ -502,11 +490,10 @@ let g:ale_c_parse_compile_commands = 1
 " -- lightline -----------------------------------------------------------------
 
 let g:lightline = {}
-let g:lightline.colorscheme = 'monochrome'
 let g:lightline.component_function = {
-\ 'server_status': 'scnvim#statusline#server_status',
-\ 'gitbranch': 'fugitive#head',
-\ }
+      \ 'server_status': 'scnvim#statusline#server_status',
+      \ 'gitbranch': 'fugitive#head',
+      \ }
 
 let g:lightline.active = {
       \ 'left':  [ [ 'mode', 'paste' ],
@@ -544,9 +531,9 @@ nmap <leader>= <Plug>(EasyAlign)
 " ------------------------------------------------------------------------------
 " -- scnvim --------------------------------------------------------------------
 
-let g:scnvim_sclang_executable = '~/bin/sclang'
+" let g:scnvim_sclang_executable = '~/bin/sclang'
 let g:scnvim_scdoc = 1
-let g:scnvim_arghints_float = 1
+let g:scnvim_arghints_float = 0
 " let g:scnvim_postwin_size = 25
 " let g:scnvim_postwin_fixed_size = 25
 " let g:scnvim_postwin_orientation = 'h'
@@ -577,11 +564,6 @@ let g:nvimgdb_config_override = {
 " ------------------------------------------------------------------------------
 " -- misc ----------------------------------------------------------------------
 
-" supercollider
-let g:scFlash = 1
-let g:scvim_no_mappings = 1
-let g:scSplitDirection = "v"
-
 " dont' conceal text in markdown files
 let g:vim_markdown_conceal = 0
 
@@ -590,7 +572,6 @@ nmap co yo
 
 " seamless tmux navigation
 let g:tmux_navigator_no_mappings = 1
-
 nnoremap <silent> <A-h> :TmuxNavigateLeft<cr>
 nnoremap <silent> <A-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <A-k> :TmuxNavigateUp<cr>
@@ -613,9 +594,6 @@ function! s:switch_tag() abort
 endfunction
 
 nnoremap <silent> <Leader>a :call <SID>switch_tag()<cr>
-
-let g:nv_search_paths = ['~/wiki']
-nnoremap <silent> <leader><Enter> :NV<cr>
 
 let g:pear_tree_repeatable_expand = 0
 
