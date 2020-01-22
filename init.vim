@@ -22,14 +22,14 @@ Plug 'tmsvg/pear-tree'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'justinmk/vim-dirvish'
 Plug 'Shougo/deoplete.nvim'
-Plug 'Shougo/context_filetype.vim'
 
 " util
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 Plug 'sakhnik/nvim-gdb'
+Plug 'neovim/nvim-lsp'
 
 " language
 Plug 'sheerun/vim-polyglot'
@@ -39,7 +39,7 @@ Plug '~/code/vim/scnvim'
 " color schemes / appearance
 Plug 'machakann/vim-highlightedyank'
 Plug 'andreypopp/vim-colors-plain'
-Plug 'arzg/vim-substrata'
+Plug 'noahfrederick/vim-noctu'
 
 " misc
 Plug 'editorconfig/editorconfig-vim'
@@ -74,19 +74,6 @@ let g:loaded_netrwPlugin = 1
 
 let g:python_host_prog = '/usr/local/bin/python2'
 let g:python3_host_prog = '/usr/local/bin/python3'
-
-let g:clipboard = {
-      \ 'name': 'pbcopy',
-      \ 'copy': {
-      \    '+': 'pbcopy',
-      \    '*': 'pbcopy',
-      \  },
-      \ 'paste': {
-      \    '+': 'pbpaste',
-      \    '*': 'pbpaste',
-      \ },
-      \ 'cache_enabled': 0,
-      \ }
 
 " }}}
 " ==============================================================================
@@ -494,7 +481,8 @@ nmap <leader>= <Plug>(EasyAlign)
 
 " let g:scnvim_sclang_executable = '~/bin/sclang'
 let g:scnvim_scdoc = 1
-let g:scnvim_arghints_float = 0
+let g:scnvim_arghints_float = 1
+let g:scnvim_echo_args = 1
 " let g:scnvim_postwin_size = 25
 " let g:scnvim_postwin_fixed_size = 25
 " let g:scnvim_postwin_orientation = 'h'
@@ -505,10 +493,20 @@ nnoremap <leader>sk :SCNvimRecompile<cr>
 " snippet support
 let g:UltiSnipsSnippetDirectories = ['UltiSnips', 'scnvim-data']
 
-" augroup scnvim_stl
-"   autocmd!
-"   autocmd FileType supercollider call <SID>set_sclang_stl()
-" augroup END
+" create a custom status line for supercollider buffers
+function! s:set_sclang_stl()
+  setlocal stl=
+  setlocal stl+=%f
+  setlocal stl+=%=
+  setlocal stl+=%(%l,%c%)
+  setlocal stl+=\ \|
+  setlocal stl+=%24.24{scnvim#statusline#server_status()}
+endfunction
+
+augroup scnvim_stl
+  autocmd!
+  autocmd FileType supercollider call <SID>set_sclang_stl()
+augroup END
 
 " ------------------------------------------------------------------------------
 " -- nvim-gdb ------------------------------------------------------------------
@@ -545,23 +543,108 @@ nnoremap <silent> <A-l> :TmuxNavigateRight<cr>
 
 " file switching based on tags
 function! s:switch_tag() abort
-  let name = expand("%:t:r")
-  let ext = expand("%:e")
-  if ext == "h"
-    let dest = name . ".c"
+  let name = expand('%:t:r')
+  let ext = expand('%:e')
+  if ext ==# 'h'
+    let dest = name . '.c'
   else
-    let dest = name . ".h"
+    let dest = name . '.h'
   endif
   try
-    execute "tag " . dest
+    execute 'tag ' . dest
   catch
-    echoerr printf("tag %s not found", name)
+    echoerr printf('tag %s not found', name)
   endtry
 endfunction
 
 nnoremap <silent> <Leader>a :call <SID>switch_tag()<cr>
 
 let g:pear_tree_repeatable_expand = 0
+
+let $FZF_DEFAULT_OPTS='--layout=reverse --color=bw'
+let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
+
+"##############################################################################
+" Terminal Handling
+"##############################################################################
+
+function! ToggleScratchTerm()
+    call ToggleTerm('zsh')
+    startinsert
+endfunction
+
+function! ToggleTerm(cmd)
+    if empty(bufname(a:cmd))
+        call CreateCenteredFloatingWindow()
+        call termopen(a:cmd, { 'on_exit': function('OnTermExit') })
+    else
+        call DeleteUnlistedBuffers()
+    endif
+endfunction
+
+function! OnTermExit(job_id, code, event) dict
+    if a:code == 0
+        call DeleteUnlistedBuffers()
+    endif
+endfunction
+
+function! DeleteUnlistedBuffers()
+    for n in nvim_list_bufs()
+        if ! buflisted(n)
+            let name = bufname(n)
+            if name ==# '[Scratch]' ||
+              \ matchend(name, ':fzf') ||
+              \ matchend(name, ':zsh')
+                call CleanupBuffer(n)
+            endif
+        endif
+    endfor
+endfunction
+
+function! CleanupBuffer(buf)
+    if bufexists(a:buf)
+        silent execute 'bwipeout! '.a:buf
+    endif
+endfunction
+
+" Creates a floating window with a most recent buffer to be used
+function! CreateCenteredFloatingWindow()
+    let width = float2nr(&columns * 0.6)
+    let height = float2nr(&lines * 0.6)
+    let top = ((&lines - height) / 2) - 1
+    let left = (&columns - width) / 2
+    let opts = {'relative': 'editor', 'row': top, 'col': left, 'width': width, 'height': height, 'style': 'minimal'}
+
+    let top = "╭" . repeat("─", width - 2) . "╮"
+    let mid = "│" . repeat(" ", width - 2) . "│"
+    let bot = "╰" . repeat("─", width - 2) . "╯"
+    let lines = [top] + repeat([mid], height - 2) + [bot]
+    let s:buf = nvim_create_buf(v:false, v:true)
+    call nvim_buf_set_lines(s:buf, 0, -1, v:true, lines)
+    call nvim_open_win(s:buf, v:true, opts)
+    set winhl=Normal:Floating
+    let opts.row += 1
+    let opts.height -= 2
+    let opts.col += 2
+    let opts.width -= 4
+    call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
+    autocmd BufWipeout <buffer> call CleanupBuffer(s:buf)
+    tnoremap <buffer> <silent> <Esc> <C-\><C-n><CR>:call DeleteUnlistedBuffers()<CR>
+endfunction
+
+"" clangd LSP
+lua << EOF
+local nvim_lsp = require'nvim_lsp'
+nvim_lsp.clangd.setup{
+  cmd = {"/usr/local/Cellar/llvm/9.0.0_1/bin/clangd", "--background-index"};
+}
+EOF
+
+function! EchoHighlightGroup()
+  for id in synstack(line("."), col("."))
+    echo synIDattr(id, "name")
+  endfor
+endfunction
 
 " ===========================================================================
 " }}}
