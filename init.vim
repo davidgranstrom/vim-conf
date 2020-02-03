@@ -13,23 +13,22 @@ syntax enable              " syntax highlighting
 call plug#begin('~/.config/nvim/bundle')
 
 " editing
+Plug 'Shougo/deoplete.nvim'
 Plug 'SirVer/ultisnips'
+Plug 'tmsvg/pear-tree'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
-Plug 'tmsvg/pear-tree'
 
 " navigation
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'justinmk/vim-dirvish'
-Plug 'Shougo/deoplete.nvim'
 
 " util
+" Plug 'w0rp/ale'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'tpope/vim-fugitive'
-" Plug 'w0rp/ale'
-Plug 'sakhnik/nvim-gdb'
 Plug 'neovim/nvim-lsp'
+Plug 'tpope/vim-fugitive'
 
 " language
 Plug 'sheerun/vim-polyglot'
@@ -39,7 +38,6 @@ Plug '~/code/vim/scnvim'
 " color schemes / appearance
 Plug 'machakann/vim-highlightedyank'
 Plug 'andreypopp/vim-colors-plain'
-Plug 'noahfrederick/vim-noctu'
 
 " misc
 Plug 'editorconfig/editorconfig-vim'
@@ -573,6 +571,8 @@ function! ToggleScratchTerm()
     startinsert
 endfunction
 
+nnoremap <leader>o :call ToggleScratchTerm()<cr>
+
 function! ToggleTerm(cmd)
     if empty(bufname(a:cmd))
         call CreateCenteredFloatingWindow()
@@ -637,6 +637,7 @@ lua << EOF
 local nvim_lsp = require'nvim_lsp'
 nvim_lsp.clangd.setup{
   cmd = {"/usr/local/Cellar/llvm/9.0.0_1/bin/clangd", "--background-index"};
+  filetypes = {"c", "cpp"};
 }
 EOF
 
