@@ -317,27 +317,6 @@ augroup END
 " ==============================================================================
 " {{{
 
-augroup vimrc_dirvish
-  autocmd!
-  " Map t to "open in new tab".
-  autocmd FileType dirvish
-        \  nnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
-        \ |xnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
-
-  " Enable :Gstatus and friends.
-  autocmd FileType dirvish call fugitive#detect(@%)
-
-  " Map CTRL-R to reload the Dirvish buffer.
-  autocmd FileType dirvish nnoremap <buffer> <C-r> :<C-U>Dirvish %<CR>
-
-  " Map gh to hide 'hidden' files.
-  autocmd FileType dirvish nnoremap <buffer> gh
-        \ :g@\v/\.[^\/]+/?$@d<cr>
-
-  autocmd FileType dirvish nnoremap <buffer> s :<C-U>sort r /[^\/]$/<CR>
-  autocmd FileType dirvish nnoremap <buffer> S :<C-U>sort r /\/$/<CR>
-augroup END
-
 " ------------------------------------------------------------------------------
 " -- Mundo  --------------------------------------------------------------------
 
@@ -363,7 +342,7 @@ xmap s <plug>VSurround
 " ------------------------------------------------------------------------------
 " -- Fugitive  -----------------------------------------------------------------
 
-nnoremap <Leader>fs :Gstatus<CR><C-w>K
+nnoremap <leader>fs :Gstatus<cr>
 nnoremap <F5> :Gblame<cr>
 
 augroup vimrc_git
