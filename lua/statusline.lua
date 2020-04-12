@@ -1,5 +1,4 @@
 local M = {}
-local api = vim.api
 
 local function get_gitbranch()
   local status, res = pcall(vim.call, 'FugitiveHead')
@@ -12,22 +11,27 @@ local function active_left()
   -- relative path
   stl = stl .. '%<%f '
   -- git branch
-  if not (gitbranch == '') then
-    stl = stl .. '| ' .. gitbranch  
+  if gitbranch ~= '' then
+    stl = stl .. '| ' .. gitbranch
   end
   -- help buffer flag, modified flag, read-only flag
-  stl = stl .. '%h%m%r%'
+  stl = stl .. ' %h%m%r%'
   return stl
 end
 
 local function active_right()
+  local ft = vim.api.nvim_get_option('filetype')
   local stl = ''
   -- filetype
   stl = stl .. '%y '
   -- line num, virtual col, value of char (hex)
-  stl = stl .. '%-8.(%l,%v,%B%) '
+  stl = stl .. '%-8.(%l:%v %B%) '
   -- percentage through file
   stl = stl .. '%P'
+  -- display scsynth status
+  if ft == 'supercollider' then
+    stl = stl ..' | %{scnvim#statusline#server_status()}'
+  end
   return stl
 end
 

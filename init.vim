@@ -475,19 +475,8 @@ nnoremap <leader>sk :SCNvimRecompile<cr>
 " snippet support
 let g:UltiSnipsSnippetDirectories = ['UltiSnips', 'scnvim-data']
 
-" create a custom status line for supercollider buffers
-function! s:set_sclang_stl()
-  setlocal stl=
-  setlocal stl+=%f
-  setlocal stl+=%=
-  setlocal stl+=%(%l,%c%)
-  setlocal stl+=\ \|
-  setlocal stl+=%24.24{scnvim#statusline#server_status()}
-endfunction
-
 augroup scnvim_vimrc
   autocmd!
-  autocmd FileType supercollider call <SID>set_sclang_stl()
   autocmd FileType supercollider setlocal tabstop=4 softtabstop=4 shiftwidth=4
 augroup END
 
