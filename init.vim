@@ -14,6 +14,7 @@ call plug#begin('~/.config/nvim/bundle')
 
 " editing
 Plug 'Shougo/deoplete.nvim'
+Plug 'deoplete-plugins/deoplete-tag'
 Plug 'SirVer/ultisnips'
 Plug 'tmsvg/pear-tree'
 Plug 'tpope/vim-commentary'
@@ -24,20 +25,21 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'justinmk/vim-dirvish'
 
 " util
-" Plug 'w0rp/ale'
+Plug 'w0rp/ale', { 'on': 'ALEToggleBuffer' }
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'neovim/nvim-lsp'
 Plug 'tpope/vim-fugitive'
+Plug 'norcalli/nvim-colorizer.lua'
 
 " language
 Plug 'sheerun/vim-polyglot'
-" extra
 Plug '~/code/vim/scnvim'
 
 " color schemes / appearance
 Plug 'machakann/vim-highlightedyank'
 Plug 'andreypopp/vim-colors-plain'
+Plug 'noahfrederick/vim-noctu'
 
 " misc
 Plug 'editorconfig/editorconfig-vim'
@@ -355,7 +357,7 @@ augroup END
 " -- fzf -----------------------------------------------------------------------
 
 " search for file
-nnoremap <silent> <leader>t :<C-u>GitFiles<cr>
+nnoremap <silent> <leader>t :<C-u>GFiles<cr>
 " select buffers
 nnoremap <silent> <leader>b :<C-u>Buffers<cr>
 " search in current dir
@@ -363,14 +365,14 @@ nnoremap <silent> <leader>g/ :<C-u>Rg<cr>
 " search in current buffer
 nnoremap <silent> <leader>/ :<C-u>BLines<cr>
 " search for current word in pwd
-nnoremap <silent> <leader>i :<C-u>call SearchWordWithAg()<cr>
-xnoremap <silent> <leader>i :<C-u>call SearchVisualSelectionWithAg()<cr>
+nnoremap <silent> <leader>i :<C-u>call <sid>search_word()<cr>
+xnoremap <silent> <leader>i :<C-u>call <sid>search_selection()<cr>
 
-function! SearchWordWithAg()
+function! s:search_word()
   execute 'Rg' expand('<cword>')
 endfunction
 
-function! SearchVisualSelectionWithAg() range
+function! s:search_selection() range
   let old_reg = getreg('"')
   let old_regtype = getregtype('"')
   let old_clipboard = &clipboard
@@ -426,6 +428,7 @@ let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_delay = 0
 let g:ale_completion_enabled = 0
 let g:ale_c_parse_compile_commands = 1
+let g:ale_c_clang_options = '-std=c99 -Iinclude -I../include -Wall -Wextra -pedantic'
 
 hi link ALEErrorLine ErrorMsg
 hi link ALEWarningLine WarningMsg
@@ -434,7 +437,9 @@ let g:ale_linters = {
       \ 'javascript': ['eslint'],
       \ 'c': ['clang'],
       \ 'c.doxygen': ['clang'],
-      \ 'cpp': ['clang']
+      \ 'cpp': ['clang'],
+      \ 'json': ['jq'],
+      \ 'vim': ['vint --enable-neovim']
       \ }
 
 let g:ale_fixers = {
@@ -442,8 +447,7 @@ let g:ale_fixers = {
       \ 'json': ['jq']
       \ }
 
-let g:ale_c_clang_options = '-std=c99 -Iinclude -I../include -Wall -Wextra -pedantic'
-let g:ale_c_parse_compile_commands = 1
+nmap <leader>l <Plug>(ale_toggle_buffer)
 
 " ------------------------------------------------------------------------------
 " -- easy-align ----------------------------------------------------------------
@@ -456,13 +460,14 @@ nmap <leader>= <Plug>(EasyAlign)
 " ------------------------------------------------------------------------------
 " -- scnvim --------------------------------------------------------------------
 
-" let g:scnvim_sclang_executable = '~/bin/sclang'
 let g:scnvim_scdoc = 1
 let g:scnvim_arghints_float = 1
 let g:scnvim_echo_args = 1
-" let g:scnvim_postwin_size = 25
-" let g:scnvim_postwin_fixed_size = 25
-" let g:scnvim_postwin_orientation = 'h'
+" let g:scnvim_postwin_layout = {
+"   \ 'style': 'float', 
+"   \ 'style': 'inline', " default
+"   \ 'bufnum': function('create#buf'),  " optional
+" }
 
 nnoremap <leader>st :SCNvimStart<cr>
 nnoremap <leader>sk :SCNvimRecompile<cr>
@@ -480,9 +485,10 @@ function! s:set_sclang_stl()
   setlocal stl+=%24.24{scnvim#statusline#server_status()}
 endfunction
 
-augroup scnvim_stl
+augroup scnvim_vimrc
   autocmd!
   autocmd FileType supercollider call <SID>set_sclang_stl()
+  autocmd FileType supercollider setlocal tabstop=4 softtabstop=4 shiftwidth=4
 augroup END
 
 " ------------------------------------------------------------------------------
@@ -594,7 +600,7 @@ function! CreateCenteredFloatingWindow()
     tnoremap <buffer> <silent> <Esc> <C-\><C-n><CR>:call DeleteUnlistedBuffers()<CR>
 endfunction
 
-"" clangd LSP
+" " clangd LSP
 lua << EOF
 local nvim_lsp = require'nvim_lsp'
 nvim_lsp.clangd.setup{
