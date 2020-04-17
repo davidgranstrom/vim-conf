@@ -4,12 +4,6 @@
 
 scriptencoding utf-8
 
-augroup statusline
-  autocmd!
-  autocmd WinEnter,BufEnter * setlocal statusline=%!ActiveStatus()
-  autocmd WinLeave,BufLeave * setlocal statusline=%!InactiveStatus()
-augroup END
-
 function! ActiveStatus() abort
   return luaeval('require("statusline").active()')
 endfunction
@@ -17,3 +11,15 @@ endfunction
 function! InactiveStatus() abort
   return luaeval('require("statusline").inactive()')
 endfunction
+
+function! Tabline() abort
+  return luaeval('require("statusline").my_tabline()')
+endfunction
+
+augroup statusline
+  autocmd!
+  autocmd WinEnter,BufEnter * setlocal statusline=%!ActiveStatus()
+  autocmd WinLeave,BufLeave * setlocal statusline=%!InactiveStatus()
+augroup END
+
+set tabline=%!Tabline()
