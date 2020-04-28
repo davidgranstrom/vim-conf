@@ -1,5 +1,22 @@
 local M = {}
 
+local glyphs = {
+  branch = '⎇ ',
+  moon = '☾',
+}
+
+local function get_ft()
+  local buf = vim.api.nvim_get_current_buf()
+  local ft = vim.api.nvim_buf_get_option(buf, 'filetype')
+  return ft
+end
+
+local function pad(s, left, right)
+  left = left or 0
+  right = right or 0
+  return string.rep(' ', left) .. s .. string.rep(' ', right)
+end
+
 local function get_gitbranch()
   local status, res = pcall(vim.call, 'FugitiveHead')
   return status and res or ''
@@ -7,36 +24,42 @@ end
 
 local function active_left()
   local gitbranch = get_gitbranch()
-  local stl = ''
+  local s = ''
+  -- truncate at beginning of line
+  s = s .. '%<'
   -- relative path
-  stl = stl .. '%<%f '
+  s = s .. '%f'
   -- git branch
   if gitbranch ~= '' then
-    stl = stl .. '| ' .. gitbranch
+    s = s .. pad(glyphs.branch, 1) .. gitbranch
   end
   -- help buffer flag, modified flag, read-only flag
-  stl = stl .. ' %h%m%r%'
-  return stl
+  s = s .. ' %h%m%r%'
+  return s
 end
 
 local function active_right()
-  local ft = vim.api.nvim_get_option('filetype')
-  local stl = ''
-  -- filetype
-  stl = stl .. '%y '
+  local s = ''
+  local ft = get_ft()
   -- line num, virtual col, value of char (hex)
-  stl = stl .. '%-10.(%l:%v %B%) '
-  -- percentage through file
-  stl = stl .. '%P'
-  -- display scsynth status
+  s = s .. '%-8.(%l:%v %B%)'
+  s = s .. pad(glyphs.moon, 1, 1)
+  -- display filetype (without brackets like %y)
+  s = s .. ft
+  -- overwrite the above and display scsynth server status
   if ft == 'supercollider' then
-    stl = stl ..' | %{scnvim#statusline#server_status()}'
+    s = '%(%l:%v %B%)'
+    s = s .. pad(glyphs.moon, 2, 2)
+    s = s .. '%{scnvim#statusline#server_status()}'
   end
-  return stl
+  return s
 end
 
 local function inactive_left()
-  return active_left()
+  local s = ''
+  -- tail of filename path
+  s = s .. '%t'
+  return s
 end
 
 local function inactive_right()
@@ -54,22 +77,24 @@ local function get_short_file_name(handle)
 end
 
 local function create_tabline()
-  local tabline = ''
+  local s = ''
   local tabs = vim.api.nvim_list_tabpages()
   local num_tabs = vim.call('tabpagenr', '$')
   for i, handle in ipairs(tabs) do
     local n = vim.call('tabpagenr')
     local name = get_short_file_name(handle)
     if i == n then
-      tabline = tabline .. '%#TabLineSel#' .. name
+      s = s .. '%#TabLineSel#'
     else
-      tabline = tabline .. '%#TabLine#' .. name
+      s = s .. '%#TabLine#'
     end
+    s = s .. name
     if i ~= num_tabs then
-      tabline = tabline .. ' | '
+      s = s .. '%#TabLine#' .. ' | '
     end
   end
-  return tabline
+  s = s .. '%#TabLineFill#'
+  return s
 end
 
 --- Interface
@@ -79,7 +104,7 @@ function M.active()
 end
 
 function M.inactive()
-  return inactive_left() .. '=' .. inactive_right()
+  return inactive_left()
 end
 
 function M.my_tabline()
