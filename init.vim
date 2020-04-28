@@ -40,6 +40,7 @@ Plug '~/code/vim/scnvim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'andreypopp/vim-colors-plain'
 Plug 'noahfrederick/vim-noctu'
+Plug 'wadackel/vim-dogrun'
 
 " misc
 Plug 'editorconfig/editorconfig-vim'
@@ -139,7 +140,7 @@ set shiftround                      " round indent to multiples of 'shiftwidth'
 set nojoinspaces                    " only insert one space after a join command
 
 set background=dark
-colorscheme plain
+colorscheme dogrun
 
 " use par to format text
 if executable("par")
