@@ -10,7 +10,7 @@ filetype plugin indent on  " detect plugin filetypes
 syntax enable              " syntax highlighting
 
 " vim-plug
-call plug#begin('~/.config/nvim/bundle')
+call plug#begin(stdpath('config') . '/bundle')
 
 " editing
 Plug 'Shougo/deoplete.nvim'
@@ -111,7 +111,6 @@ set noshowcmd                       " don't display partial commands (g,c etc.)
 set sidescroll=1
 set sidescrolloff=1
 set listchars+=extends:>,precedes:<
-set fillchars=vert:│,fold:·
 
 " searching
 set ignorecase                      " ignore case in search patterns
@@ -321,11 +320,6 @@ augroup END
 " {{{
 
 " ------------------------------------------------------------------------------
-" -- Mundo  --------------------------------------------------------------------
-
-nnoremap <F4> :MundoToggle<CR>
-
-" ------------------------------------------------------------------------------
 " -- UltiSnips  ----------------------------------------------------------------
 
 let g:UltiSnips_Author             = "David Granström"
@@ -385,6 +379,9 @@ function! s:search_selection() range
   execute 'Rg' selection
 endfunction
 
+let $FZF_DEFAULT_OPTS='--layout=reverse --color=bw'
+let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
+
 " ------------------------------------------------------------------------------
 " -- deoplete ------------------------------------------------------------------
 
@@ -394,15 +391,11 @@ if has('nvim')
   autocmd vimrc InsertEnter * call deoplete#enable()
 
   call deoplete#custom#option({
-  \ 'auto_complete_delay': 0,
-  \ 'smart_case': v:true,
-  \ 'camel_case': v:true,
-  \ 'refresh_always': v:false,
-  \ })
-
-  " call deoplete#custom#option('sources', {
-  "       \ 'supercollider': ['buffer', 'tag'],
-  "       \})
+        \ 'auto_complete_delay': 0,
+        \ 'smart_case': v:true,
+        \ 'camel_case': v:true,
+        \ 'refresh_always': v:false,
+        \ })
 
   inoremap <silent> <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
   inoremap <expr><C-h> deoplete#smart_close_popup() . "\<C-h>"
@@ -451,14 +444,6 @@ let g:ale_fixers = {
 nmap <leader>l <Plug>(ale_toggle_buffer)
 
 " ------------------------------------------------------------------------------
-" -- easy-align ----------------------------------------------------------------
-
-" visual mode
-vmap <leader>= <Plug>(EasyAlign)
-" motions
-nmap <leader>= <Plug>(EasyAlign)
-
-" ------------------------------------------------------------------------------
 " -- scnvim --------------------------------------------------------------------
 
 let g:scnvim_scdoc = 1
@@ -476,10 +461,14 @@ nnoremap <leader>sk :SCNvimRecompile<cr>
 " snippet support
 let g:UltiSnipsSnippetDirectories = ['UltiSnips', 'scnvim-data']
 
-augroup scnvim_vimrc
-  autocmd!
-  autocmd FileType supercollider setlocal tabstop=4 softtabstop=4 shiftwidth=4
-augroup END
+" ------------------------------------------------------------------------------
+" -- tmux-navigator ------------------------------------------------------------
+
+let g:tmux_navigator_no_mappings = 1
+nnoremap <silent> <A-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <A-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <A-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <A-l> :TmuxNavigateRight<cr>
 
 " ------------------------------------------------------------------------------
 " -- misc ----------------------------------------------------------------------
@@ -489,13 +478,6 @@ let g:vim_markdown_conceal = 0
 
 " unimpaired original mapping
 nmap co yo
-
-" seamless tmux navigation
-let g:tmux_navigator_no_mappings = 1
-nnoremap <silent> <A-h> :TmuxNavigateLeft<cr>
-nnoremap <silent> <A-j> :TmuxNavigateDown<cr>
-nnoremap <silent> <A-k> :TmuxNavigateUp<cr>
-nnoremap <silent> <A-l> :TmuxNavigateRight<cr>
 
 " file switching based on tags
 function! s:switch_tag() abort
@@ -516,9 +498,6 @@ endfunction
 nnoremap <silent> <Leader>a :call <SID>switch_tag()<cr>
 
 let g:pear_tree_repeatable_expand = 0
-
-let $FZF_DEFAULT_OPTS='--layout=reverse --color=bw'
-let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
 
 "##############################################################################
 " Terminal Handling
@@ -590,7 +569,7 @@ function! CreateCenteredFloatingWindow()
     tnoremap <buffer> <silent> <Esc> <C-\><C-n><CR>:call DeleteUnlistedBuffers()<CR>
 endfunction
 
-" " clangd LSP
+" clangd LSP
 lua << EOF
 local nvim_lsp = require'nvim_lsp'
 nvim_lsp.clangd.setup{
