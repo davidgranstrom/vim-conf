@@ -3,6 +3,7 @@ local M = {}
 local glyphs = {
   branch = '⎇ ',
   moon = '☾',
+  divider = '│',
 }
 
 local function get_ft()
@@ -90,7 +91,7 @@ local function create_tabline()
     end
     s = s .. name
     if i ~= num_tabs then
-      s = s .. '%#TabLine#' .. ' | '
+      s = s .. '%#TabLine#' .. pad(glyphs.divider, 1, 1)
     end
   end
   s = s .. '%#TabLineFill#'
