@@ -6,10 +6,29 @@ local glyphs = {
   divider = '│',
 }
 
+--- Utils
+
+local path_sep = vim.loop.os_uname().sysname == 'Windows' and '\\' or '/'
+
 local function get_ft()
   local buf = vim.api.nvim_get_current_buf()
   local ft = vim.api.nvim_buf_get_option(buf, 'filetype')
   return ft
+end
+
+local function get_rel_filename()
+  local buf = vim.api.nvim_get_current_buf()
+  local name = vim.api.nvim_buf_get_name(buf)
+  local cwd = vim.call('getcwd') .. path_sep
+  local home = os.getenv('HOME')
+  name = name:gsub(vim.pesc(cwd), '') -- escape magic chars
+  name = name:gsub(home, '~')
+  return name ~= '' and name or '[No name]'
+end
+
+local function get_gitbranch()
+  local status, res = pcall(vim.call, 'FugitiveHead')
+  return status and res or ''
 end
 
 local function pad(s, left, right)
@@ -18,18 +37,40 @@ local function pad(s, left, right)
   return string.rep(' ', left) .. s .. string.rep(' ', right)
 end
 
-local function get_gitbranch()
-  local status, res = pcall(vim.call, 'FugitiveHead')
-  return status and res or ''
+local function short_path(path, keep)
+  local max_len = 20
+  if keep == 1 then
+    return path
+  end
+  local len = string.len(path)
+  if len > max_len then
+    local s = ''
+    local items = vim.split(path, path_sep)
+    for i, item in ipairs(items) do
+      if i ~= #items then
+        s = s .. item:sub(1,keep) .. path_sep
+      else
+        s = s .. item
+      end
+    end
+    path = s
+    -- recurse if we're still above max_len
+    if string.len(path) > max_len then
+      return short_path(path, keep - 1)
+    end
+  end
+  return path
 end
+
+--- Statusline
 
 local function active_left()
   local gitbranch = get_gitbranch()
   local s = ''
   -- truncate at beginning of line
   s = s .. '%<'
-  -- relative path
-  s = s .. '%f'
+  -- filename
+  s = s .. short_path(get_rel_filename(), 3)
   -- git branch
   if gitbranch ~= '' then
     s = s .. pad(glyphs.branch, 1) .. gitbranch
@@ -74,7 +115,7 @@ local function get_short_file_name(handle)
   local buf = vim.api.nvim_win_get_buf(win)
   local name = vim.api.nvim_buf_get_name(buf)
   name = vim.call('fnamemodify', name, ':p:t')
-  return name == '' and 'No name' or name
+  return name ~= '' and name or '[No name]'
 end
 
 local function create_tabline()
