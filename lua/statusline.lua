@@ -38,7 +38,7 @@ local function pad(s, left, right)
 end
 
 local function short_path(path, keep)
-  local max_len = 20
+  local max_len = 30
   if keep == 1 then
     return path
   end
@@ -66,11 +66,12 @@ end
 
 local function active_left()
   local gitbranch = get_gitbranch()
+  local path = short_path(get_rel_filename(), 3)
   local s = ''
   -- truncate at beginning of line
   s = s .. '%<'
   -- filename
-  s = s .. short_path(get_rel_filename(), 3)
+  s = s .. path
   -- git branch
   if gitbranch ~= '' then
     s = s .. pad(glyphs.branch, 1) .. gitbranch
@@ -139,14 +140,38 @@ local function create_tabline()
   return s
 end
 
+--- Performance
+
+local function get_cached_stl_active()
+  local buf = vim.api.nvim_get_current_buf()
+  local cached, s = pcall(vim.api.nvim_buf_get_var, buf, 'stl_active')
+  if not cached then
+    local stl = active_left() .. '=' .. active_right()
+    vim.api.nvim_buf_set_var(buf, 'stl_active', stl)
+    return stl
+  end
+  return s
+end
+
+local function get_cached_stl_inactive()
+  local buf = vim.api.nvim_get_current_buf()
+  local cached, s = pcall(vim.api.nvim_buf_get_var, buf, 'stl_inactive')
+  if not cached then
+    local stl = inactive_left()
+    vim.api.nvim_buf_set_var(buf, 'stl_inactive', stl)
+    return stl
+  end
+  return s
+end
+
 --- Interface
 
 function M.active()
-  return active_left() .. '=' .. active_right()
+  return get_cached_stl_active()
 end
 
 function M.inactive()
-  return inactive_left()
+  return get_cached_stl_inactive()
 end
 
 function M.my_tabline()
