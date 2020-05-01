@@ -67,11 +67,16 @@ end
 local function active_left()
   local gitbranch = get_gitbranch()
   local path = short_path(get_rel_filename(), 3)
+  local ft = get_ft()
   local s = ''
   -- truncate at beginning of line
   s = s .. '%<'
   -- filename
-  s = s .. path
+  if ft ~= 'help' then
+    s = s .. path
+  else
+    s = s .. '%t'
+  end
   -- git branch
   if gitbranch ~= '' then
     s = s .. pad(glyphs.branch, 1) .. gitbranch
