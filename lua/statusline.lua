@@ -1,3 +1,7 @@
+--- @file lua/statusline.lua
+--- @author David Granström
+--- @license GPLv3
+
 local M = {}
 
 local glyphs = {
