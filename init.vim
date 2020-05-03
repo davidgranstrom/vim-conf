@@ -37,7 +37,6 @@ Plug 'sheerun/vim-polyglot'
 Plug '~/code/vim/scnvim'
 
 " color schemes / appearance
-Plug 'machakann/vim-highlightedyank'
 Plug 'andreypopp/vim-colors-plain'
 Plug 'noahfrederick/vim-noctu'
 Plug 'wadackel/vim-dogrun'
