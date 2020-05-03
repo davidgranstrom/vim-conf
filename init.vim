@@ -1,13 +1,10 @@
 "
-" vimrc
+" init.vim
 "
 " ==============================================================================
 " PLUGINS
 " ==============================================================================
 " {{{
-
-filetype plugin indent on  " detect plugin filetypes
-syntax enable              " syntax highlighting
 
 " vim-plug
 call plug#begin(stdpath('config') . '/bundle')
@@ -34,7 +31,8 @@ Plug 'norcalli/nvim-colorizer.lua'
 
 " language
 Plug 'sheerun/vim-polyglot'
-Plug '~/code/vim/scnvim'
+" Plug '~/code/vim/scnvim'
+Plug 'davidgranstrom/scnvim', { 'branch': 'topic/install-scripts', 'do': './bin/install_mac.sh' }
 
 " color schemes / appearance
 Plug 'andreypopp/vim-colors-plain'
@@ -50,10 +48,6 @@ Plug '~/code/vim/nvim-markdown-preview'
 Plug '~/code/vim/vim-dkg'
 
 call plug#end()
-
-augroup vimrc
-  autocmd!
-augroup END
 
 let mapleader="\<space>"            " set mapleader
 set mouse=a                         " enable mouse
@@ -81,69 +75,41 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 " ==============================================================================
 " {{{
 
-" enable true color for nvim
-if has('nvim')
-  set inccommand=nosplit " preview changes (:s/) incrementally
-  set termguicolors
-else
-  " put all swap files in one place
-  " neovim already does this by default, ~/.local/share/nvim/swap
-  set directory^=$HOME/.vim/.swap//
-  set ttyfast " assume fast terminal connection
-endif
-
 " editing
-set backspace=2                     " allow backspacing over indent, eol, and the start of an insert
-set virtualedit=all                 " be able to access all areas of the buffer
-set hidden                          " be able to hide modified buffers
-set complete-=i                     " where to look for auto-completion
-set clipboard=unnamed               " yank to system-wide clipboard
-set autoread                        " reload buffers changed from the outside
-set completeopt-=preview            " don't display scratch buffer for completion
-set formatoptions+=rj               " auto insert comments from insert mode, remove comment leader when joining lines
+set virtualedit=all      " be able to access all areas of the buffer
+set hidden               " be able to hide modified buffers
+set clipboard=unnamed    " yank to system-wide clipboard
+set completeopt-=preview " don't display scratch buffer for completion
+set inccommand=nosplit   " preview changes (:s/) incrementally
 
 " appearance
-set scrolloff=4                     " keep a distance of from the cursor when scrolling
-set nowrap                          " don't wrap words
-set linebreak                       " break at word boundries for wrapped text
-set noshowcmd                       " don't display partial commands (g,c etc.)
-set sidescroll=1
+set termguicolors
+set scrolloff=4          " keep a distance of from the cursor when scrolling
+set nowrap               " don't wrap words
+set linebreak            " break at word boundries for wrapped text
+set noshowcmd            " don't display partial commands (g,c etc.)
 set sidescrolloff=1
-set listchars+=extends:>,precedes:<
 
 " searching
-set ignorecase                      " ignore case in search patterns
-set incsearch                       " incrementally match the search
-set smartcase                       " overrides 'ignorecase' if search pattern contains an upper char
-set showmatch                       " highlight search matches while typing
+set ignorecase           " ignore case in search patterns
+set smartcase            " overrides 'ignorecase'
+set showmatch            " highlight search matches while typing
 
 " misc
-set wildmenu                        " enhanced command line completion
-set wildignorecase                  " be smart case-sensitive
-set diffopt+=vertical               " use vertical diffs by default
-set laststatus=2                    " always display a status line
-set novisualbell                    " turn off error beep/flash
-set lazyredraw                      " don't redraw screen for macros
+set wildignorecase       " be smart case-sensitive
+set diffopt+=vertical    " use vertical diffs by default
+set lazyredraw           " don't redraw screen for macros
 
 " indenting/formating
-set autoindent                      " indent even if we have no filetype rules
-" set smartindent                     " be smarter
-set copyindent                      " copy indent chars from previous line
-set smarttab
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
-set expandtab                       " use whitespace instead of tabs
-set shiftround                      " round indent to multiples of 'shiftwidth'
-set nojoinspaces                    " only insert one space after a join command
+set copyindent           " copy indent chars from previous line
+set expandtab            " use whitespace instead of tabs
+set shiftround           " round indent to multiples of 'shiftwidth'
+set nojoinspaces         " only insert one space after a join command
 
-set background=dark
 colorscheme dogrun
-
-" use par to format text
-if executable("par")
-  set formatprg=par\ -w80qr
-endif
 
 " }}}
 " ==============================================================================
@@ -152,15 +118,13 @@ endif
 " {{{
 
 " delete trailing whitespace in the whole buffer
-function! DeleteTrailingWS()
+function! s:delete_trailing_ws()
   normal! m`
   %s/\s\+$//ge
   normal! ``
 endfunction
 
-com! DeleteTrailingWS :call DeleteTrailingWS()
-nnoremap _$ :DeleteTrailingWS<cr>
-nnoremap __ :s/\s\+$//ge<cr>
+command! DeleteTrailingWS call <sid>delete_trailing_ws()
 
 " format json
 if executable('jq')
@@ -169,12 +133,6 @@ if executable('jq')
 else
   com! JSONPretty %!python -m json.tool
 endif
-
-" justify selected text
-com! -nargs=0 -range Justify '<,'>!par \-w80j
-
-" Allow saving of files as sudo when I forgot to start vim using sudo.
-com! SudoWrite w !sudo tee > /dev/null %
 
 " }}}
 " ==============================================================================
@@ -187,6 +145,9 @@ nnoremap <leader>ev :tabedit $MYVIMRC<cr>
 
 " change to current dir
 nnoremap <leader>c :cd %:p:h \| pwd<cr>
+
+" save buffer
+nnoremap <A-s> :<c-u>w<cr>
 
 " unmap help, and replace with <Esc>
 noremap <F1> <Esc>
@@ -224,9 +185,6 @@ nnoremap <leader>sn :SCNewScratchBuf<CR>
 
 " edit current buffer in a new tab
 nnoremap <silent><leader>z :tabedit!%<cr>
-" move between tabs
-" nnoremap <silent> <C-n> :tabn<cr>
-" nnoremap <silent> <C-p> :tabp<cr>
 
 " resize windows with arrow-keys
 nnoremap <silent><left>  :3wincmd <<cr>
@@ -243,30 +201,24 @@ nnoremap <leader>r *``cgn
 " don't move cursor after visual selection yank
 vnoremap <expr>y "my\"" . v:register . "y`y"
 
-if has('nvim')
-  " remap esc in terminal mode
-  tnoremap <Esc> <C-\><C-n>
+" remap esc in terminal mode
+tnoremap <Esc> <C-\><C-n>
 
-  " navigate from terminal buffers
-  tnoremap <A-h> <C-\><C-n><C-w>h
-  tnoremap <A-j> <C-\><C-n><C-w>j
-  tnoremap <A-k> <C-\><C-n><C-w>k
-  tnoremap <A-l> <C-\><C-n><C-w>l
-
-  " navigate tab pages with A-<number>
-  for i in range(1, 9)
-    execute 'nnoremap <silent><A-' . i . '> :tabnext ' . i . ' <cr>'
-  endfor
-
-  " save buffer
-  nnoremap <A-s> :<C-u>w<cr>
-endif
+" navigate from terminal buffers
+tnoremap <A-h> <C-\><C-n><C-w>h
+tnoremap <A-j> <C-\><C-n><C-w>j
+tnoremap <A-k> <C-\><C-n><C-w>k
+tnoremap <A-l> <C-\><C-n><C-w>l
 
 " }}}
 " ==============================================================================
 " AUTOCMDS
 " ==============================================================================
 " {{{
+
+augroup vimrc
+  autocmd!
+augroup END
 
 augroup vimrc_filetype
   autocmd!
@@ -275,15 +227,15 @@ augroup vimrc_filetype
   " save and source current file
   autocmd FileType vim nnoremap <buffer> <leader>so :w \| so%<cr>
 
-  if has('nvim')
-    " make autoread behave as expected (neovim only)
-    autocmd FocusGained * if &autoread | silent checktime | endif
-    " save last terminal job id
-    autocmd TermOpen * let g:last_terminal_job_id = b:terminal_job_id
-  endif
+  " if has('nvim')
+  "   " make autoread behave as expected (neovim only)
+  "   autocmd FocusGained * if &autoread | silent checktime | endif
+  "   " save last terminal job id
+  "   autocmd TermOpen * let g:last_terminal_job_id = b:terminal_job_id
+  " endif
 
   " c/cpp
-  autocmd BufEnter,BufReadPre,BufNewFile *.h,*.c setlocal filetype=c.doxygen
+  " autocmd BufEnter,BufReadPre,BufNewFile *.h,*.c setlocal filetype=c.doxygen
 
   " c#
   autocmd FileType cs set tabstop=4 softtabstop=4 shiftwidth=4
@@ -300,15 +252,13 @@ augroup vimrc_filetype
   autocmd FileType javascript.jsx setlocal filetype=javascript
   autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
 
-  autocmd FileType javascript,typescript, setlocal ts=2 sts=2 sw=2
-  autocmd FileType css,less,scss,sass setlocal ts=2 sts=2 sw=2
-
   " hack to make development servers not rebuild twice
   autocmd FileType javascript setlocal nowritebackup
 
   " python
-  " ------
   autocmd FileType python setlocal ts=4 sts=4 sw=4
+
+  " cmake
   autocmd FileType cmake setlocal commentstring=#%s
 augroup END
 
@@ -321,14 +271,11 @@ augroup END
 " ------------------------------------------------------------------------------
 " -- UltiSnips  ----------------------------------------------------------------
 
-let g:UltiSnips_Author             = "David Granström"
-let g:UltiSnipsExpandTrigger       = "<C-j>"
-let g:UltiSnipsJumpForwardTrigger  = "<C-j>"
+let g:UltiSnips_Author = "David Granström"
+let g:UltiSnipsExpandTrigger = "<C-j>"
+let g:UltiSnipsJumpForwardTrigger = "<C-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
-let g:UltiSnipsUsePythonVersion    = 2
-if has('nvim')
-  let g:UltiSnipsUsePythonVersion = 3
-endif
+let g:UltiSnipsUsePythonVersion = 3
 
 " ------------------------------------------------------------------------------
 " -- Surround  -----------------------------------------------------------------
@@ -356,8 +303,6 @@ nnoremap <silent> <leader>t :<C-u>GFiles<cr>
 nnoremap <silent> <leader>b :<C-u>Buffers<cr>
 " search in current dir
 nnoremap <silent> <leader>g/ :<C-u>Rg<cr>
-" search in current buffer
-nnoremap <silent> <leader>/ :<C-u>BLines<cr>
 " search for current word in pwd
 nnoremap <silent> <leader>i :<C-u>call <sid>search_word()<cr>
 xnoremap <silent> <leader>i :<C-u>call <sid>search_selection()<cr>
@@ -384,33 +329,26 @@ let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
 " ------------------------------------------------------------------------------
 " -- deoplete ------------------------------------------------------------------
 
-if has('nvim')
-  " Enable deoplete on InsertEnter
-  let g:deoplete#enable_at_startup = 0
-  autocmd vimrc InsertEnter * call deoplete#enable()
+" Don't enable until InsertEnter
+let g:deoplete#enable_at_startup = 0
+autocmd vimrc InsertEnter * call deoplete#enable()
 
-  call deoplete#custom#option({
-        \ 'auto_complete_delay': 0,
-        \ 'smart_case': v:true,
-        \ 'camel_case': v:true,
-        \ 'refresh_always': v:false,
-        \ })
+call deoplete#custom#option({
+      \ 'auto_complete_delay': 0,
+      \ 'smart_case': v:true,
+      \ 'camel_case': v:true,
+      \ 'refresh_always': v:false,
+      \ })
 
-  inoremap <silent> <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-  inoremap <expr><C-h> deoplete#smart_close_popup() . "\<C-h>"
-  inoremap <expr><BS>  deoplete#smart_close_popup() . "\<C-h>"
+inoremap <silent> <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr><C-h> deoplete#smart_close_popup() . "\<C-h>"
+inoremap <expr><BS>  deoplete#smart_close_popup() . "\<C-h>"
 
-  " <CR>: close popup and save indent.
-  inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-  function! s:my_cr_function() abort
-    return deoplete#close_popup() . "\<CR>"
-  endfunction
-endif
-
-" ------------------------------------------------------------------------------
-" -- Highlighted Yank ----------------------------------------------------------
-
-let g:highlightedyank_highlight_duration = 130
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function() abort
+  return deoplete#close_popup() . "\<CR>"
+endfunction
 
 " ------------------------------------------------------------------------------
 " -- Ale -----------------------------------------------------------------------
@@ -449,7 +387,7 @@ let g:scnvim_scdoc = 1
 let g:scnvim_arghints_float = 1
 let g:scnvim_echo_args = 1
 " let g:scnvim_postwin_layout = {
-"   \ 'style': 'float', 
+"   \ 'style': 'float',
 "   \ 'style': 'inline', " default
 "   \ 'bufnum': function('create#buf'),  " optional
 " }
@@ -569,19 +507,55 @@ function! CreateCenteredFloatingWindow()
 endfunction
 
 " clangd LSP
-lua << EOF
-local nvim_lsp = require'nvim_lsp'
-nvim_lsp.clangd.setup{
-  cmd = {"/usr/local/Cellar/llvm/9.0.0_1/bin/clangd", "--background-index"};
-  filetypes = {"c", "cpp"};
-}
-EOF
+" lua << EOF
+" local nvim_lsp = require'nvim_lsp'
+" nvim_lsp.clangd.setup{
+"   cmd = {"/usr/local/Cellar/llvm/9.0.0_1/bin/clangd", "--background-index"};
+"   filetypes = {"c", "cpp"};
+" }
+" EOF
 
 function! EchoHighlightGroup()
   for id in synstack(line("."), col("."))
     echo synIDattr(id, "name")
   endfor
 endfunction
+
+" https://github.com/justinmk/config/blob/master/.config/nvim/init.vim
+function! s:hl_yank(operator, regtype, inclusive) abort
+  if a:operator !=# 'y' || a:regtype ==# ''
+    return
+  endif
+  " edge cases:
+  "   ^v[count]l ranges multiple lines
+
+  " TODO:
+  "   bug: ^v where the cursor cannot go past EOL, so '] reports a lesser column.
+
+  let bnr = bufnr('%')
+  let ns = nvim_create_namespace('')
+  call nvim_buf_clear_namespace(bnr, ns, 0, -1)
+
+  let [_, lin1, col1, off1] = getpos("'[")
+  let [lin1, col1] = [lin1 - 1, col1 - 1]
+  let [_, lin2, col2, off2] = getpos("']")
+  let [lin2, col2] = [lin2 - 1, col2 - (a:inclusive ? 0 : 1)]
+  for l in range(lin1, lin1 + (lin2 - lin1))
+    let is_first = (l == lin1)
+    let is_last = (l == lin2)
+    let c1 = is_first || a:regtype[0] ==# "\<C-v>" ? (col1 + off1) : 0
+    let c2 = is_last || a:regtype[0] ==# "\<C-v>" ? (col2 + off2) : -1
+    call nvim_buf_add_highlight(bnr, ns, 'TextYank', l, c1, c2)
+  endfor
+  call timer_start(100, {-> nvim_buf_is_valid(bnr) && nvim_buf_clear_namespace(bnr, ns, 0, -1)})
+endfunc
+
+highlight default link TextYank Search
+
+augroup hlyank
+  autocmd!
+  autocmd TextYankPost * call s:hl_yank(v:event.operator, v:event.regtype, v:event.inclusive)
+augroup END
 
 " ===========================================================================
 " }}}
