@@ -151,41 +151,19 @@ local function create_tabline()
   return s
 end
 
---- Performance
-
-local function get_cached_stl_active()
-  local buf = vim.api.nvim_get_current_buf()
-  local cached, s = pcall(vim.api.nvim_buf_get_var, buf, 'stl_active')
-  if not cached then
-    local stl = active_left() .. '=' .. active_right()
-    vim.api.nvim_buf_set_var(buf, 'stl_active', stl)
-    return stl
-  end
-  return s
-end
-
-local function get_cached_stl_inactive()
-  local buf = vim.api.nvim_get_current_buf()
-  local cached, s = pcall(vim.api.nvim_buf_get_var, buf, 'stl_inactive')
-  if not cached then
-    local stl = inactive_left()
-    vim.api.nvim_buf_set_var(buf, 'stl_inactive', stl)
-    return stl
-  end
-  return s
-end
-
 --- Interface
 
 function M.active()
-  return get_cached_stl_active()
+  local stl = active_left() .. '=' .. active_right()
+  vim.api.nvim_win_set_option(0, 'statusline', stl)
 end
 
 function M.inactive()
-  return get_cached_stl_inactive()
+  local stl = inactive_left()
+  vim.api.nvim_win_set_option(0, 'statusline', stl)
 end
 
-function M.my_tabline()
+function M.tabline()
   return create_tabline()
 end
 

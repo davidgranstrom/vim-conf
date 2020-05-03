@@ -4,22 +4,22 @@
 
 scriptencoding utf-8
 
-function! ActiveStatus() abort
-  return luaeval('require("statusline").active()')
+function! s:active_status() abort
+  lua require('statusline').active()
 endfunction
 
-function! InactiveStatus() abort
-  return luaeval('require("statusline").inactive()')
+function! s:inactive_status() abort
+  lua require('statusline').inactive()
 endfunction
 
 function! Tabline() abort
-  return luaeval('require("statusline").my_tabline()')
+  return luaeval('require("statusline").tabline()')
 endfunction
 
 augroup statusline
   autocmd!
-  autocmd WinEnter,BufEnter * setlocal statusline=%!ActiveStatus()
-  autocmd WinLeave,BufLeave * setlocal statusline=%!InactiveStatus()
+  autocmd WinEnter,BufEnter * call <sid>active_status()
+  autocmd WinLeave,BufLeave * call <sid>inactive_status()
 augroup END
 
 set tabline=%!Tabline()
