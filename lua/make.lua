@@ -5,7 +5,6 @@
 
 local M = {}
 local uv = vim.loop
-local on_exit_handlers = {}
 
 --- Utils
 
@@ -13,12 +12,8 @@ local function print_err(msg)
   print('[make]:', msg)
 end
 
-local function add_to_cleanup(func)
-  table.insert(on_exit_handlers, func)
-end
-
 local function find_git_root()
-  local root = vim.call('system', 'git rev-parse --show-toplevel 2> /dev/null')
+  local root = vim.fn.system('git rev-parse --show-toplevel 2> /dev/null')
   if root ~= '' then
     root = root:gsub('\n', '')
   end
@@ -31,13 +26,6 @@ local function check_dir_exists(dir)
     return stat.type == 'directory'
   end
   return false
-end
-
-local function cleanup()
-  for _,handler in ipairs(on_exit_handlers) do
-    handler()
-  end 
-  on_exit_handlers = {}
 end
 
 local function run_make(opts)
@@ -81,14 +69,42 @@ local on_stderr = function(fd)
   end)
 end
 
+local function parse_build_progress(data)
+  local progress, state = data:match('(%d+%%)%] (%a+)')
+  if progress and state then
+    vim.schedule_wrap(function()
+      local build = string.format('%s %s', state, progress)
+      vim.api.nvim_win_set_var(0, 'make_progress', build)
+    end)()
+  end
+end
+
+local function parse_ctest(data)
+  local ctest_num = data:match('^%s*(%d+/%d+)')
+  if ctest_num then
+    local status = data:match('Passed') and 'Passed' or 'Failed'
+    vim.schedule_wrap(function()
+      local ctest = string.format('%s %s', ctest_num, status)
+      vim.api.nvim_win_set_var(0, 'make_progress', ctest)
+    end)()
+  end
+end
+
 local on_stdout = function(fd) 
+  local s = ''
   uv.read_start(fd, function(err, data)
     assert(not err, err)
     if data then
-      local progress = data:match('(%d+%%)')
-      vim.schedule_wrap(function()
-        vim.api.nvim_win_set_var(0, 'make_progress', progress)
-      end)()
+      s = s .. data
+      local lines = vim.gsplit(s, '\n')
+      for line in lines do
+        if line ~= '' then
+          parse_build_progress(line)
+          parse_ctest(line)
+        else
+          s = ''
+        end
+      end
     end
   end)
 end
@@ -102,6 +118,10 @@ function M.make()
     stdout:close()
     stderr:close()
     handle:close()
+    local msg = code == 0 and 'Build OK' or 'Build ERR'
+    vim.schedule_wrap(function()
+      vim.api.nvim_win_set_var(0, 'make_progress', msg)
+    end)()
   end
 
   handle, pid = run_make({
