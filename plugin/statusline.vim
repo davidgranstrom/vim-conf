@@ -2,6 +2,11 @@
 " Author: David Granström
 " Description: Status line functions
 
+if exists('g:statusline_loaded')
+  finish
+endif
+let g:statusline_loaded = 1
+
 scriptencoding utf-8
 
 function! s:active_status() abort
