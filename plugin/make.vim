@@ -24,8 +24,4 @@ function! MakeBuildProgress() abort
   return ''
 endfunction
 
-function! s:make() abort
-  call luaeval('require("make").make()')
-endfunction
-
-nnoremap <silent> <F5> :call <sid>make()<cr>
+nnoremap <silent> <F5> :lua require('make').make()<cr>
