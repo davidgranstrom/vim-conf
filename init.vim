@@ -25,7 +25,9 @@ Plug 'justinmk/vim-dirvish'
 Plug 'w0rp/ale', { 'on': 'ALEToggleBuffer' }
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
+if has('nvim-0.5')
 Plug 'neovim/nvim-lsp'
+end
 Plug 'tpope/vim-fugitive'
 Plug 'norcalli/nvim-colorizer.lua'
 
@@ -507,13 +509,16 @@ function! CreateCenteredFloatingWindow()
 endfunction
 
 " clangd LSP
-" lua << EOF
-" local nvim_lsp = require'nvim_lsp'
-" nvim_lsp.clangd.setup{
-"   cmd = {"/usr/local/Cellar/llvm/9.0.0_1/bin/clangd", "--background-index"};
-"   filetypes = {"c", "cpp"};
-" }
-" EOF
+if has('nvim-0.5')
+lua << EOF
+local nvim_lsp = require'nvim_lsp'
+nvim_lsp.clangd.setup{
+cmd = {"/usr/local/Cellar/llvm/9.0.0_1/bin/clangd", "--background-index"};
+filetypes = {"c", "cpp"};
+}
+vim.lsp.callbacks['textDocument/publishDiagnostics'] = function() end
+EOF
+end
 
 function! EchoHighlightGroup()
   for id in synstack(line("."), col("."))

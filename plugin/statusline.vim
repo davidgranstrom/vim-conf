@@ -2,7 +2,7 @@
 " Author: David Granström
 " Description: Status line functions
 
-if exists('g:statusline_loaded')
+if exists('g:statusline_loaded') || !has('nvim-0.5')
   finish
 endif
 let g:statusline_loaded = 1
