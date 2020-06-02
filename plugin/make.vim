@@ -24,4 +24,5 @@ function! MakeBuildProgress() abort
   return ''
 endfunction
 
-nnoremap <silent> <F5> :lua require('make').make()<cr>
+nnoremap <silent> <F3> :lua require('make').make()<cr>
+nnoremap <silent> <F4> :call MakeRunCurrentTest()<cr>
