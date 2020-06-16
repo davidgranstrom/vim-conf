@@ -24,5 +24,16 @@ function! MakeBuildProgress() abort
   return ''
 endfunction
 
+function! MakeRunCurrentTest() abort
+  let testname = expand('%:p:t:r')
+  let testdir = expand('%:h')
+  vsplit +term
+  startinsert
+  let cmd = 'cd '.testdir.'<cr>'
+  let cmd .= 'make ' . testname
+  let cmd .= ' && ./'.testname
+  call nvim_input(cmd)
+endfunction
+
 nnoremap <silent> <F3> :lua require('make').make()<cr>
 nnoremap <silent> <F4> :call MakeRunCurrentTest()<cr>
