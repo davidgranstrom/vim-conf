@@ -6,13 +6,12 @@
 " ==============================================================================
 " {{{
 
-" vim-plug
-call plug#begin(stdpath('config') . '/bundle')
+call plug#begin()
 
 " editing
-Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'deoplete-plugins/deoplete-tag'
-Plug 'SirVer/ultisnips'
+" Plug 'SirVer/ultisnips'
 Plug 'tmsvg/pear-tree'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
@@ -22,28 +21,26 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'justinmk/vim-dirvish'
 
 " util
-Plug 'w0rp/ale', { 'on': 'ALEToggleBuffer' }
+if has('mac')
 Plug '/usr/local/opt/fzf'
+end
 Plug 'junegunn/fzf.vim'
 if has('nvim-0.5')
 Plug 'neovim/nvim-lsp'
 end
 Plug 'tpope/vim-fugitive'
 Plug 'norcalli/nvim-colorizer.lua'
+Plug 'bfredl/nvim-luadev'
 
 " language
-Plug 'sheerun/vim-polyglot'
-" Plug '~/code/vim/scnvim'
-Plug 'davidgranstrom/scnvim', { 'branch': 'topic/install-scripts', 'do': './bin/install_mac.sh' }
+Plug '~/code/vim/scnvim'
 
 " color schemes / appearance
-Plug 'andreypopp/vim-colors-plain'
-Plug 'noahfrederick/vim-noctu'
 Plug 'wadackel/vim-dogrun'
 
 " misc
 Plug 'editorconfig/editorconfig-vim'
-Plug 'tpope/vim-apathy'
+" Plug 'tpope/vim-apathy'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug '~/code/vim/nvim-markdown-preview'
@@ -68,8 +65,10 @@ let g:did_install_syntax_menu = 1
 let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
 
+if has('mac')
 let g:python_host_prog = '/usr/local/bin/python2'
 let g:python3_host_prog = '/usr/local/bin/python3'
+end
 
 " }}}
 " ==============================================================================
@@ -201,7 +200,7 @@ nnoremap Q <Nop>
 nnoremap <leader>r *``cgn
 
 " don't move cursor after visual selection yank
-vnoremap <expr>y "my\"" . v:register . "y`y"
+" vnoremap <expr>y "my\"" . v:register . "y`y"
 
 " remap esc in terminal mode
 tnoremap <Esc> <C-\><C-n>
@@ -388,6 +387,15 @@ nmap <leader>l <Plug>(ale_toggle_buffer)
 let g:scnvim_scdoc = 1
 let g:scnvim_arghints_float = 1
 let g:scnvim_echo_args = 1
+
+lua << EOF
+scnvim_test = [[
+var x = 123;
+(x * x).postln;
+]]
+EOF
+nnoremap <F7> :lua require('scnvim').send(scnvim_test)
+
 " let g:scnvim_postwin_layout = {
 "   \ 'style': 'float',
 "   \ 'style': 'inline', " default
@@ -395,7 +403,7 @@ let g:scnvim_echo_args = 1
 " }
 
 nnoremap <leader>st :SCNvimStart<cr>
-nnoremap <leader>sk :SCNvimRecompile<cr>
+nmap <leader>sk <Plug>(scnvim-recompile)
 
 " snippet support
 let g:UltiSnipsSnippetDirectories = ['UltiSnips', 'scnvim-data']
@@ -442,13 +450,6 @@ let g:pear_tree_repeatable_expand = 0
 " Terminal Handling
 "##############################################################################
 
-function! ToggleScratchTerm()
-    call ToggleTerm('zsh')
-    startinsert
-endfunction
-
-nnoremap <leader>o :call ToggleScratchTerm()<cr>
-
 function! ToggleTerm(cmd)
     if empty(bufname(a:cmd))
         call CreateCenteredFloatingWindow()
@@ -457,6 +458,13 @@ function! ToggleTerm(cmd)
         call DeleteUnlistedBuffers()
     endif
 endfunction
+
+function! ToggleScratchTerm()
+    call ToggleTerm('zsh')
+    startinsert
+endfunction
+
+nnoremap <leader>o :call ToggleScratchTerm()<cr>
 
 function! OnTermExit(job_id, code, event) dict
     if a:code == 0
@@ -560,6 +568,18 @@ highlight default link TextYank Search
 augroup hlyank
   autocmd!
   autocmd TextYankPost * call s:hl_yank(v:event.operator, v:event.regtype, v:event.inclusive)
+augroup END
+
+augroup lua_vimrc
+  au!
+  " Execute the current line
+  au FileType lua nmap <A-e> <Plug>(Luadev-RunLine)
+  " in visual mode: execute visual selection
+  au FileType lua xmap <A-e> <Plug>(Luadev-Run)
+  " Eval identifier under cursor, including table.attr
+  au FileType lua nmap <M-p> <Plug>(Luadev-RunWord)
+  " in insert mode: complete (nested) global table fields
+  au FileType lua imap <C-x><C-x> <Plug>(Luadev-Complete)
 augroup END
 
 " ===========================================================================
