@@ -9,8 +9,8 @@
 call plug#begin()
 
 " editing
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'deoplete-plugins/deoplete-tag'
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'deoplete-plugins/deoplete-tag'
 " Plug 'SirVer/ultisnips'
 Plug 'tmsvg/pear-tree'
 Plug 'tpope/vim-commentary'
@@ -27,6 +27,8 @@ end
 Plug 'junegunn/fzf.vim'
 if has('nvim-0.5')
 Plug 'neovim/nvim-lsp'
+Plug 'nvim-lua/diagnostic-nvim'
+Plug 'nvim-lua/completion-nvim'
 end
 Plug 'tpope/vim-fugitive'
 Plug 'norcalli/nvim-colorizer.lua'
@@ -37,6 +39,9 @@ Plug '~/code/vim/scnvim'
 
 " color schemes / appearance
 Plug 'wadackel/vim-dogrun'
+Plug 'srcery-colors/srcery-vim'
+Plug 'arcticicestudio/nord-vim'
+Plug 'noahfrederick/vim-noctu'
 
 " misc
 Plug 'editorconfig/editorconfig-vim'
@@ -110,7 +115,10 @@ set expandtab            " use whitespace instead of tabs
 set shiftround           " round indent to multiples of 'shiftwidth'
 set nojoinspaces         " only insert one space after a join command
 
-colorscheme dogrun
+" colorscheme dogrun
+" colorscheme srcery
+colorscheme nord
+" colorscheme noctu
 
 " }}}
 " ==============================================================================
@@ -237,6 +245,7 @@ augroup vimrc_filetype
 
   " c/cpp
   " autocmd BufEnter,BufReadPre,BufNewFile *.h,*.c setlocal filetype=c.doxygen
+  autocmd BufEnter,BufReadPre,BufNewFile *.h setlocal filetype=c
 
   " c#
   autocmd FileType cs set tabstop=4 softtabstop=4 shiftwidth=4
@@ -262,6 +271,46 @@ augroup vimrc_filetype
   " cmake
   autocmd FileType cmake setlocal commentstring=#%s
 augroup END
+
+" }}}
+" ==============================================================================
+" LSP
+" ==============================================================================
+" {{{
+"
+if has('nvim-0.5')
+" clangd
+lua << EOF
+local nvim_lsp = require'nvim_lsp'
+nvim_lsp.clangd.setup {
+  cmd = {"/usr/local/Cellar/llvm/10.0.0_3/bin/clangd", "--background-index", "--cross-file-rename"},
+  filetypes = {"c", "cpp"},
+  on_attach=require'diagnostic'.on_attach
+}
+EOF
+
+" don't display diagnostics in insert mode
+let g:diagnostic_insert_delay = 1
+
+" completion-nvim
+"
+" enable completion-nvim for all buffers
+augroup lsp_vimrc
+  autocmd!
+  autocmd BufEnter * lua require'completion'.on_attach()
+augroup END
+
+" Use <Tab> and <S-Tab> to navigate through popup menu
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" Set completeopt to have a better completion experience
+set completeopt=menuone,noinsert,noselect
+" Avoid showing message extra message when using completion
+set shortmess+=c
+
+let g:completion_auto_change_source = 1
+let g:completion_enable_auto_hover = 0
+end
 
 " }}}
 " ==============================================================================
@@ -331,55 +380,25 @@ let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
 " -- deoplete ------------------------------------------------------------------
 
 " Don't enable until InsertEnter
-let g:deoplete#enable_at_startup = 0
-autocmd vimrc InsertEnter * call deoplete#enable()
+" let g:deoplete#enable_at_startup = 0
+" autocmd vimrc InsertEnter * call deoplete#enable()
 
-call deoplete#custom#option({
-      \ 'auto_complete_delay': 0,
-      \ 'smart_case': v:true,
-      \ 'camel_case': v:true,
-      \ 'refresh_always': v:false,
-      \ })
+" call deoplete#custom#option({
+"       \ 'auto_complete_delay': 0,
+"       \ 'smart_case': v:true,
+"       \ 'camel_case': v:true,
+"       \ 'refresh_always': v:false,
+"       \ })
 
-inoremap <silent> <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr><C-h> deoplete#smart_close_popup() . "\<C-h>"
-inoremap <expr><BS>  deoplete#smart_close_popup() . "\<C-h>"
+" inoremap <silent> <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr><C-h> deoplete#smart_close_popup() . "\<C-h>"
+" inoremap <expr><BS>  deoplete#smart_close_popup() . "\<C-h>"
 
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function() abort
-  return deoplete#close_popup() . "\<CR>"
-endfunction
-
-" ------------------------------------------------------------------------------
-" -- Ale -----------------------------------------------------------------------
-
-let g:ale_set_signs = 0
-let g:ale_lint_on_text_changed = 'normal'
-let g:ale_lint_on_insert_leave = 1
-let g:ale_lint_delay = 0
-let g:ale_completion_enabled = 0
-let g:ale_c_parse_compile_commands = 1
-let g:ale_c_clang_options = '-std=c99 -Iinclude -I../include -Wall -Wextra -pedantic'
-
-hi link ALEErrorLine ErrorMsg
-hi link ALEWarningLine WarningMsg
-
-let g:ale_linters = {
-      \ 'javascript': ['eslint'],
-      \ 'c': ['clang'],
-      \ 'c.doxygen': ['clang'],
-      \ 'cpp': ['clang'],
-      \ 'json': ['jq'],
-      \ 'vim': ['vint --enable-neovim']
-      \ }
-
-let g:ale_fixers = {
-      \ 'javascript': ['eslint'],
-      \ 'json': ['jq']
-      \ }
-
-nmap <leader>l <Plug>(ale_toggle_buffer)
+" " <CR>: close popup and save indent.
+" inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+" function! s:my_cr_function() abort
+"   return deoplete#close_popup() . "\<CR>"
+" endfunction
 
 " ------------------------------------------------------------------------------
 " -- scnvim --------------------------------------------------------------------
@@ -387,14 +406,6 @@ nmap <leader>l <Plug>(ale_toggle_buffer)
 let g:scnvim_scdoc = 1
 let g:scnvim_arghints_float = 1
 let g:scnvim_echo_args = 1
-
-lua << EOF
-scnvim_test = [[
-var x = 123;
-(x * x).postln;
-]]
-EOF
-nnoremap <F7> :lua require('scnvim').send(scnvim_test)
 
 " let g:scnvim_postwin_layout = {
 "   \ 'style': 'float',
@@ -425,24 +436,6 @@ let g:vim_markdown_conceal = 0
 
 " unimpaired original mapping
 nmap co yo
-
-" file switching based on tags
-function! s:switch_tag() abort
-  let name = expand('%:t:r')
-  let ext = expand('%:e')
-  if ext ==# 'h'
-    let dest = name . '.c'
-  else
-    let dest = name . '.h'
-  endif
-  try
-    execute 'tag ' . dest
-  catch
-    echoerr printf('tag %s not found', name)
-  endtry
-endfunction
-
-nnoremap <silent> <Leader>a :call <SID>switch_tag()<cr>
 
 let g:pear_tree_repeatable_expand = 0
 
@@ -516,18 +509,6 @@ function! CreateCenteredFloatingWindow()
     tnoremap <buffer> <silent> <Esc> <C-\><C-n><CR>:call DeleteUnlistedBuffers()<CR>
 endfunction
 
-" clangd LSP
-if has('nvim-0.5')
-lua << EOF
-local nvim_lsp = require'nvim_lsp'
-nvim_lsp.clangd.setup{
-cmd = {"/usr/local/Cellar/llvm/9.0.0_1/bin/clangd", "--background-index"};
-filetypes = {"c", "cpp"};
-}
-vim.lsp.callbacks['textDocument/publishDiagnostics'] = function() end
-EOF
-end
-
 function! EchoHighlightGroup()
   for id in synstack(line("."), col("."))
     echo synIDattr(id, "name")
@@ -536,7 +517,7 @@ endfunction
 
 augroup hlyank
   autocmd!
-  autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank("IncSearch", 80)
+  autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup="Search", timeout=80}
 augroup END
 
 augroup lua_vimrc
