@@ -17,18 +17,18 @@ endfunction
 function s:insert_float_array() abort
   let opts = s:array_opts()
   let array = luaeval('require"random".float_array(unpack(_A))', opts)
-  call nvim_input(array)
+  call nvim_feedkeys(array, 'i', v:true)
 endfunction
 
 function s:insert_int_array() abort
   let opts = s:array_opts()
   let array = luaeval('require"random".int_array(unpack(_A))', opts)
-  call nvim_input(array)
+  call nvim_feedkeys(array, 'i', v:true)
 endfunction
 
 " mappings
 
-inoremap <silent> <A-f> <c-o>:call nvim_input(luaeval('require"random".float()'))<cr>
-inoremap <silent> <A-i> <c-o>:call nvim_input(luaeval('require"random".int()'))<cr>
+inoremap <silent> <A-f> <c-o>:call nvim_feedkeys(luaeval('require"random".float()'), 'i', v:true)<cr>
+inoremap <silent> <A-i> <c-o>:call nvim_feedkeys(luaeval('require"random".int()'), 'i', v:true)<cr>
 inoremap <silent> <A-a>f <c-o>:call <SID>insert_float_array()<cr>
 inoremap <silent> <A-a>i <c-o>:call <SID>insert_int_array()<cr>
