@@ -5,7 +5,10 @@
 
 local M = {}
 local api = vim.api
+-- defaults
 local float_prec = 4
+local int_range = {0, 1}
+local float_range = {0, 1}
 local float_formatter = nil
 
 -- seed the random number generator on nvim startup
@@ -20,15 +23,27 @@ local function get_float_prec()
   return float_formatter
 end
 
+local function get_brackets_for_ft()
+  local buf = api.nvim_get_current_buf()
+  local ft = api.nvim_buf_get_option(buf, 'filetype')
+  local brackets
+  if ft == 'c' or ft == 'cpp' or ft == 'lua' then
+    brackets = {'{', '}'}
+  else
+    brackets = {'[', ']'}
+  end
+  return brackets
+end
+
 local function frand(min, max)
-  min = min or 0
-  max = max or 1
+  min = min or float_range[1]
+  max = max or float_range[2]
   return math.random() * (max - min) + min
 end
 
 local function irand(min, max)
-  min = min or 0
-  max = max or 1
+  min = min or int_range[1]
+  max = max or int_range[2]
   return math.random(min, max)
 end
 
@@ -73,14 +88,15 @@ end
 -- @see float_formatter for floating point precision.
 function M.float_array(size, min, max)
   local data = float_array(size, min, max)
-  local str = '['
+  local open_bracket, close_bracket = unpack(get_brackets_for_ft())
+  local str = open_bracket
   for i,v in ipairs(data) do
     str = str .. string.format(get_float_prec(), v)
     if i < #data then
       str = str .. ', '
     end
   end
-  return str .. ']'
+  return str .. close_bracket
 end
 
 --- An array of integers.
@@ -89,14 +105,36 @@ end
 -- @param max The maximum value.
 function M.int_array(size, min, max)
   local data = int_array(size, min, max)
-  local str = '['
+  local open_bracket, close_bracket = unpack(get_brackets_for_ft())
+  local str = open_bracket
   for i,v in ipairs(data) do
     str = str .. v
     if i < #data then
       str = str .. ', '
     end
   end
-  return str .. ']'
+  return str .. close_bracket
+end
+
+local function set_range(range, ...)
+  local args = {...}
+  local count = #args
+  if #args == 1 then
+    range[2] = tonumber(args[1])
+  elseif #args == 2 then
+    range[1] = tonumber(args[1])
+    range[2] = tonumber(args[2])
+  else
+    print(string.format('Range: %d %d', unpack(range)))
+  end
+end
+
+function M.set_int_range(...)
+  set_range(int_range, ...)
+end
+
+function M.set_float_range(...)
+  set_range(float_range, ...)
 end
 
 return M
