@@ -5,10 +5,20 @@
 
 local M = {}
 local api = vim.api
-local float_formatter = "%.4f"
+local float_prec = 4
+local float_formatter = nil
 
 -- seed the random number generator on nvim startup
 math.randomseed(os.time())
+
+local function get_float_prec()
+  local prec = vim.g.rnd_float_prec or float_prec
+  if prec ~= float_prec then
+    float_prec = prec
+    float_formatter = "%."..float_prec.."f"
+  end
+  return float_formatter
+end
 
 local function frand(min, max)
   min = min or 0
@@ -46,7 +56,7 @@ end
 -- @param max The maximum value.
 -- @see float_formatter for floating point precision.
 function M.float(min, max)
-  return string.format(float_formatter, frand(min, max))
+  return string.format(get_float_prec(), frand(min, max))
 end
 
 --- A random integer number.
@@ -65,7 +75,7 @@ function M.float_array(size, min, max)
   local data = float_array(size, min, max)
   local str = '['
   for i,v in ipairs(data) do
-    str = str .. string.format(float_formatter, v)
+    str = str .. string.format(get_float_prec(), v)
     if i < #data then
       str = str .. ', '
     end
