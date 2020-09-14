@@ -12,3 +12,5 @@ nnoremap <buffer><silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <buffer><silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <buffer><silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <buffer><silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+
+nnoremap <buffer><silent> <leader>a :ClangdSwitchSourceHeader<cr>
