@@ -9,12 +9,11 @@
 call plug#begin()
 
 " editing
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'deoplete-plugins/deoplete-tag'
-" Plug 'SirVer/ultisnips'
 Plug 'tmsvg/pear-tree'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-abolish'
+Plug 'nvim-treesitter/nvim-treesitter'
 
 " navigation
 Plug 'christoomey/vim-tmux-navigator'
@@ -39,13 +38,11 @@ Plug '~/code/vim/scnvim'
 
 " color schemes / appearance
 Plug 'wadackel/vim-dogrun'
-Plug 'srcery-colors/srcery-vim'
 Plug 'arcticicestudio/nord-vim'
 Plug 'noahfrederick/vim-noctu'
 
 " misc
 Plug 'editorconfig/editorconfig-vim'
-" Plug 'tpope/vim-apathy'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug '~/code/vim/nvim-markdown-preview'
@@ -89,7 +86,6 @@ set completeopt-=preview " don't display scratch buffer for completion
 set inccommand=nosplit   " preview changes (:s/) incrementally
 
 " appearance
-set termguicolors
 set scrolloff=4          " keep a distance of from the cursor when scrolling
 set nowrap               " don't wrap words
 set linebreak            " break at word boundries for wrapped text
@@ -115,10 +111,20 @@ set expandtab            " use whitespace instead of tabs
 set shiftround           " round indent to multiples of 'shiftwidth'
 set nojoinspaces         " only insert one space after a join command
 
-" colorscheme dogrun
-" colorscheme srcery
-colorscheme nord
+set termguicolors
+colorscheme dogrun
 " colorscheme noctu
+
+" " noctu override
+" hi StatusLine ctermfg=0 ctermbg=7 cterm=NONE
+" hi CursorLine ctermfg=7 ctermbg=0 cterm=NONE
+" hi VertSplit  ctermfg=7 ctermbg=0 cterm=NONE
+" hi IncSearch  ctermfg=7 ctermbg=12 cterm=NONE
+" hi Search     ctermfg=7 ctermbg=12
+" hi MatchParen ctermfg=7 ctermbg=12  cterm=NONE
+
+" sc
+" hi! def link scGlobVariable Identifier
 
 " }}}
 " ==============================================================================
@@ -279,15 +285,8 @@ augroup END
 " {{{
 "
 if has('nvim-0.5')
-" clangd
-lua << EOF
-local nvim_lsp = require'nvim_lsp'
-nvim_lsp.clangd.setup {
-  cmd = {"/usr/local/Cellar/llvm/10.0.0_3/bin/clangd", "--background-index", "--cross-file-rename"},
-  filetypes = {"c", "cpp"},
-  on_attach=require'diagnostic'.on_attach
-}
-EOF
+
+lua require('dkg/config')
 
 " don't display diagnostics in insert mode
 let g:diagnostic_insert_delay = 1
@@ -303,29 +302,24 @@ augroup END
 " Use <Tab> and <S-Tab> to navigate through popup menu
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
 " Set completeopt to have a better completion experience
 set completeopt=menuone,noinsert,noselect
+
 " Avoid showing message extra message when using completion
 set shortmess+=c
 
 let g:completion_auto_change_source = 1
 let g:completion_enable_auto_hover = 0
-end
+let g:completion_trigger_keyword_length = 3
+
+end " has('nvim-0.5')
 
 " }}}
 " ==============================================================================
 " PLUGIN CONFIGURATION
 " ==============================================================================
 " {{{
-
-" ------------------------------------------------------------------------------
-" -- UltiSnips  ----------------------------------------------------------------
-
-let g:UltiSnips_Author = "David Granström"
-let g:UltiSnipsExpandTrigger = "<C-j>"
-let g:UltiSnipsJumpForwardTrigger = "<C-j>"
-let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
-let g:UltiSnipsUsePythonVersion = 3
 
 " ------------------------------------------------------------------------------
 " -- Surround  -----------------------------------------------------------------
@@ -377,35 +371,13 @@ let $FZF_DEFAULT_OPTS='--layout=reverse --color=bw'
 let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
 
 " ------------------------------------------------------------------------------
-" -- deoplete ------------------------------------------------------------------
-
-" Don't enable until InsertEnter
-" let g:deoplete#enable_at_startup = 0
-" autocmd vimrc InsertEnter * call deoplete#enable()
-
-" call deoplete#custom#option({
-"       \ 'auto_complete_delay': 0,
-"       \ 'smart_case': v:true,
-"       \ 'camel_case': v:true,
-"       \ 'refresh_always': v:false,
-"       \ })
-
-" inoremap <silent> <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr><C-h> deoplete#smart_close_popup() . "\<C-h>"
-" inoremap <expr><BS>  deoplete#smart_close_popup() . "\<C-h>"
-
-" " <CR>: close popup and save indent.
-" inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-" function! s:my_cr_function() abort
-"   return deoplete#close_popup() . "\<CR>"
-" endfunction
-
-" ------------------------------------------------------------------------------
 " -- scnvim --------------------------------------------------------------------
 
 let g:scnvim_scdoc = 1
 let g:scnvim_arghints_float = 1
 let g:scnvim_echo_args = 1
+let g:scnvim_postwin_orientation = 'h'
+let g:scnvim_postwin_size = 10
 
 " let g:scnvim_postwin_layout = {
 "   \ 'style': 'float',
@@ -415,9 +387,6 @@ let g:scnvim_echo_args = 1
 
 nnoremap <leader>st :SCNvimStart<cr>
 nmap <leader>sk <Plug>(scnvim-recompile)
-
-" snippet support
-let g:UltiSnipsSnippetDirectories = ['UltiSnips', 'scnvim-data']
 
 " ------------------------------------------------------------------------------
 " -- tmux-navigator ------------------------------------------------------------

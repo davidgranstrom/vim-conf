@@ -10,15 +10,15 @@ let g:statusline_loaded = 1
 scriptencoding utf-8
 
 function! s:active_status() abort
-  lua require('statusline').active()
+  lua require('dkg/statusline').active()
 endfunction
 
 function! s:inactive_status() abort
-  lua require('statusline').inactive()
+  lua require('dkg/statusline').inactive()
 endfunction
 
 function! Tabline() abort
-  return luaeval('require("statusline").tabline()')
+  return luaeval('require("dkg/statusline").tabline()')
 endfunction
 
 augroup statusline

@@ -35,5 +35,5 @@ function! MakeRunCurrentTest() abort
   call nvim_input(cmd)
 endfunction
 
-nnoremap <silent> <F3> :lua require('make').make()<cr>
+nnoremap <silent> <F3> :lua require('dkg/make').make()<cr>
 nnoremap <silent> <F4> :call MakeRunCurrentTest()<cr>
