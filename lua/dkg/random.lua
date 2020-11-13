@@ -15,7 +15,7 @@ local float_formatter = nil
 math.randomseed(os.time())
 
 local function get_float_prec()
-  local prec = vim.g.rnd_float_prec or float_prec
+  local prec = vim.g.rnd_float_prec or tostring(float_prec)
   if prec ~= float_prec then
     float_prec = prec
     float_formatter = "%."..float_prec.."f"
