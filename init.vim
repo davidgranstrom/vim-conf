@@ -21,13 +21,16 @@ Plug 'justinmk/vim-dirvish'
 
 " util
 if has('mac')
-Plug '/usr/local/opt/fzf'
+  Plug '/usr/local/opt/fzf'
 end
 Plug 'junegunn/fzf.vim'
 if has('nvim-0.5')
-Plug 'neovim/nvim-lsp'
-Plug 'nvim-lua/diagnostic-nvim'
-Plug 'nvim-lua/completion-nvim'
+  " Plug 'nvim-lua/popup.nvim'
+  " Plug 'nvim-lua/plenary.nvim'
+  " Plug 'nvim-lua/telescope.nvim'
+  Plug 'neovim/nvim-lspconfig'
+  Plug 'nvim-lua/completion-nvim'
+else
 end
 Plug 'tpope/vim-fugitive'
 Plug 'norcalli/nvim-colorizer.lua'
@@ -35,11 +38,12 @@ Plug 'bfredl/nvim-luadev'
 
 " language
 Plug '~/code/vim/scnvim'
+" Plug 'davidgranstrom/scnvim', {'do': {-> scnvim#install() } }
 
 " color schemes / appearance
 Plug 'wadackel/vim-dogrun'
-Plug 'arcticicestudio/nord-vim'
 Plug 'noahfrederick/vim-noctu'
+Plug 'kyazdani42/blue-moon'
 
 " misc
 Plug 'editorconfig/editorconfig-vim'
@@ -64,8 +68,8 @@ let g:did_install_default_menus = 1
 let g:did_install_syntax_menu = 1
 
 " disable netrw
-let g:loaded_netrw = 1
-let g:loaded_netrwPlugin = 1
+" let g:loaded_netrw = 1
+" let g:loaded_netrwPlugin = 1
 
 if has('mac')
 let g:python_host_prog = '/usr/local/bin/python2'
@@ -341,6 +345,9 @@ augroup END
 " ------------------------------------------------------------------------------
 " -- fzf -----------------------------------------------------------------------
 
+" nnoremap <silent> <leader>t :lua require'telescope.builtin'.git_files{}<cr>
+" nnoremap <silent> <leader>i :lua require'telescope.builtin'.lsp_references{}<cr>
+
 " search for file
 nnoremap <silent> <leader>t :<C-u>GFiles<cr>
 " select buffers
@@ -376,8 +383,11 @@ let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
 let g:scnvim_scdoc = 1
 let g:scnvim_arghints_float = 1
 let g:scnvim_echo_args = 1
-let g:scnvim_postwin_orientation = 'h'
-let g:scnvim_postwin_size = 10
+" let g:scnvim_postwin_syntax_hl = 0
+" let g:scnvim_postwin_orientation = 'h'
+" let g:scnvim_postwin_size = 10
+
+" let g:scnvim_sclang_options = ['-u', 9999]
 
 " let g:scnvim_postwin_layout = {
 "   \ 'style': 'float',
@@ -407,6 +417,9 @@ let g:vim_markdown_conceal = 0
 nmap co yo
 
 let g:pear_tree_repeatable_expand = 0
+let g:pear_tree_smart_openers = 1
+let g:pear_tree_smart_closers = 1
+let g:pear_tree_smart_backspace = 1
 
 "##############################################################################
 " Terminal Handling

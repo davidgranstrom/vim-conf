@@ -32,10 +32,8 @@ end
 local function parse_build_progress(data)
   local progress, state = data:match('(%d+%%)%] (%a+)')
   if progress and state then
-    vim.schedule_wrap(function()
-      local build = string.format('%s %s', state, progress)
-      vim.api.nvim_win_set_var(0, 'make_progress', build)
-    end)()
+    local build = string.format('%s %s', state, progress)
+    vim.api.nvim_win_set_var(0, 'make_progress', build)
   end
 end
 
@@ -43,10 +41,8 @@ local function parse_ctest(data)
   local ctest_num = data:match('^%s*(%d+/%d+)')
   if ctest_num then
     local status = data:match('Passed') and 'Passed' or 'Failed'
-    vim.schedule_wrap(function()
-      local ctest = string.format('%s %s', ctest_num, status)
-      vim.api.nvim_win_set_var(0, 'make_progress', ctest)
-    end)()
+    local ctest = string.format('%s %s', ctest_num, status)
+    vim.api.nvim_win_set_var(0, 'make_progress', ctest)
   end
 end
 
@@ -65,14 +61,10 @@ local function on_handle_exit(code)
     msg = 'Build ERR'
     local ctest_fails = parse_ctest_fails(stdout_log)
     if ctest_fails then
-      vim.schedule_wrap(function()
-        vim.call('MakeQuickFix', ctest_fails)
-      end)()
+      vim.call('MakeQuickFix', ctest_fails)
     end
   end
-  vim.schedule_wrap(function()
-    vim.api.nvim_win_set_var(0, 'make_progress', msg)
-  end)()
+  vim.api.nvim_win_set_var(0, 'make_progress', msg)
 end
 
 local function run_make(opts)
@@ -96,31 +88,30 @@ local function run_make(opts)
       opts.stdout,
       opts.stderr,
     },
-    cwd = cwd
+    cwd = cwd,
+    args = {'-j', 4}
   }
-  return uv.spawn('make', options, opts.on_exit)
+  return uv.spawn('make', options, vim.schedule_wrap(opts.on_exit))
 end
 
 --- Handlers
 
-local on_stderr = function(fd) 
+local on_stderr = function() 
   local s = ''
-  uv.read_start(fd, function(err, data)
+  return function(err, data)
     assert(not err, err)
     if data then
       s = s .. data
     else
       -- reached EOF
-      vim.schedule_wrap(function()
-        vim.call('MakeQuickFix', s)
-      end)()
+      vim.call('MakeQuickFix', s)
     end
-  end)
+  end
 end
 
-local on_stdout = function(fd) 
+local on_stdout = function() 
   local s = ''
-  uv.read_start(fd, function(err, data)
+  return function(err, data)
     assert(not err, err)
     if data then
       s = s .. data
@@ -136,7 +127,7 @@ local on_stdout = function(fd)
         end
       end
     end
-  end)
+  end
 end
 
 --- Interface
@@ -169,8 +160,10 @@ function M.make()
     return
   end
 
-  on_stdout(stdout)
-  on_stderr(stderr)
+  local onstdout = on_stdout() 
+  local onstderr = on_stderr() 
+  uv.read_start(stdout, vim.schedule_wrap(onstdout))
+  uv.read_start(stderr, vim.schedule_wrap(onstderr))
 end
 
 return M
