@@ -76,10 +76,10 @@ sclang.on_read = function(data)
 end
 
 sclang.on_exit = function(code, signal)
-  if not M.is_open() then
+  if M.is_open() then
     api.nvim_win_close(M.winnr, true)
-    api.nvim_buf_delete(M.bufnr, { force = true })
   end
+  api.nvim_buf_delete(M.bufnr, { force = true })
 end
 
 return M
