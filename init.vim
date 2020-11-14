@@ -398,6 +398,8 @@ let g:scnvim_echo_args = 1
 nnoremap <leader>st :SCNvimStart<cr>
 nmap <leader>sk <Plug>(scnvim-recompile)
 
+lua require'dkg/supercollider'
+
 " ------------------------------------------------------------------------------
 " -- tmux-navigator ------------------------------------------------------------
 
