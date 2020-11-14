@@ -54,8 +54,8 @@ end
 
 function M.set_mappings()
   local options = { noremap = true, nowait = true, silent = true }
-  api.nvim_buf_set_keymap(0, 'n', '<M-L>', ':lua require"dkg/supercollider".clear()<cr>', options)
-  api.nvim_buf_set_keymap(0, 'n', '<Enter>', ':lua require"dkg/supercollider".toggle()<cr>', options)
+  api.nvim_buf_set_keymap(0, 'n', '<M-L>', '<cmd> lua require"dkg/supercollider".clear()<cr>', options)
+  api.nvim_buf_set_keymap(0, 'n', '<Enter>', '<cmd> lua require"dkg/supercollider".toggle()<cr>', options)
 end
 
 sclang.on_start = function()
