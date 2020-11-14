@@ -18,7 +18,7 @@ function M.clear()
 end
 
 function M.is_open()
-  return M.is_valid() and vim.fn.bufwinid(M.bufnr) > 0
+  return M.is_valid() and vim.fn.bufwinnr(M.bufnr) > 0
 end
 
 function M.open()
