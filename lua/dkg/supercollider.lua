@@ -1,4 +1,8 @@
--- custom floating supercollider post window
+--- @file lua/dkg/supercollider.lua
+--- @author David Granström
+--- @brief Custom sclang floating post window
+--- @license GPLv3
+
 local sclang = require'scnvim/sclang'
 local api = vim.api
 local M = {}
