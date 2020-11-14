@@ -1,7 +1,12 @@
 local lsp = require'nvim_lsp'
 
 lsp.clangd.setup {
-  cmd = {"/usr/local/Cellar/llvm/10.0.0_3/bin/clangd", "--background-index", "--cross-file-rename"},
+  cmd = {
+    "/usr/local/Cellar/llvm/11.0.0/bin/clangd",
+    "--background-index",
+    "--cross-file-rename",
+    "--clang-tidy",
+  },
   filetypes = {"c", "cpp"},
 }
 
