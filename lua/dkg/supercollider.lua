@@ -52,6 +52,7 @@ function Window:create_border(options, margin)
     height = options.height + margin,
     col = options.col - (margin / 2),
     row = options.row - (margin / 2),
+    focusable = false,
   }
   local border = {}
   local top = '╭' .. string.rep('─', opts.width - margin) .. '╮'
