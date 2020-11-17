@@ -292,9 +292,6 @@ if has('nvim-0.5')
 
 lua require('dkg/config')
 
-" don't display diagnostics in insert mode
-let g:diagnostic_insert_delay = 1
-
 " completion-nvim
 "
 " enable completion-nvim for all buffers
