@@ -35,6 +35,7 @@ end
 Plug 'tpope/vim-fugitive'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'bfredl/nvim-luadev'
+Plug 'rktjmp/lush.nvim'
 
 " language
 Plug '~/code/vim/scnvim'
@@ -116,8 +117,9 @@ set shiftround           " round indent to multiples of 'shiftwidth'
 set nojoinspaces         " only insert one space after a join command
 
 set termguicolors
-colorscheme dogrun
+" colorscheme dogrun
 " colorscheme noctu
+colorscheme obsidian
 
 " " noctu override
 " hi StatusLine ctermfg=0 ctermbg=7 cterm=NONE
