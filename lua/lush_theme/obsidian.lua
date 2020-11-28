@@ -61,7 +61,7 @@ local theme = lush(function()
     Visual { bg = cyan, fg = Normal.fg.rotate(180) },
     CursorColumn { CursorLine }, -- Screen-column at the cursor, when 'cursorcolumn' is set.
     -- Whitespace { fg = Normal.bg.desaturate(25).lighten(25) },
-    Comment { bg = Normal.bg, fg = Normal.bg.lighten(25) },
+    Comment { bg = Normal.bg, fg = Normal.bg.lighten(20) },
     LineNr       { fg = cyan.darken(60) }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
     CursorLineNr { bg = Normal.bg, fg = cyan.lighten(50) }, -- Like LineNr when 'cursorline' or 'relativenumber' is set for the cursor line.
 
@@ -74,7 +74,7 @@ local theme = lush(function()
     Cursor       { DefaultHl }, -- character under the cursor
     lCursor      { DefaultHl }, -- the character under the cursor when |language-mapping| is used (see 'guicursor')
     CursorIM     { DefaultHl }, -- like Cursor, but used when in IME mode |CursorIM|
-    Directory    { DefaultHl }, -- directory names (and other special names in listings)
+    Directory    { fg = cyan }, -- directory names (and other special names in listings)
     DiffAdd      { bg = cyan }, -- diff mode: Added line |diff.txt|
     DiffChange   { DefaultHl }, -- diff mode: Changed line |diff.txt|
     DiffDelete   { bg = magenta }, -- diff mode: Deleted line |diff.txt|
@@ -82,14 +82,14 @@ local theme = lush(function()
     EndOfBuffer  { fg = Normal.fg.darken(80), bg = Normal.bg }, -- filler lines (~) after the end of the buffer.  By default, this is highlighted like |hl-NonText|.
     TermCursor   { DefaultHl }, -- cursor in a focused terminal
     TermCursorNC { DefaultHl }, -- cursor in an unfocused terminal
-    ErrorMsg     { DefaultHl }, -- error messages on the command line
+    ErrorMsg     { fg = magenta }, -- error messages on the command line
     VertSplit    { fg = white.darken(30) }, -- the column separating vertically split windows
     Folded       { DefaultHl }, -- line used for closed folds
     FoldColumn   { DefaultHl }, -- 'foldcolumn'
     SignColumn   { DefaultHl }, -- column where |signs| are displayed
     Substitute   { DefaultHl }, -- |:substitute| replacement text highlighting
-    MatchParen   { DefaultHl }, -- The character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
-    ModeMsg      { DefaultHl }, -- 'showmode' message (e.g., "-- INSERT -- ")
+    MatchParen   { bg = magenta }, -- The character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
+    ModeMsg      { fg = magenta }, -- 'showmode' message (e.g., "-- INSERT -- ")
     MsgArea      { DefaultHl }, -- Area for messages and cmdline
     MsgSeparator { DefaultHl }, -- Separator for scrolled messages, `msgsep` flag of 'display'
     MoreMsg      { DefaultHl }, -- |more-prompt|
@@ -121,41 +121,41 @@ local theme = lush(function()
     -- default,
     -- Uncomment and edit if you want more specific syntax highlighting.
 
-    Constant       { fg = cyan, bg = Normal.bg }, -- (preferred) any constant
+    Constant       { fg = cyan },             -- (preferred) any constant
     String         { fg = cyan.lighten(50) }, --   a string constant: "this is a string"
     Character      { fg = cyan.lighten(60) }, --  a character constant: 'c', '\n'
     Number         { fg = cyan.lighten(70) }, --   a number constant: 234, 0xff
-    Float          { Number }, --    a floating point constant: 2.3e10
+    Float          { Number },                --    a floating point constant: 2.3e10
     Boolean        { fg = cyan.lighten(80) }, --  a boolean constant: TRUE, false
 
-    Identifier     { fg = cyan.lighten(20) }, -- (preferred) any variable name
-    Function       { fg = cyan.darken(20) }, -- function name (also: methods for classes)
+    Identifier     { fg = cyan.lighten(15) }, -- (preferred) any variable name
+    Function       { fg = cyan.darken(20)  }, -- function name (also: methods for classes)
 
-    Statement      { fg = cyan.lighten(80), bg = Normal.bg }, -- (preferred) any statement
-    Conditional    { fg = cyan.lighten(70), bg = Normal.bg }, --  if, then, else, endif, switch, etc.
-    Repeat         { fg = cyan.lighten(60), bg = Normal.bg }, --   for, do, while, etc.
-    Label          { fg = cyan.lighten(50), bg = Normal.bg }, --    case, default, etc.
-    Operator       { fg = cyan.lighten(40), bg = Normal.bg }, -- "sizeof", "+", "*", etc.
-    Keyword        { fg = cyan.lighten(30), bg = Normal.bg }, --  any other keyword
-    Exception      { fg = cyan.lighten(20), bg = Normal.bg }, --  try, catch, throw
+    Statement      { fg = cyan.lighten(80) }, -- (preferred) any statement
+    Conditional    { fg = cyan.lighten(70) }, --  if, then, else, endif, switch, etc.
+    Repeat         { fg = cyan.lighten(60) }, --   for, do, while, etc.
+    Label          { fg = cyan.lighten(50) }, --    case, default, etc.
+    Operator       { fg = cyan.lighten(40) }, -- "sizeof", "+", "*", etc.
+    Keyword        { fg = cyan.lighten(30) }, --  any other keyword
+    Exception      { fg = cyan.lighten(20) }, --  try, catch, throw
 
-    PreProc        { fg = cyan.lighten(0), bg = Normal.bg  }, -- (preferred) generic Preprocessor
-    Include        { fg = cyan.lighten(10), bg = Normal.bg  }, --  preprocessor #include
-    Define         { fg = cyan.lighten(20), bg = Normal.bg  }, --   preprocessor #define
-    Macro          { fg = cyan.lighten(30), bg = Normal.bg  }, --    same as Define
-    PreCondit      { fg = cyan.lighten(40), bg = Normal.bg  }, --  preprocessor #if, #else, #endif, etc.
+    PreProc        { fg = cyan.lighten(0)  }, -- (preferred) generic Preprocessor
+    Include        { fg = cyan.lighten(10) }, --  preprocessor #include
+    Define         { fg = cyan.lighten(20) }, --   preprocessor #define
+    Macro          { fg = cyan.lighten(30) }, --    same as Define
+    PreCondit      { fg = cyan.lighten(40) }, --  preprocessor #if, #else, #endif, etc.
 
-    Type           { fg = cyan  }, -- (preferred) int, long, char, etc.
-    StorageClass   { DefaultHl  }, -- static, register, volatile, etc.
-    Structure      { DefaultHl  }, --  struct, union, enum, etc.
-    Typedef        { DefaultHl  }, --  A typedef
+    Type           { fg = cyan  },            -- (preferred) int, long, char, etc.
+    StorageClass   { DefaultHl  },            -- static, register, volatile, etc.
+    Structure      { DefaultHl  },            --  struct, union, enum, etc.
+    Typedef        { DefaultHl  },            --  A typedef
 
-    Special        { DefaultHl  }, -- (preferred) any special symbol
-    SpecialChar    { DefaultHl  }, --  special character in a constant
-    Tag            { DefaultHl  }, --    you can use CTRL-] on this
-    Delimiter      { DefaultHl  }, --  character that needs attention
-    SpecialComment { DefaultHl  }, -- special things inside a comment
-    Debug          { DefaultHl  }, --    debugging statements
+    Special        { DefaultHl  },            -- (preferred) any special symbol
+    SpecialChar    { DefaultHl  },            --  special character in a constant
+    Tag            { DefaultHl  },            --    you can use CTRL-] on this
+    Delimiter      { DefaultHl  },            --  character that needs attention
+    SpecialComment { DefaultHl  },            -- special things inside a comment
+    Debug          { DefaultHl  },            --    debugging statements
 
     -- Underlined { gui = "underline" }, -- (preferred) text that stands out, HTML links
     -- Bold       { gui = "bold" },
@@ -164,16 +164,16 @@ local theme = lush(function()
     -- ("Ignore", below, may be invisible...)
     -- Ignore         { }, -- (preferred) left blank, hidden  |hl-Ignore|
 
-    -- Error          { }, -- (preferred) any erroneous construct
+    Error          { fg = magenta }, -- (preferred) any erroneous construct
 
-    -- Todo           { }, -- (preferred) anything that needs extra attention; mostly the keywords TODO FIXME and XXX
+    Todo           { fg = white, bg = magenta.darken(50) }, -- (preferred) anything that needs extra attention; mostly the keywords TODO FIXME and XXX
 
     -- These groups are for the native LSP client. Some other LSP clients may use
     -- these groups, or use their own. Consult your LSP client's documentation.
 
-    -- LspDiagnosticsError               { }, -- used for "Error" diagnostic virtual text
-    -- LspDiagnosticsErrorSign           { }, -- used for "Error" diagnostic signs in sign column
-    -- LspDiagnosticsErrorFloating       { }, -- used for "Error" diagnostic messages in the diagnostics float
+    LspDiagnosticsError               { Error }, -- used for "Error" diagnostic virtual text
+    LspDiagnosticsErrorSign           { Error }, -- used for "Error" diagnostic signs in sign column
+    LspDiagnosticsErrorFloating       { Error }, -- used for "Error" diagnostic messages in the diagnostics float
     -- LspDiagnosticsWarning             { }, -- used for "Warning" diagnostic virtual text
     -- LspDiagnosticsWarningSign         { }, -- used for "Warning" diagnostic signs in sign column
     -- LspDiagnosticsWarningFloating     { }, -- used for "Warning" diagnostic messages in the diagnostics float
