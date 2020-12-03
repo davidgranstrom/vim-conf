@@ -50,8 +50,10 @@ local hsl = lush.hsl
 
 local obsidian  = hsl(0, 0, 0).lighten(0)  -- the integers used here.
 local white  = hsl('#ffffff').darken(15)  -- Try presing C-a and C-x
-local magenta  = hsl('#ff00ff').darken(10)  -- Try presing C-a and C-x
+local magenta  = hsl('#ff00ff').darken(0)  -- Try presing C-a and C-x
 local cyan  = hsl('#00ffff').darken(50)  -- Try presing C-a and C-x
+local magenta_dark  = cyan.rotate(90).lighten(50)  -- Try presing C-a and C-x
+local cyan_light  = hsl('#00ffff').darken(25)  -- Try presing C-a and C-x
 local DefaultHl = { fg = white, bg = obsidian }
 
 local theme = lush(function()
@@ -76,14 +78,14 @@ local theme = lush(function()
     CursorIM     { DefaultHl }, -- like Cursor, but used when in IME mode |CursorIM|
     Directory    { fg = cyan }, -- directory names (and other special names in listings)
     DiffAdd      { bg = cyan }, -- diff mode: Added line |diff.txt|
-    DiffChange   { DefaultHl }, -- diff mode: Changed line |diff.txt|
+    DiffChange   { bg = cyan_light }, -- diff mode: Changed line |diff.txt|
     DiffDelete   { bg = magenta }, -- diff mode: Deleted line |diff.txt|
-    DiffText     { DefaultHl }, -- diff mode: Changed text within a changed line |diff.txt|
+    DiffText     { fg = magenta }, -- diff mode: Changed text within a changed line |diff.txt|
     EndOfBuffer  { fg = Normal.fg.darken(80), bg = Normal.bg }, -- filler lines (~) after the end of the buffer.  By default, this is highlighted like |hl-NonText|.
     TermCursor   { DefaultHl }, -- cursor in a focused terminal
     TermCursorNC { DefaultHl }, -- cursor in an unfocused terminal
     ErrorMsg     { fg = magenta }, -- error messages on the command line
-    VertSplit    { fg = white.darken(30) }, -- the column separating vertically split windows
+    VertSplit    { fg = white.darken(50) }, -- the column separating vertically split windows
     Folded       { DefaultHl }, -- line used for closed folds
     FoldColumn   { DefaultHl }, -- 'foldcolumn'
     SignColumn   { DefaultHl }, -- column where |signs| are displayed
@@ -122,31 +124,30 @@ local theme = lush(function()
     -- Uncomment and edit if you want more specific syntax highlighting.
 
     Constant       { fg = cyan },             -- (preferred) any constant
-    -- String         { fg = cyan.lighten(50) }, --   a string constant: "this is a string"
-    String         { fg = magenta.darken(20) }, --   a string constant: "this is a string"
-    Character      { fg = String.fg.lighten(20) }, --  a character constant: 'c', '\n'
-    Number         { fg = cyan.lighten(70) }, --   a number constant: 234, 0xff
+    String         { fg = magenta_dark }, --   a string constant: "this is a string"
+    Character      { fg = magenta }, --  a character constant: 'c', '\n'
+    Number         { fg = white }, --   a number constant: 234, 0xff
     Float          { Number },                --    a floating point constant: 2.3e10
-    Boolean        { fg = cyan.lighten(80) }, --  a boolean constant: TRUE, false
+    Boolean        { fg = magenta }, --  a boolean constant: TRUE, false
 
-    Identifier     { fg = cyan.lighten(15) }, -- (preferred) any variable name
-    Function       { fg = cyan.darken(20)  }, -- function name (also: methods for classes)
+    Identifier     { fg = cyan_light }, -- (preferred) any variable name
+    Function       { fg = cyan }, -- function name (also: methods for classes)
 
-    Statement      { fg = cyan.lighten(80) }, -- (preferred) any statement
-    Conditional    { fg = cyan.lighten(70) }, --  if, then, else, endif, switch, etc.
-    Repeat         { fg = cyan.lighten(60) }, --   for, do, while, etc.
-    Label          { fg = cyan.lighten(50) }, --    case, default, etc.
-    Operator       { fg = cyan.lighten(40) }, -- "sizeof", "+", "*", etc.
-    Keyword        { fg = cyan.lighten(30) }, --  any other keyword
-    Exception      { fg = cyan.lighten(20) }, --  try, catch, throw
+    Statement      { fg = cyan }, -- (preferred) any statement
+    Conditional    { fg = cyan_light }, --  if, then, else, endif, switch, etc.
+    Repeat         { fg = cyan_light }, --   for, do, while, etc.
+    Label          { fg = cyan_light }, --    case, default, etc.
+    Operator       { fg = cyan_light }, -- "sizeof", "+", "*", etc.
+    Keyword        { fg = cyan_light }, --  any other keyword
+    Exception      { fg = cyan }, --  try, catch, throw
 
-    PreProc        { fg = cyan.lighten(0)  }, -- (preferred) generic Preprocessor
-    Include        { fg = cyan.lighten(10) }, --  preprocessor #include
-    Define         { fg = cyan.lighten(20) }, --   preprocessor #define
-    Macro          { fg = cyan.lighten(30) }, --    same as Define
-    PreCondit      { fg = cyan.lighten(40) }, --  preprocessor #if, #else, #endif, etc.
+    PreProc        { fg = cyan }, -- (preferred) generic Preprocessor
+    Include        { fg = cyan }, --  preprocessor #include
+    Define         { fg = cyan }, --   preprocessor #define
+    Macro          { fg = cyan }, --    same as Define
+    PreCondit      { fg = cyan }, --  preprocessor #if, #else, #endif, etc.
 
-    Type           { fg = cyan  },            -- (preferred) int, long, char, etc.
+    Type           { fg = cyan_light  },            -- (preferred) int, long, char, etc.
     StorageClass   { DefaultHl  },            -- static, register, volatile, etc.
     Structure      { DefaultHl  },            --  struct, union, enum, etc.
     Typedef        { DefaultHl  },            --  A typedef
