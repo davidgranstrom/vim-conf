@@ -48,9 +48,9 @@ local hsl = lush.hsl
 --
 -- Lets define some colors (these should already be highlighted for you):
 
-local obsidian  = hsl(0, 0, 0).lighten(2)  -- the integers used here.
+local obsidian  = hsl(0, 0, 0).lighten(0)  -- the integers used here.
 local white  = hsl('#ffffff').darken(15)  -- Try presing C-a and C-x
-local magenta  = hsl('#ff00ff').darken(30)  -- Try presing C-a and C-x
+local magenta  = hsl('#ff00ff').darken(10)  -- Try presing C-a and C-x
 local cyan  = hsl('#00ffff').darken(50)  -- Try presing C-a and C-x
 local DefaultHl = { fg = white, bg = obsidian }
 
@@ -61,7 +61,7 @@ local theme = lush(function()
     Visual { bg = cyan, fg = Normal.fg.rotate(180) },
     CursorColumn { CursorLine }, -- Screen-column at the cursor, when 'cursorcolumn' is set.
     -- Whitespace { fg = Normal.bg.desaturate(25).lighten(25) },
-    Comment { bg = Normal.bg, fg = Normal.bg.lighten(20) },
+    Comment { bg = Normal.bg, fg = Normal.bg.lighten(30) },
     LineNr       { fg = cyan.darken(60) }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
     CursorLineNr { bg = Normal.bg, fg = cyan.lighten(50) }, -- Like LineNr when 'cursorline' or 'relativenumber' is set for the cursor line.
 
@@ -122,8 +122,9 @@ local theme = lush(function()
     -- Uncomment and edit if you want more specific syntax highlighting.
 
     Constant       { fg = cyan },             -- (preferred) any constant
-    String         { fg = cyan.lighten(50) }, --   a string constant: "this is a string"
-    Character      { fg = cyan.lighten(60) }, --  a character constant: 'c', '\n'
+    -- String         { fg = cyan.lighten(50) }, --   a string constant: "this is a string"
+    String         { fg = magenta.darken(20) }, --   a string constant: "this is a string"
+    Character      { fg = String.fg.lighten(20) }, --  a character constant: 'c', '\n'
     Number         { fg = cyan.lighten(70) }, --   a number constant: 234, 0xff
     Float          { Number },                --    a floating point constant: 2.3e10
     Boolean        { fg = cyan.lighten(80) }, --  a boolean constant: TRUE, false
@@ -200,10 +201,10 @@ local theme = lush(function()
     -- TSConstant           { }, -- For constants
     -- TSConstBuiltin       { }, -- For constant that are built in the language: `nil` in Lua.
     -- TSConstMacro         { }, -- For constants that are defined by macros: `NULL` in C.
-    -- TSString             { }, -- For strings.
+    TSString             { String }, -- For strings.
     -- TSStringRegex        { }, -- For regexes.
     -- TSStringEscape       { }, -- For escape characters within a string.
-    -- TSCharacter          { }, -- For characters.
+    TSCharacter          { Character }, -- For characters.
     -- TSNumber             { }, -- For integers.
     -- TSBoolean            { }, -- For booleans.
     -- TSFloat              { }, -- For floats.
@@ -219,11 +220,11 @@ local theme = lush(function()
     -- TSConditional        { }, -- For keywords related to conditionnals.
     -- TSRepeat             { }, -- For keywords related to loops.
     -- TSLabel              { }, -- For labels: `label:` in C and `:label:` in Lua.
-    -- TSOperator           { }, -- For any operator: `+`, but also `->` and `*` in C.
+    -- TSOperator           { fg = magenta }, -- For any operator: `+`, but also `->` and `*` in C.
     -- TSKeyword            { }, -- For keywords that don't fall in previous categories.
     -- TSKeywordFunction    { }, -- For keywords used to define a fuction.
     -- TSException          { }, -- For exception related keywords.
-    -- TSType               { }, -- For types.
+    TSType               { fg = '#ffffff' }, -- For types.
     -- TSTypeBuiltin        { }, -- For builtin types (you guessed it, right ?).
     -- TSNamespace          { }, -- For identifiers referring to modules and namespaces.
     -- TSInclude            { }, -- For includes: `#include` in C, `use` or `extern crate` in Rust, or `require` in Lua.
