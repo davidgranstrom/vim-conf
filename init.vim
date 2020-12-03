@@ -35,7 +35,7 @@ end
 Plug 'tpope/vim-fugitive'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'bfredl/nvim-luadev'
-Plug 'rktjmp/lush.nvim'
+" Plug 'rktjmp/lush.nvim'
 
 " language
 Plug '~/code/vim/scnvim'
