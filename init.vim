@@ -374,6 +374,7 @@ function! s:search_selection() range
 endfunction
 
 let $FZF_DEFAULT_OPTS='--layout=reverse --color=bw'
+let g:fzf_preview_window = []
 let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
 
 " ------------------------------------------------------------------------------
@@ -382,9 +383,9 @@ let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
 let g:scnvim_scdoc = 1
 let g:scnvim_arghints_float = 1
 let g:scnvim_echo_args = 1
+let g:scnvim_postwin_orientation = 'h'
+let g:scnvim_postwin_size = 10
 " let g:scnvim_postwin_syntax_hl = 0
-" let g:scnvim_postwin_orientation = 'h'
-" let g:scnvim_postwin_size = 10
 
 " let g:scnvim_sclang_options = ['-u', 9999]
 
@@ -396,8 +397,7 @@ let g:scnvim_echo_args = 1
 
 nnoremap <leader>st :SCNvimStart<cr>
 nmap <leader>sk <Plug>(scnvim-recompile)
-
-lua require'dkg/supercollider'
+" lua require'dkg/supercollider'
 
 " ------------------------------------------------------------------------------
 " -- tmux-navigator ------------------------------------------------------------
@@ -500,7 +500,7 @@ endfunction
 
 augroup hlyank
   autocmd!
-  autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup="Search", timeout=80}
+  autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup="MatchParen", timeout=80}
 augroup END
 
 augroup lua_vimrc
