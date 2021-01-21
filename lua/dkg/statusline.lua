@@ -74,6 +74,7 @@ local function active_left()
   local ft = get_ft()
   local s = ''
   -- truncate at beginning of line
+  s = s .. '%#StatusLine#'
   s = s .. '%<'
   -- filename
   if ft ~= 'help' then
@@ -112,6 +113,7 @@ end
 local function inactive_left()
   local s = ''
   -- tail of filename path
+  s = s .. '%#StatusLineNC#'
   s = s .. '%t'
   return s
 end

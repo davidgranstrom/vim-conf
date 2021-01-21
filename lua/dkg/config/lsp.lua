@@ -10,6 +10,8 @@ lsp.clangd.setup {
   filetypes = {"c", "cpp"},
 }
 
+lsp.cmake.setup{}
+
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
     -- This will disable virtual text, like doing:
@@ -26,31 +28,3 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     -- "let g:diagnostic_insert_delay = 1"
     update_in_insert = false,
   })
-
-require'nvim-treesitter.configs'.setup{
-  ensure_installed = {"c", "cpp", "lua", "html", "javascript"},
-  highlight = {
-    enable = true,
-    disable = {},
-  },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = "<Enter>",
-      node_incremental = "<Enter>",
-      node_decremental = "<BS>",
-    },
-  },
-  textobjects = {
-    select = {
-      enable = true,
-      keymaps = {
-        -- You can use the capture groups defined in textobjects.scm
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
-      }
-    }
-  }
-}

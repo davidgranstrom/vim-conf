@@ -20,31 +20,22 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'justinmk/vim-dirvish'
 
 " util
-if has('mac')
-  Plug '/usr/local/opt/fzf'
-end
-Plug 'junegunn/fzf.vim'
 if has('nvim-0.5')
-  " Plug 'nvim-lua/popup.nvim'
-  " Plug 'nvim-lua/plenary.nvim'
-  " Plug 'nvim-lua/telescope.nvim'
   Plug 'neovim/nvim-lspconfig'
   Plug 'nvim-lua/completion-nvim'
-else
 end
 Plug 'tpope/vim-fugitive'
 Plug 'norcalli/nvim-colorizer.lua'
-Plug 'bfredl/nvim-luadev'
-" Plug 'rktjmp/lush.nvim'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 
 " language
 Plug '~/code/vim/scnvim'
-" Plug 'davidgranstrom/scnvim', {'do': {-> scnvim#install() } }
+Plug '~/code/vim/osc.nvim'
 
 " color schemes / appearance
-Plug 'wadackel/vim-dogrun'
-Plug 'noahfrederick/vim-noctu'
-Plug 'kyazdani42/blue-moon'
+Plug 'pineapplegiant/spaceduck'
 
 " misc
 Plug 'editorconfig/editorconfig-vim'
@@ -68,13 +59,13 @@ set mouse=a                         " enable mouse
 let g:did_install_default_menus = 1
 let g:did_install_syntax_menu = 1
 
-" disable netrw
-" let g:loaded_netrw = 1
-" let g:loaded_netrwPlugin = 1
+" disable netrw (NOTE: uncomment to download new spell files)
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
 
 if has('mac')
-let g:python_host_prog = '/usr/local/bin/python2'
-let g:python3_host_prog = '/usr/local/bin/python3'
+  let g:python_host_prog = '/usr/local/bin/python2'
+  let g:python3_host_prog = '/usr/local/bin/python3'
 end
 
 " }}}
@@ -117,20 +108,8 @@ set shiftround           " round indent to multiples of 'shiftwidth'
 set nojoinspaces         " only insert one space after a join command
 
 set termguicolors
-" colorscheme dogrun
-" colorscheme noctu
-colorscheme obsidian
-
-" " noctu override
-" hi StatusLine ctermfg=0 ctermbg=7 cterm=NONE
-" hi CursorLine ctermfg=7 ctermbg=0 cterm=NONE
-" hi VertSplit  ctermfg=7 ctermbg=0 cterm=NONE
-" hi IncSearch  ctermfg=7 ctermbg=12 cterm=NONE
-" hi Search     ctermfg=7 ctermbg=12
-" hi MatchParen ctermfg=7 ctermbg=12  cterm=NONE
-
-" sc
-" hi! def link scGlobVariable Identifier
+colorscheme spaceduck
+hi! link Comment Folded
 
 " }}}
 " ==============================================================================
@@ -220,7 +199,7 @@ nnoremap Q <Nop>
 nnoremap <leader>r *``cgn
 
 " don't move cursor after visual selection yank
-" vnoremap <expr>y "my\"" . v:register . "y`y"
+vnoremap <expr>y "my\"" . v:register . "y`y"
 
 " remap esc in terminal mode
 tnoremap <Esc> <C-\><C-n>
@@ -243,17 +222,6 @@ augroup END
 
 augroup vimrc_filetype
   autocmd!
-
-  " vim
-  " save and source current file
-  autocmd FileType vim nnoremap <buffer> <leader>so :w \| so%<cr>
-
-  " if has('nvim')
-  "   " make autoread behave as expected (neovim only)
-  "   autocmd FocusGained * if &autoread | silent checktime | endif
-  "   " save last terminal job id
-  "   autocmd TermOpen * let g:last_terminal_job_id = b:terminal_job_id
-  " endif
 
   " c/cpp
   " autocmd BufEnter,BufReadPre,BufNewFile *.h,*.c setlocal filetype=c.doxygen
@@ -286,21 +254,32 @@ augroup END
 
 " }}}
 " ==============================================================================
-" LSP
+" Lua
 " ==============================================================================
 " {{{
-"
+
 if has('nvim-0.5')
+  lua require'dkg.config.lsp'
+  lua require'dkg.config.treesitter'
+  lua require'dkg.config.telescope'
+end
 
-lua require('dkg/config')
+" }}}
+" ==============================================================================
+" PLUGIN CONFIGURATION
+" ==============================================================================
+" {{{
 
-" completion-nvim
-"
+" ------------------------------------------------------------------------------
+" -- completion-nvim -----------------------------------------------------------
+
 " enable completion-nvim for all buffers
-augroup lsp_vimrc
-  autocmd!
-  autocmd BufEnter * lua require'completion'.on_attach()
-augroup END
+if has('nvim-0.5')
+  augroup completion_vimrc
+    autocmd!
+    autocmd BufEnter * lua require'completion'.on_attach()
+  augroup END
+endif
 
 " Use <Tab> and <S-Tab> to navigate through popup menu
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -315,14 +294,6 @@ set shortmess+=c
 let g:completion_auto_change_source = 1
 let g:completion_enable_auto_hover = 0
 let g:completion_trigger_keyword_length = 3
-
-end " has('nvim-0.5')
-
-" }}}
-" ==============================================================================
-" PLUGIN CONFIGURATION
-" ==============================================================================
-" {{{
 
 " ------------------------------------------------------------------------------
 " -- Surround  -----------------------------------------------------------------
@@ -342,62 +313,19 @@ augroup vimrc_git
 augroup END
 
 " ------------------------------------------------------------------------------
-" -- fzf -----------------------------------------------------------------------
+" -- telescope -----------------------------------------------------------------
 
-" nnoremap <silent> <leader>t :lua require'telescope.builtin'.git_files{}<cr>
-" nnoremap <silent> <leader>i :lua require'telescope.builtin'.lsp_references{}<cr>
-
-" search for file
-nnoremap <silent> <leader>t :<C-u>GFiles<cr>
-" select buffers
-nnoremap <silent> <leader>b :<C-u>Buffers<cr>
-" search in current dir
-nnoremap <silent> <leader>g/ :<C-u>Rg<cr>
-" search for current word in pwd
-nnoremap <silent> <leader>i :<C-u>call <sid>search_word()<cr>
-xnoremap <silent> <leader>i :<C-u>call <sid>search_selection()<cr>
-
-function! s:search_word()
-  execute 'Rg' expand('<cword>')
-endfunction
-
-function! s:search_selection() range
-  let old_reg = getreg('"')
-  let old_regtype = getregtype('"')
-  let old_clipboard = &clipboard
-  set clipboard&
-  normal! ""gvy
-  let selection = getreg('"')
-  call setreg('"', old_reg, old_regtype)
-  let &clipboard = old_clipboard
-  execute 'Rg' selection
-endfunction
-
-let $FZF_DEFAULT_OPTS='--layout=reverse --color=bw'
-let g:fzf_preview_window = []
-let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
+nnoremap <silent> <leader>t <cmd>Telescope git_files<cr>
+nnoremap <silent> <leader>b <cmd>Telescope buffers<cr>
+nnoremap <silent> <leader>g <cmd>Telescope live_grep<cr>
+nnoremap <silent> <leader>i <cmd>Telescope grep_string<cr>
 
 " ------------------------------------------------------------------------------
 " -- scnvim --------------------------------------------------------------------
 
 let g:scnvim_scdoc = 1
-let g:scnvim_arghints_float = 1
-let g:scnvim_echo_args = 1
-let g:scnvim_postwin_orientation = 'h'
-let g:scnvim_postwin_size = 10
-" let g:scnvim_postwin_syntax_hl = 0
-
-" let g:scnvim_sclang_options = ['-u', 9999]
-
-" let g:scnvim_postwin_layout = {
-"   \ 'style': 'float',
-"   \ 'style': 'inline', " default
-"   \ 'bufnum': function('create#buf'),  " optional
-" }
-
-nnoremap <leader>st :SCNvimStart<cr>
+nnoremap <leader>st <cmd>SCNvimStart<cr>
 nmap <leader>sk <Plug>(scnvim-recompile)
-" lua require'dkg/supercollider'
 
 " ------------------------------------------------------------------------------
 " -- tmux-navigator ------------------------------------------------------------
@@ -422,97 +350,9 @@ let g:pear_tree_smart_openers = 1
 let g:pear_tree_smart_closers = 1
 let g:pear_tree_smart_backspace = 1
 
-"##############################################################################
-" Terminal Handling
-"##############################################################################
-
-function! ToggleTerm(cmd)
-    if empty(bufname(a:cmd))
-        call CreateCenteredFloatingWindow()
-        call termopen(a:cmd, { 'on_exit': function('OnTermExit') })
-    else
-        call DeleteUnlistedBuffers()
-    endif
-endfunction
-
-function! ToggleScratchTerm()
-    call ToggleTerm('zsh')
-    startinsert
-endfunction
-
-nnoremap <leader>o :call ToggleScratchTerm()<cr>
-
-function! OnTermExit(job_id, code, event) dict
-    if a:code == 0
-        call DeleteUnlistedBuffers()
-    endif
-endfunction
-
-function! DeleteUnlistedBuffers()
-    for n in nvim_list_bufs()
-        if ! buflisted(n)
-            let name = bufname(n)
-            if name ==# '[Scratch]' ||
-              \ matchend(name, ':fzf') ||
-              \ matchend(name, ':zsh')
-                call CleanupBuffer(n)
-            endif
-        endif
-    endfor
-endfunction
-
-function! CleanupBuffer(buf)
-    if bufexists(a:buf)
-        silent execute 'bwipeout! '.a:buf
-    endif
-endfunction
-
-" Creates a floating window with a most recent buffer to be used
-function! CreateCenteredFloatingWindow()
-    let width = float2nr(&columns * 0.6)
-    let height = float2nr(&lines * 0.6)
-    let top = ((&lines - height) / 2) - 1
-    let left = (&columns - width) / 2
-    let opts = {'relative': 'editor', 'row': top, 'col': left, 'width': width, 'height': height, 'style': 'minimal'}
-
-    let top = "╭" . repeat("─", width - 2) . "╮"
-    let mid = "│" . repeat(" ", width - 2) . "│"
-    let bot = "╰" . repeat("─", width - 2) . "╯"
-    let lines = [top] + repeat([mid], height - 2) + [bot]
-    let s:buf = nvim_create_buf(v:false, v:true)
-    call nvim_buf_set_lines(s:buf, 0, -1, v:true, lines)
-    call nvim_open_win(s:buf, v:true, opts)
-    set winhl=Normal:Floating
-    let opts.row += 1
-    let opts.height -= 2
-    let opts.col += 2
-    let opts.width -= 4
-    call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
-    autocmd BufWipeout <buffer> call CleanupBuffer(s:buf)
-    tnoremap <buffer> <silent> <Esc> <C-\><C-n><CR>:call DeleteUnlistedBuffers()<CR>
-endfunction
-
-function! EchoHighlightGroup()
-  for id in synstack(line("."), col("."))
-    echo synIDattr(id, "name")
-  endfor
-endfunction
-
 augroup hlyank
   autocmd!
-  autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup="MatchParen", timeout=80}
-augroup END
-
-augroup lua_vimrc
-  au!
-  " Execute the current line
-  au FileType lua nmap <A-e> <Plug>(Luadev-RunLine)
-  " in visual mode: execute visual selection
-  au FileType lua xmap <A-e> <Plug>(Luadev-Run)
-  " Eval identifier under cursor, including table.attr
-  au FileType lua nmap <M-p> <Plug>(Luadev-RunWord)
-  " in insert mode: complete (nested) global table fields
-  au FileType lua imap <C-x><C-x> <Plug>(Luadev-Complete)
+  autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="MatchParen", timeout=80}
 augroup END
 
 " ===========================================================================
