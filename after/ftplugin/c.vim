@@ -18,3 +18,5 @@ nnoremap <buffer><silent> <leader>a :ClangdSwitchSourceHeader<cr>
 " diagnostics
 nnoremap <leader>n <cmd>lua vim.lsp.diagnostic.goto_next { wrap = false }<CR>
 nnoremap <leader>o <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
+
+nnoremap <silent> <leader>i <cmd>Telescope lsp_references<cr>

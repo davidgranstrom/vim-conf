@@ -223,10 +223,6 @@ augroup END
 augroup vimrc_filetype
   autocmd!
 
-  " c/cpp
-  " autocmd BufEnter,BufReadPre,BufNewFile *.h,*.c setlocal filetype=c.doxygen
-  autocmd BufEnter,BufReadPre,BufNewFile *.h setlocal filetype=c
-
   " c#
   autocmd FileType cs set tabstop=4 softtabstop=4 shiftwidth=4
 
