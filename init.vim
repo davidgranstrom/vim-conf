@@ -10,39 +10,43 @@ call plug#begin()
 
 " editing
 Plug 'tmsvg/pear-tree'
+" Plug 'steelsojka/pears.nvim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-abolish'
-Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} 
+Plug 'nvim-treesitter/playground', {'on': 'TSPlaygroundToggle'}
 
 " navigation
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'justinmk/vim-dirvish'
 
 " util
-if has('nvim-0.5')
-  Plug 'neovim/nvim-lspconfig'
-  Plug 'nvim-lua/completion-nvim'
-end
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/nvim-compe'
 Plug 'tpope/vim-fugitive'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'mfussenegger/nvim-dap'
+Plug 'theHamsta/nvim-dap-virtual-text'
 
 " language
 Plug '~/code/vim/scnvim'
 Plug '~/code/vim/osc.nvim'
 
 " color schemes / appearance
-Plug 'pineapplegiant/spaceduck'
+Plug 'folke/tokyonight.nvim'
+Plug 'lukas-reineke/indent-blankline.nvim', {'branch': 'lua'}
+Plug 'kyazdani42/nvim-web-devicons'
 
 " misc
+Plug 'alec-gibson/nvim-tetris'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug '~/code/vim/nvim-markdown-preview'
-Plug '~/code/vim/vim-dkg'
 
 call plug#end()
 
@@ -78,7 +82,8 @@ end
 set virtualedit=all      " be able to access all areas of the buffer
 set hidden               " be able to hide modified buffers
 set clipboard=unnamed    " yank to system-wide clipboard
-set completeopt-=preview " don't display scratch buffer for completion
+" set completeopt-=preview " don't display scratch buffer for completion
+set completeopt=menu,menuone,noselect
 set inccommand=nosplit   " preview changes (:s/) incrementally
 
 " appearance
@@ -108,8 +113,13 @@ set shiftround           " round indent to multiples of 'shiftwidth'
 set nojoinspaces         " only insert one space after a join command
 
 set termguicolors
-colorscheme spaceduck
-hi! link Comment Folded
+let g:tokyonight_style = "night"
+colorscheme tokyonight
+hi! link EndOfBuffer NonText
+hi! link VertSplit Normal
+
+" colorscheme spaceduck
+" hi! link Comment Folded
 
 " }}}
 " ==============================================================================
@@ -179,9 +189,6 @@ xnoremap gp "0p
 
 " move to the first non-blank character of the line
 nnoremap <BS> ^
-
-" create an empty buffer for SuperCollider code
-nnoremap <leader>sn :SCNewScratchBuf<CR>
 
 " edit current buffer in a new tab
 nnoremap <silent><leader>z :tabedit!%<cr>
@@ -258,6 +265,8 @@ if has('nvim-0.5')
   lua require'dkg.config.lsp'
   lua require'dkg.config.treesitter'
   lua require'dkg.config.telescope'
+  lua require'dkg.config.dap'
+  lua require'dkg.config.general'
 end
 
 " }}}
@@ -267,29 +276,26 @@ end
 " {{{
 
 " ------------------------------------------------------------------------------
-" -- completion-nvim -----------------------------------------------------------
-
-" enable completion-nvim for all buffers
-if has('nvim-0.5')
-  augroup completion_vimrc
-    autocmd!
-    autocmd BufEnter * lua require'completion'.on_attach()
-  augroup END
-endif
+" -- nvim-compe ----------------------------------------------------------------
 
 " Use <Tab> and <S-Tab> to navigate through popup menu
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-" Set completeopt to have a better completion experience
-set completeopt=menuone,noinsert,noselect
-
-" Avoid showing message extra message when using completion
-set shortmess+=c
-
-let g:completion_auto_change_source = 1
-let g:completion_enable_auto_hover = 0
-let g:completion_trigger_keyword_length = 3
+lua << EOF
+require'compe'.setup {
+  enabled = true,
+  min_length = 3,
+  source = {
+    path = true,
+    buffer = true,
+    tags = true,
+    nvim_lsp = true,
+    nvim_lua = true,
+    vsnip = false,
+  }
+}
+EOF
 
 " ------------------------------------------------------------------------------
 " -- Surround  -----------------------------------------------------------------
@@ -322,6 +328,7 @@ nnoremap <silent> <leader>i <cmd>Telescope grep_string<cr>
 let g:scnvim_scdoc = 1
 nnoremap <leader>st <cmd>SCNvimStart<cr>
 nmap <leader>sk <Plug>(scnvim-recompile)
+nnoremap <leader>sn <cmd>lua sc_scratchpad_new()<CR>
 
 " ------------------------------------------------------------------------------
 " -- tmux-navigator ------------------------------------------------------------
@@ -348,8 +355,14 @@ let g:pear_tree_smart_backspace = 1
 
 augroup hlyank
   autocmd!
-  autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="MatchParen", timeout=80}
+  autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=80}
 augroup END
+
+let g:indent_blankline_char = '│'
+let g:indent_blankline_show_first_indent_level = v:false
+let g:indent_blankline_filetype_exclude = ['help', 'scnvim', 'git', 'markdown']
+
+let g:dap_virtual_text = v:true
 
 " ===========================================================================
 " }}}
