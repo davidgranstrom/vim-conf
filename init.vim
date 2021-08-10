@@ -121,8 +121,6 @@ colorscheme tokyonight
 hi! link EndOfBuffer NonText
 hi! link VertSplit Normal
 
-set noshowmode
-
 " colorscheme spaceduck
 " hi! link Comment Folded
 
