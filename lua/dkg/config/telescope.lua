@@ -19,7 +19,7 @@ require'telescope'.setup {
         ['<C-q>'] = actions.send_to_qflist,
       },
     },
-    preview_cutoff = 120,
+    -- preview_cutoff = 120,
     color_devicons = true,
     file_sorter = sorters.get_fzy_sorter,
     file_previewer = previewers.vim_buffer_cat.new,

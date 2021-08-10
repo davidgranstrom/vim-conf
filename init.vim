@@ -10,16 +10,17 @@ call plug#begin()
 
 " editing
 Plug 'tmsvg/pear-tree'
-" Plug 'steelsojka/pears.nvim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-abolish'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} 
+Plug 'nvim-treesitter/nvim-treesitter', {'branch' : '0.5-compat', 'do': ':TSUpdate'} 
+Plug 'nvim-treesitter/nvim-treesitter-textobjects', {'branch' : '0.5-compat'}
 Plug 'nvim-treesitter/playground', {'on': 'TSPlaygroundToggle'}
 
 " navigation
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'justinmk/vim-dirvish'
+" Plug 'ggandor/lightspeed.nvim'
 
 " util
 Plug 'neovim/nvim-lspconfig'
@@ -31,14 +32,15 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'mfussenegger/nvim-dap'
 Plug 'theHamsta/nvim-dap-virtual-text'
+Plug 'jbyuki/venn.nvim'
 
 " language
 Plug '~/code/vim/scnvim'
-Plug '~/code/vim/osc.nvim'
+Plug 'ziglang/zig.vim'
 
 " color schemes / appearance
 Plug 'folke/tokyonight.nvim'
-Plug 'lukas-reineke/indent-blankline.nvim', {'branch': 'lua'}
+Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 
 " misc
@@ -47,6 +49,7 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug '~/code/vim/nvim-markdown-preview'
+Plug '~/code/vim/osc.nvim'
 
 call plug#end()
 
@@ -117,6 +120,8 @@ let g:tokyonight_style = "night"
 colorscheme tokyonight
 hi! link EndOfBuffer NonText
 hi! link VertSplit Normal
+
+set noshowmode
 
 " colorscheme spaceduck
 " hi! link Comment Folded
@@ -261,41 +266,13 @@ augroup END
 " ==============================================================================
 " {{{
 
-if has('nvim-0.5')
-  lua require'dkg.config.lsp'
-  lua require'dkg.config.treesitter'
-  lua require'dkg.config.telescope'
-  lua require'dkg.config.dap'
-  lua require'dkg.config.general'
-end
+lua require'dkg'
 
 " }}}
 " ==============================================================================
 " PLUGIN CONFIGURATION
 " ==============================================================================
 " {{{
-
-" ------------------------------------------------------------------------------
-" -- nvim-compe ----------------------------------------------------------------
-
-" Use <Tab> and <S-Tab> to navigate through popup menu
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-lua << EOF
-require'compe'.setup {
-  enabled = true,
-  min_length = 3,
-  source = {
-    path = true,
-    buffer = true,
-    tags = true,
-    nvim_lsp = true,
-    nvim_lua = true,
-    vsnip = false,
-  }
-}
-EOF
 
 " ------------------------------------------------------------------------------
 " -- Surround  -----------------------------------------------------------------
@@ -305,7 +282,7 @@ xmap s <plug>VSurround
 " ------------------------------------------------------------------------------
 " -- Fugitive  -----------------------------------------------------------------
 
-nnoremap <leader>fs :Gstatus<cr>
+nnoremap <leader>fs :Git<cr>
 nnoremap <F5> :Gblame<cr>
 
 augroup vimrc_git
@@ -357,12 +334,6 @@ augroup hlyank
   autocmd!
   autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=80}
 augroup END
-
-let g:indent_blankline_char = '│'
-let g:indent_blankline_show_first_indent_level = v:false
-let g:indent_blankline_filetype_exclude = ['help', 'scnvim', 'git', 'markdown']
-
-let g:dap_virtual_text = v:true
 
 " ===========================================================================
 " }}}

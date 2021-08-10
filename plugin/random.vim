@@ -8,11 +8,11 @@ endif
 let g:random_loaded = 1
 
 function s:insert_float() abort
-  call nvim_feedkeys(luaeval('require"dkg/random".float()'), 'i', v:true)
+  call nvim_feedkeys(luaeval('require"dkg.random".float()'), 'i', v:true)
 endfunction
 
 function s:insert_int() abort
-  call nvim_feedkeys(luaeval('require"dkg/random".int()'), 'i', v:true)
+  call nvim_feedkeys(luaeval('require"dkg.random".int()'), 'i', v:true)
 endfunction
 
 function s:array_opts() abort
@@ -24,22 +24,22 @@ endfunction
 
 function s:insert_float_array() abort
   let opts = s:array_opts()
-  let array = luaeval('require"dkg/random".float_array(unpack(_A))', opts)
+  let array = luaeval('require"dkg.random".float_array(unpack(_A))', opts)
   call nvim_feedkeys(array, 'i', v:true)
 endfunction
 
 function s:insert_int_array() abort
   let opts = s:array_opts()
-  let array = luaeval('require"dkg/random".int_array(unpack(_A))', opts)
+  let array = luaeval('require"dkg.random".int_array(unpack(_A))', opts)
   call nvim_feedkeys(array, 'i', v:true)
 endfunction
 
 function s:set_int_range(...) abort
-  call luaeval('require"dkg/random".set_int_range(unpack(_A))', a:000)
+  call luaeval('require"dkg.random".set_int_range(unpack(_A))', a:000)
 endfunction
 
 function s:set_float_range(...) abort
-  call luaeval('require"dkg/random".set_float_range(unpack(_A))', a:000)
+  call luaeval('require"dkg.random".set_float_range(unpack(_A))', a:000)
 endfunction
 
 " mappings

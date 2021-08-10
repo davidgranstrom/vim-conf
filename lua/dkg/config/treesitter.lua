@@ -1,5 +1,21 @@
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = {"c", "cpp", "lua", "html", "javascript"},
+  ensure_installed = {
+    "c",
+    "cpp",
+    "c_sharp",
+    "zig",
+    "lua",
+    "html",
+    "javascript",
+    "css",
+    "scss",
+    "tsx",
+    "typescript",
+    "json",
+    "yaml",
+    "dockerfile",
+    -- "supercollider",
+  },
   highlight = {
     enable = true,
     disable = {},
