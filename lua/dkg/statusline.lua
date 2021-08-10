@@ -5,8 +5,8 @@
 local M = {}
 
 local glyphs = {
-  branch = '⎇ ',
-  moon = '☾',
+  branch = 'שׂ',
+  moon = '',
   divider = '│',
 }
 
@@ -84,7 +84,7 @@ local function active_left()
   end
   -- git branch
   if gitbranch ~= '' then
-    s = s .. pad(glyphs.branch, 1) .. gitbranch
+    s = s .. pad(glyphs.branch, 1, 1) .. gitbranch
   end
   -- make integration
   s = s .. ' %{MakeBuildProgress()}'
