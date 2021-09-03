@@ -6,59 +6,7 @@
 " ==============================================================================
 " {{{
 
-call plug#begin()
-
-" editing
-Plug 'tmsvg/pear-tree'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-abolish'
-Plug 'nvim-treesitter/nvim-treesitter', {'branch' : '0.5-compat', 'do': ':TSUpdate'} 
-Plug 'nvim-treesitter/nvim-treesitter-textobjects', {'branch' : '0.5-compat'}
-Plug 'nvim-treesitter/playground', {'on': 'TSPlaygroundToggle'}
-Plug 'danymat/neogen'
-" Plug 'gpanders/nvim-parinfer'
-
-" navigation
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'justinmk/vim-dirvish'
-" Plug 'ggandor/lightspeed.nvim'
-
-" util
-Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-nvim-lsp'
-
-Plug 'tpope/vim-fugitive'
-Plug 'norcalli/nvim-colorizer.lua'
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'mfussenegger/nvim-dap'
-Plug 'theHamsta/nvim-dap-virtual-text'
-Plug 'jbyuki/venn.nvim'
-
-" language
-Plug '~/code/vim/scnvim'
-Plug 'ziglang/zig.vim'
-Plug 'Olical/conjure', {'tag': 'v4.23.0'}
-Plug 'Olical/aniseed', { 'tag': 'v3.21.0' }
-
-" color schemes / appearance
-Plug 'folke/tokyonight.nvim'
-Plug 'lukas-reineke/indent-blankline.nvim'
-Plug 'kyazdani42/nvim-web-devicons'
-
-" misc
-Plug 'alec-gibson/nvim-tetris'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-unimpaired'
-Plug '~/code/vim/nvim-markdown-preview'
-Plug '~/code/vim/osc.nvim'
-
-call plug#end()
+lua require'dkg'
 
 let mapleader="\<space>"            " set mapleader
 let maplocalleader="\<space>"            " set mapleader
@@ -288,7 +236,6 @@ augroup END
 " ==============================================================================
 " {{{
 
-lua require'dkg'
 
 " }}}
 " ==============================================================================
