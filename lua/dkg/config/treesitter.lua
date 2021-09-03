@@ -14,6 +14,7 @@ require'nvim-treesitter.configs'.setup {
     "json",
     "yaml",
     "dockerfile",
+    "fennel",
     -- "supercollider",
   },
   highlight = {

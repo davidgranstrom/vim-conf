@@ -1,5 +1,8 @@
 local lsp = require'lspconfig'
 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require'cmp_nvim_lsp'.update_capabilities(capabilities)
+
 lsp.clangd.setup {
   cmd = {
     "/usr/local/Cellar/llvm/12.0.0_1/bin/clangd",

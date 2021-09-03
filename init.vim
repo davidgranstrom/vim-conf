@@ -16,6 +16,8 @@ Plug 'tpope/vim-abolish'
 Plug 'nvim-treesitter/nvim-treesitter', {'branch' : '0.5-compat', 'do': ':TSUpdate'} 
 Plug 'nvim-treesitter/nvim-treesitter-textobjects', {'branch' : '0.5-compat'}
 Plug 'nvim-treesitter/playground', {'on': 'TSPlaygroundToggle'}
+Plug 'danymat/neogen'
+" Plug 'gpanders/nvim-parinfer'
 
 " navigation
 Plug 'christoomey/vim-tmux-navigator'
@@ -24,7 +26,10 @@ Plug 'justinmk/vim-dirvish'
 
 " util
 Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-compe'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-nvim-lsp'
+
 Plug 'tpope/vim-fugitive'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'nvim-lua/popup.nvim'
@@ -37,6 +42,8 @@ Plug 'jbyuki/venn.nvim'
 " language
 Plug '~/code/vim/scnvim'
 Plug 'ziglang/zig.vim'
+Plug 'Olical/conjure', {'tag': 'v4.23.0'}
+Plug 'Olical/aniseed', { 'tag': 'v3.21.0' }
 
 " color schemes / appearance
 Plug 'folke/tokyonight.nvim'
@@ -54,6 +61,7 @@ Plug '~/code/vim/osc.nvim'
 call plug#end()
 
 let mapleader="\<space>"            " set mapleader
+let maplocalleader="\<space>"            " set mapleader
 set mouse=a                         " enable mouse
 
 " }}}
@@ -69,11 +77,26 @@ let g:did_install_syntax_menu = 1
 " disable netrw (NOTE: uncomment to download new spell files)
 let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
+let g:loaded_netrwSettings = 1
+let g:loaded_netrwFileHandlers = 1
 
-if has('mac')
-  let g:python_host_prog = '/usr/local/bin/python2'
-  let g:python3_host_prog = '/usr/local/bin/python3'
-end
+let g:loaded_gzip = 1
+let g:loaded_tar = 1
+let g:loaded_tarPlugin = 1
+let g:loaded_zip = 1
+let g:loaded_zipPlugin = 1
+let g:loaded_2html_plugin = 1
+
+let g:loaded_python3_provider = 0
+let g:loaded_python_provider = 0
+let g:loaded_ruby_provider = 0
+let g:loaded_perl_provider = 0
+let g:loaded_node_provider = 0
+
+" if has('mac')
+"   let g:python_host_prog = '/usr/local/bin/python2'
+"   let g:python3_host_prog = '/usr/local/bin/python3'
+" end
 
 " }}}
 " ==============================================================================
@@ -95,6 +118,7 @@ set nowrap               " don't wrap words
 set linebreak            " break at word boundries for wrapped text
 set noshowcmd            " don't display partial commands (g,c etc.)
 set sidescrolloff=1
+set pumblend=10
 
 " searching
 set ignorecase           " ignore case in search patterns
@@ -327,11 +351,14 @@ let g:pear_tree_repeatable_expand = 0
 let g:pear_tree_smart_openers = 1
 let g:pear_tree_smart_closers = 1
 let g:pear_tree_smart_backspace = 1
+let g:pear_tree_ft_disabled = ['TelescopePrompt']
 
 augroup hlyank
   autocmd!
   autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=80}
 augroup END
+
+let g:conjure#filetype#fennel = "conjure.client.fennel.stdio"
 
 " ===========================================================================
 " }}}
