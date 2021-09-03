@@ -9,7 +9,7 @@
 lua require'dkg'
 
 let mapleader="\<space>"            " set mapleader
-let maplocalleader="\<space>"            " set mapleader
+let maplocalleader="\<space>"       " set mapleader
 set mouse=a                         " enable mouse
 
 " }}}
@@ -40,11 +40,6 @@ let g:loaded_python_provider = 0
 let g:loaded_ruby_provider = 0
 let g:loaded_perl_provider = 0
 let g:loaded_node_provider = 0
-
-" if has('mac')
-"   let g:python_host_prog = '/usr/local/bin/python2'
-"   let g:python3_host_prog = '/usr/local/bin/python3'
-" end
 
 " }}}
 " ==============================================================================
@@ -101,15 +96,6 @@ hi! link VertSplit Normal
 " FUNCTIONS
 " ==============================================================================
 " {{{
-
-" delete trailing whitespace in the whole buffer
-function! s:delete_trailing_ws()
-  normal! m`
-  %s/\s\+$//ge
-  normal! ``
-endfunction
-
-command! DeleteTrailingWS call <sid>delete_trailing_ws()
 
 " format json
 if executable('jq')
@@ -198,16 +184,10 @@ tnoremap <A-l> <C-\><C-n><C-w>l
 " ==============================================================================
 " {{{
 
-augroup vimrc
-  autocmd!
-augroup END
-
 augroup vimrc_filetype
   autocmd!
-
   " c#
   autocmd FileType cs set tabstop=4 softtabstop=4 shiftwidth=4
-
   " markdown
   autocmd FileType markdown setlocal commentstring=<!--%s-->
   " break undo sequence into smaller chunks for prose
@@ -215,29 +195,19 @@ augroup vimrc_filetype
   autocmd FileType markdown inoremap <buffer> ? ?<c-g>u
   autocmd FileType markdown inoremap <buffer> ! !<c-g>u
   autocmd FileType markdown inoremap <buffer> , ,<c-g>u
-
   " javascript
   autocmd FileType javascript.jsx setlocal filetype=javascript
   autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
-
   " hack to make development servers not rebuild twice
   autocmd FileType javascript setlocal nowritebackup
-
   " python
   autocmd FileType python setlocal ts=4 sts=4 sw=4
-
   " cmake
   autocmd FileType cmake setlocal commentstring=#%s
 augroup END
 
 " }}}
-" ==============================================================================
-" Lua
-" ==============================================================================
-" {{{
 
-
-" }}}
 " ==============================================================================
 " PLUGIN CONFIGURATION
 " ==============================================================================
