@@ -31,20 +31,22 @@ return require'packer'.startup(function()
   use 'hrsh7th/cmp-nvim-lsp'
 
   use 'tpope/vim-fugitive'
-  use 'norcalli/nvim-colorizer.lua'
+  use {
+    'norcalli/nvim-colorizer.lua',
+    cmd = ':ColorizerAttachToBuffer'
+  }
   use 'nvim-lua/popup.nvim'
   use 'nvim-lua/plenary.nvim'
   use 'nvim-telescope/telescope.nvim'
   use 'mfussenegger/nvim-dap'
   use 'theHamsta/nvim-dap-virtual-text'
-  use 'jbyuki/venn.nvim'
+  -- use 'jbyuki/venn.nvim'
 
   -- language
   use '~/code/vim/scnvim'
-  use {
-    'ziglang/zig.vim',
-    ft = 'zig',
-  }
+  -- use {
+  --   'ziglang/zig.vim',
+  -- }
   use {
     'Olical/conjure',
     tag = 'v4.23.0',
