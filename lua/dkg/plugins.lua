@@ -172,13 +172,7 @@ function misc(use)
   }
   use 'editorconfig/editorconfig-vim'
   use 'tpope/vim-repeat'
-  use {
-    'tpope/vim-unimpaired',
-    config = function()
-      -- unimpaired original mapping
-      set_keymap('n', 'co', 'yo')
-    end
-  }
+  use 'tpope/vim-unimpaired'
   use {
     '~/code/vim/nvim-markdown-preview',
     cmd = 'MarkdownPreview',

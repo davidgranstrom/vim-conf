@@ -208,6 +208,9 @@ augroup END
 " dont' conceal text in markdown files
 " let g:vim_markdown_conceal = 0
 
+" unimpaired original mapping
+nmap co yo
+
 " ===========================================================================
 " }}}
 
