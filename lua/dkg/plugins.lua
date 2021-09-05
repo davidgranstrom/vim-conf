@@ -59,7 +59,17 @@ return require'packer'.startup(function()
   use 'bakpakin/fennel.vim'
 
   -- color schemes / appearance
-  use 'folke/tokyonight.nvim'
+  use {
+    'folke/tokyonight.nvim',
+    setup = function()
+      vim.g.tokyonight_style = 'night'
+    end,
+    config = function()
+      vim.cmd [[colorscheme tokyonight]]
+      vim.cmd [[hi! link EndOfBuffer NonText]]
+      vim.cmd [[hi! link VertSplit Normal]]
+    end
+  }
   use 'lukas-reineke/indent-blankline.nvim'
   use 'kyazdani42/nvim-web-devicons'
 

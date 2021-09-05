@@ -56,6 +56,7 @@ set completeopt=menu,menuone,noselect
 set inccommand=nosplit   " preview changes (:s/) incrementally
 
 " appearance
+set termguicolors        " enable true color
 set scrolloff=4          " keep a distance of from the cursor when scrolling
 set nowrap               " don't wrap words
 set linebreak            " break at word boundries for wrapped text
@@ -81,15 +82,6 @@ set copyindent           " copy indent chars from previous line
 set expandtab            " use whitespace instead of tabs
 set shiftround           " round indent to multiples of 'shiftwidth'
 set nojoinspaces         " only insert one space after a join command
-
-set termguicolors
-let g:tokyonight_style = "night"
-colorscheme tokyonight
-hi! link EndOfBuffer NonText
-hi! link VertSplit Normal
-
-" colorscheme spaceduck
-" hi! link Comment Folded
 
 " }}}
 " ==============================================================================
