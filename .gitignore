@@ -2,3 +2,4 @@ bundle/
 plugged/
 spell/
 autoload/
+plugin/packer_*

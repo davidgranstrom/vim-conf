@@ -6,62 +6,10 @@
 " ==============================================================================
 " {{{
 
-call plug#begin()
-
-" editing
-Plug 'tmsvg/pear-tree'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-abolish'
-Plug 'nvim-treesitter/nvim-treesitter', {'branch' : '0.5-compat', 'do': ':TSUpdate'} 
-Plug 'nvim-treesitter/nvim-treesitter-textobjects', {'branch' : '0.5-compat'}
-Plug 'nvim-treesitter/playground', {'on': 'TSPlaygroundToggle'}
-Plug 'danymat/neogen'
-" Plug 'gpanders/nvim-parinfer'
-
-" navigation
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'justinmk/vim-dirvish'
-" Plug 'ggandor/lightspeed.nvim'
-
-" util
-Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-nvim-lsp'
-
-Plug 'tpope/vim-fugitive'
-Plug 'norcalli/nvim-colorizer.lua'
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'mfussenegger/nvim-dap'
-Plug 'theHamsta/nvim-dap-virtual-text'
-Plug 'jbyuki/venn.nvim'
-
-" language
-Plug '~/code/vim/scnvim'
-Plug 'ziglang/zig.vim'
-Plug 'Olical/conjure', {'tag': 'v4.23.0'}
-Plug 'Olical/aniseed', { 'tag': 'v3.21.0' }
-
-" color schemes / appearance
-Plug 'folke/tokyonight.nvim'
-Plug 'lukas-reineke/indent-blankline.nvim'
-Plug 'kyazdani42/nvim-web-devicons'
-
-" misc
-Plug 'alec-gibson/nvim-tetris'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-unimpaired'
-Plug '~/code/vim/nvim-markdown-preview'
-Plug '~/code/vim/osc.nvim'
-
-call plug#end()
+lua require'dkg'
 
 let mapleader="\<space>"            " set mapleader
-let maplocalleader="\<space>"            " set mapleader
+let maplocalleader="\<space>"       " set mapleader
 set mouse=a                         " enable mouse
 
 " }}}
@@ -93,11 +41,6 @@ let g:loaded_ruby_provider = 0
 let g:loaded_perl_provider = 0
 let g:loaded_node_provider = 0
 
-" if has('mac')
-"   let g:python_host_prog = '/usr/local/bin/python2'
-"   let g:python3_host_prog = '/usr/local/bin/python3'
-" end
-
 " }}}
 " ==============================================================================
 " SETTINGS
@@ -113,6 +56,7 @@ set completeopt=menu,menuone,noselect
 set inccommand=nosplit   " preview changes (:s/) incrementally
 
 " appearance
+set termguicolors        " enable true color
 set scrolloff=4          " keep a distance of from the cursor when scrolling
 set nowrap               " don't wrap words
 set linebreak            " break at word boundries for wrapped text
@@ -139,29 +83,11 @@ set expandtab            " use whitespace instead of tabs
 set shiftround           " round indent to multiples of 'shiftwidth'
 set nojoinspaces         " only insert one space after a join command
 
-set termguicolors
-let g:tokyonight_style = "night"
-colorscheme tokyonight
-hi! link EndOfBuffer NonText
-hi! link VertSplit Normal
-
-" colorscheme spaceduck
-" hi! link Comment Folded
-
 " }}}
 " ==============================================================================
 " FUNCTIONS
 " ==============================================================================
 " {{{
-
-" delete trailing whitespace in the whole buffer
-function! s:delete_trailing_ws()
-  normal! m`
-  %s/\s\+$//ge
-  normal! ``
-endfunction
-
-command! DeleteTrailingWS call <sid>delete_trailing_ws()
 
 " format json
 if executable('jq')
@@ -250,16 +176,10 @@ tnoremap <A-l> <C-\><C-n><C-w>l
 " ==============================================================================
 " {{{
 
-augroup vimrc
-  autocmd!
-augroup END
-
 augroup vimrc_filetype
   autocmd!
-
   " c#
   autocmd FileType cs set tabstop=4 softtabstop=4 shiftwidth=4
-
   " markdown
   autocmd FileType markdown setlocal commentstring=<!--%s-->
   " break undo sequence into smaller chunks for prose
@@ -267,30 +187,19 @@ augroup vimrc_filetype
   autocmd FileType markdown inoremap <buffer> ? ?<c-g>u
   autocmd FileType markdown inoremap <buffer> ! !<c-g>u
   autocmd FileType markdown inoremap <buffer> , ,<c-g>u
-
   " javascript
   autocmd FileType javascript.jsx setlocal filetype=javascript
   autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
-
   " hack to make development servers not rebuild twice
   autocmd FileType javascript setlocal nowritebackup
-
   " python
   autocmd FileType python setlocal ts=4 sts=4 sw=4
-
   " cmake
   autocmd FileType cmake setlocal commentstring=#%s
 augroup END
 
 " }}}
-" ==============================================================================
-" Lua
-" ==============================================================================
-" {{{
 
-lua require'dkg'
-
-" }}}
 " ==============================================================================
 " PLUGIN CONFIGURATION
 " ==============================================================================

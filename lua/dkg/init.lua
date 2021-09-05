@@ -1,6 +1,7 @@
 local api = vim.api
 local uv = vim.loop
 
+require'dkg.plugins'
 require'dkg.config.lsp'
 require'dkg.config.treesitter'
 require'dkg.config.telescope'
