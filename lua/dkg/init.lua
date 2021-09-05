@@ -100,7 +100,3 @@ require'cmp'.setup {
     { name = 'nvim_lsp' },
   },
 }
-
-require'neogen'.setup{
-  enabled = true
-}

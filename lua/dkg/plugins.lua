@@ -15,9 +15,17 @@ return require'packer'.startup(function()
   }
   use {
     'nvim-treesitter/playground',
-    cmd = ':TSPlaygroundToggle'
+    cmd = 'TSPlaygroundToggle',
   }
-  use 'danymat/neogen'
+  use {
+    'danymat/neogen',
+    config = function()
+      require'neogen'.setup {
+        enabled = true
+      }
+    end,
+    requires = 'nvim-treesitter/nvim-treesitter'
+  }
   -- use 'gpanders/nvim-parinfer'
 
   -- navigation
@@ -76,14 +84,14 @@ return require'packer'.startup(function()
   -- misc
   use {
     'alec-gibson/nvim-tetris',
-    cmd = ':Tetris'
+    cmd = 'Tetris'
   }
   use 'editorconfig/editorconfig-vim'
   use 'tpope/vim-repeat'
   use 'tpope/vim-unimpaired'
   use {
     '~/code/vim/nvim-markdown-preview',
-    cmd = ':MarkdownPreview',
+    cmd = 'MarkdownPreview',
   }
   use '~/code/vim/osc.nvim'
 end)

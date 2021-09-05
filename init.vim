@@ -178,6 +178,7 @@ tnoremap <A-l> <C-\><C-n><C-w>l
 
 augroup vimrc_filetype
   autocmd!
+  autocmd BufRead,BufNewFile *.h,*.c set filetype=c
   " c#
   autocmd FileType cs set tabstop=4 softtabstop=4 shiftwidth=4
   " markdown
