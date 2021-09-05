@@ -197,78 +197,16 @@ augroup vimrc_filetype
   autocmd FileType python setlocal ts=4 sts=4 sw=4
   " cmake
   autocmd FileType cmake setlocal commentstring=#%s
+  " git
+  autocmd FileType gitcommit setlocal spell | setlocal spelllang=en
+  " highlight yanked text
+  autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=80}
 augroup END
 
 " }}}
 
-" ==============================================================================
-" PLUGIN CONFIGURATION
-" ==============================================================================
-" {{{
-
-" ------------------------------------------------------------------------------
-" -- Surround  -----------------------------------------------------------------
-
-xmap s <plug>VSurround
-
-" ------------------------------------------------------------------------------
-" -- Fugitive  -----------------------------------------------------------------
-
-nnoremap <leader>fs :Git<cr>
-nnoremap <F5> :Gblame<cr>
-
-augroup vimrc_git
-  autocmd!
-  " enable spell checking in commit messages
-  autocmd FileType gitcommit setlocal spell | setlocal spelllang=en
-augroup END
-
-" ------------------------------------------------------------------------------
-" -- telescope -----------------------------------------------------------------
-
-nnoremap <silent> <leader>t <cmd>Telescope git_files<cr>
-nnoremap <silent> <leader>b <cmd>Telescope buffers<cr>
-nnoremap <silent> <leader>g <cmd>Telescope live_grep<cr>
-nnoremap <silent> <leader>i <cmd>Telescope grep_string<cr>
-
-" ------------------------------------------------------------------------------
-" -- scnvim --------------------------------------------------------------------
-
-let g:scnvim_scdoc = 1
-nnoremap <leader>st <cmd>SCNvimStart<cr>
-nmap <leader>sk <Plug>(scnvim-recompile)
-nnoremap <leader>sn <cmd>lua sc_scratchpad_new()<CR>
-
-" ------------------------------------------------------------------------------
-" -- tmux-navigator ------------------------------------------------------------
-
-let g:tmux_navigator_no_mappings = 1
-nnoremap <silent> <A-h> :TmuxNavigateLeft<cr>
-nnoremap <silent> <A-j> :TmuxNavigateDown<cr>
-nnoremap <silent> <A-k> :TmuxNavigateUp<cr>
-nnoremap <silent> <A-l> :TmuxNavigateRight<cr>
-
-" ------------------------------------------------------------------------------
-" -- misc ----------------------------------------------------------------------
-
 " dont' conceal text in markdown files
-let g:vim_markdown_conceal = 0
-
-" unimpaired original mapping
-nmap co yo
-
-let g:pear_tree_repeatable_expand = 0
-let g:pear_tree_smart_openers = 1
-let g:pear_tree_smart_closers = 1
-let g:pear_tree_smart_backspace = 1
-let g:pear_tree_ft_disabled = ['TelescopePrompt']
-
-augroup hlyank
-  autocmd!
-  autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=80}
-augroup END
-
-let g:conjure#filetype#fennel = "conjure.client.fennel.stdio"
+" let g:vim_markdown_conceal = 0
 
 " ===========================================================================
 " }}}
