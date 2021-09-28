@@ -3,40 +3,42 @@ local lsp = require'lspconfig'
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require'cmp_nvim_lsp'.update_capabilities(capabilities)
 
+-- vim.o.updatetime = 150
+-- vim.cmd [[autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})]]
+
 lsp.clangd.setup {
   cmd = {
-    "/usr/local/Cellar/llvm/12.0.0_1/bin/clangd",
-    "--background-index",
-    "--cross-file-rename",
-    "--clang-tidy",
+    '/usr/local/Cellar/llvm/12.0.1/bin/clangd',
+    '--background-index',
+    '--cross-file-rename',
+    '--clang-tidy',
   },
-  filetypes = {"c", "cpp"},
-  on_attach = on_attach,
+  filetypes = {'c', 'cpp'},
   capabilities = capabilities,
+  flags = {
+    debounce_text_changes = 25,
+  }
 }
 
 lsp.cmake.setup{
-  on_attach = on_attach,
   capabilities = capabilities,
+  flags = {
+    debounce_text_changes = 25,
+  }
 }
 
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
-    -- This will disable virtual text, like doing:
-    -- let g:diagnostic_enable_virtual_text = 0
     virtual_text = false,
-
-    -- This is similar to:
-    -- let g:diagnostic_show_sign = 1
-    -- To configure sign display,
-    --  see: ":help vim.lsp.diagnostic.set_signs()"
     signs = true,
-
-    -- This is similar to:
-    -- "let g:diagnostic_insert_delay = 1"
     update_in_insert = false,
   })
 
+-- local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+-- for type, icon in pairs(signs) do
+--   local hl = "DiagnosticSign" .. type
+--   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+-- end
 
 -- vim.lsp.set_log_level(vim.lsp.log_levels.TRACE)
 
@@ -44,18 +46,18 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 -- if not lsp.supercollider then
 -- configs.supercollider = {
 --   default_config = {
---       cmd = {"/Users/dkg/code/cpp/sclangd/build/sclangd"};
---       filetypes = {"supercollider"};
+--       cmd = {'/Users/dkg/code/cpp/sclangd/build/sclangd'};
+--       filetypes = {'supercollider'};
 --       root_dir = function(fname)
 --         return vim.fn.getcwd()
 --       end;
 --   };
 --   settings = {};
 --   docs = {
---     package_json = "";
+--     package_json = '';
 --     description = [[]];
 --     default_config = {
---       root_dir = "vim's starting directory";
+--       root_dir = 'vim's starting directory';
 --     };
 --   };
 -- }

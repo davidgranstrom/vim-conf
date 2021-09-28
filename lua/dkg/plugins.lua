@@ -27,24 +27,39 @@ function editing(use)
   }
   use {
     'nvim-treesitter/nvim-treesitter',
-    branch = '0.5-compat',
     run = 'TSUpdate'
   }
   use {
     'nvim-treesitter/nvim-treesitter-textobjects',
-    branch = '0.5-compat',
   }
   use {
     'nvim-treesitter/playground',
     cmd = 'TSPlaygroundToggle',
   }
   use {
-    'danymat/neogen',
+    '~/code/vim/neogen',
     config = function()
       require'neogen'.setup {
-        enabled = true
+        enabled = true,
+        languages = {
+          c = {
+            template = {
+              annotation_convention = "my_doxygen",
+              my_doxygen = {
+                { nil, "/* $1 */", { no_results = true } },
+                { nil, "/**" },
+                { nil, " * @brief $1" },
+                { "parameters", " * @param %s $1" },
+                { "return_statement", " * @returns $1" },
+                { nil, " */" },
+              },
+            },
+          },
+        },
       }
-    end
+      set_keymap('n', '<leader>d', '<cmd>lua require"neogen".generate()<cr>', {noremap = true, silent = true})
+    end,
+    requires = 'nvim-treesitter/nvim-treesitter',
   }
   -- use 'gpanders/nvim-parinfer'
 end
@@ -118,7 +133,16 @@ function utils(use)
   }
   use {
     'jbyuki/venn.nvim',
-    cmd = 'VBox'
+    -- cmd = 'VBox'
+  }
+  use {
+    'lewis6991/gitsigns.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim'
+    },
+    config = function()
+      require('gitsigns').setup()
+    end
   }
 end
 

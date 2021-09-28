@@ -21,9 +21,19 @@ nnoremap <buffer><silent> <leader>a :ClangdSwitchSourceHeader<cr>
 " diagnostics
 nnoremap ]d <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 nnoremap [d <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
-nnoremap <leader>o <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
+nnoremap <leader>o <cmd>lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})<CR>
 
 nnoremap <buffer><silent> <leader>i <cmd>Telescope lsp_references<cr>
 nnoremap <buffer><silent> <leader>y <cmd>Telescope lsp_document_symbols<cr>
 
-command! ReplaceAll -buffer -nargs=? <cmd>lua vim.lsp.buf.rename(<args>)
+command! -buffer -nargs=? ReplaceAll lua vim.lsp.buf.rename(<args>)<CR>
+
+lua << EOF
+
+-- Delete doxygen comments.
+function remove_doxygen()
+  vim.cmd [[ g/^\s*\*\|\/\*/d ]]
+  vim.cmd [[ g/;/execute "normal! $xo{\<cr>}" ]]
+end
+
+EOF
