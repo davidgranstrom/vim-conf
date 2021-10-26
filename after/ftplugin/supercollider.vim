@@ -3,4 +3,4 @@ setlocal tabstop=4
 setlocal softtabstop=4
 setlocal shiftwidth=4
 
-setlocal completefunc=v:lua.scnvim.autocompleter.omnifunc
+" setlocal completefunc=v:lua.scnvim.autocompleter.omnifunc

@@ -119,11 +119,70 @@ function utils(use)
     cmd = 'ColorizerAttachToBuffer'
   }
   use {
+    'L3MON4D3/LuaSnip',
+    config = function()
+      set_keymap('i', '<C-j>', '<cmd>lua require"luasnip".expand_or_jump()<cr>', {noremap = true, silent = false})
+      set_keymap('i', '<C-k>', '<cmd>lua require"luasnip".jump(-1)<cr>', {noremap = true, silent = false})
+    end
+  }
+  use {
     'hrsh7th/nvim-cmp',
     requires = {
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-nvim-lsp',
-    }
+      'saadparwaiz1/cmp_luasnip',
+    },
+    config = function()
+      local cmp = require'cmp'
+      local luasnip = require'luasnip'
+      local has_words_before = function()
+        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+      end
+      cmp.setup {
+        completion = {
+          keyword_length = 3,
+        },
+        snippet = {
+          expand = function(args)
+            require'luasnip'.lsp_expand(args.body)
+          end
+        },
+        mapping = {
+          ["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif luasnip.expand_or_jumpable() then
+              luasnip.expand_or_jump()
+            elseif has_words_before() then
+              cmp.complete()
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+          ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            elseif luasnip.jumpable(-1) then
+              luasnip.jump(-1)
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+        },
+        sources = {
+          {
+            name = 'nvim_lsp',
+            max_item_count = 30,
+          },
+          { name = 'luasnip' },
+          { name = 'buffer' },
+        },
+      }
+      ---- snippets
+      local snip_loader = require'luasnip.loaders.from_vscode'
+      snip_loader.lazy_load()
+    end
   }
   use {
     'mfussenegger/nvim-dap',
@@ -141,7 +200,13 @@ function utils(use)
       'nvim-lua/plenary.nvim'
     },
     config = function()
-      require('gitsigns').setup()
+      require('gitsigns').setup{
+        keymaps = {
+          noremap = true,
+          ['n ]c'] = { expr = true, "&diff ? ']c' : '<cmd>lua require\"gitsigns.actions\".next_hunk()<CR>'"},
+          ['n [c'] = { expr = true, "&diff ? '[c' : '<cmd>lua require\"gitsigns.actions\".prev_hunk()<CR>'"},
+        }
+      }
     end
   }
 end
@@ -153,16 +218,18 @@ function language(use)
       set_keymap('n', '<leader>st', '<cmd>SCNvimStart<cr>')
       set_keymap('n', '<leader>sk', '<Plug>(scnvim-recompile)')
       set_keymap('n', '<leader>sn', '<cmd>lua sc_scratchpad_new()<cr>')
+      vim.g.scnvim_echo_args = 1
+      vim.g.scnvim_snippet_format = 'luasnip'
     end
   }
-  use {
-    'Olical/conjure',
-    tag = 'v4.23.0',
-    ft = 'fennel',
-    setup = function()
-      vim.g['conjure#filetype#fennel'] = 'conjure.client.fennel.stdio'
-    end
-  }
+  -- use {
+  --   'Olical/conjure',
+  --   tag = 'v4.23.0',
+  --   ft = 'fennel',
+  --   setup = function()
+  --     vim.g['conjure#filetype#fennel'] = 'conjure.client.fennel.stdio'
+  --   end
+  -- }
   use 'bakpakin/fennel.vim'
   -- use {
   --   'ziglang/zig.vim',
@@ -185,7 +252,16 @@ function appearance(use)
       vim.cmd [[hi! link VertSplit Normal]]
     end
   }
-  use 'lukas-reineke/indent-blankline.nvim'
+  use {
+    'lukas-reineke/indent-blankline.nvim',
+    config = function()
+      require'indent_blankline'.setup{
+        char = '│',
+        filetype_exclude = {'terminal', 'help', 'scnvim', 'git', 'markdown', 'fennel'},
+        show_first_indent_level = false,
+      }
+    end
+  }
   use 'kyazdani42/nvim-web-devicons'
 end
 

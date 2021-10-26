@@ -18,10 +18,6 @@ set mouse=a                         " enable mouse
 " ==============================================================================
 " {{{
 
-" avoid menu.vim (saves ~100ms)
-let g:did_install_default_menus = 1
-let g:did_install_syntax_menu = 1
-
 " disable netrw (NOTE: uncomment to download new spell files)
 let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
@@ -40,6 +36,9 @@ let g:loaded_python_provider = 0
 let g:loaded_ruby_provider = 0
 let g:loaded_perl_provider = 0
 let g:loaded_node_provider = 0
+
+let g:did_install_default_menus = 1
+let g:did_install_syntax_menu = 1
 
 " }}}
 " ==============================================================================
