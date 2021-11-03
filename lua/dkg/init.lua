@@ -13,9 +13,14 @@ require'dkg.config.dap'
 _G.P = function(...)
   local num = select("#", ...)
   local args = {...}
+  local result = ''
   for i = 1, num do
-    print(vim.inspect(args[i]))
+    result = result .. vim.inspect(args[i])
+    if i ~= num then
+      result = result .. ' '
+    end
   end
+  print(result)
 end
 
 --- Create a new temporary buffer for SuperCollider code.
