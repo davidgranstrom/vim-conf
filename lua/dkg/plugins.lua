@@ -121,8 +121,8 @@ function utils(use)
   use {
     'L3MON4D3/LuaSnip',
     config = function()
-      set_keymap('i', '<C-j>', '<cmd>lua require"luasnip".expand_or_jump()<cr>', {noremap = true, silent = false})
-      set_keymap('i', '<C-k>', '<cmd>lua require"luasnip".jump(-1)<cr>', {noremap = true, silent = false})
+      -- set_keymap('i', '<C-j>', '<cmd>lua require"luasnip".expand_or_jump()<cr>', {noremap = true, silent = false})
+      -- set_keymap('i', '<S-Tab>', '<cmd>lua require"luasnip".jump(-1)<cr>', {noremap = true, silent = false})
     end
   }
   use {
@@ -130,6 +130,8 @@ function utils(use)
     requires = {
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-path',
+      'quangnguyen30192/cmp-nvim-tags',
       'saadparwaiz1/cmp_luasnip',
     },
     config = function()
@@ -143,13 +145,19 @@ function utils(use)
         completion = {
           keyword_length = 3,
         },
+        experimental = {
+          native_menu = false,
+          ghost_text = false
+        },
+        -- documentation = false,
         snippet = {
           expand = function(args)
             require'luasnip'.lsp_expand(args.body)
           end
         },
         mapping = {
-          ["<Tab>"] = cmp.mapping(function(fallback)
+          ['<C-j>'] = cmp.mapping.confirm({ select = true }),
+          ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
             elseif luasnip.expand_or_jumpable() then
@@ -159,8 +167,8 @@ function utils(use)
             else
               fallback()
             end
-          end, { "i", "s" }),
-          ["<S-Tab>"] = cmp.mapping(function(fallback)
+          end, { 'i', 's' }),
+          ['<S-Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_prev_item()
             elseif luasnip.jumpable(-1) then
@@ -168,20 +176,21 @@ function utils(use)
             else
               fallback()
             end
-          end, { "i", "s" }),
-        },
-        sources = {
+          end, { 'i', 's' }),
+      },
+      sources = {
           {
             name = 'nvim_lsp',
             max_item_count = 30,
           },
+          { name = 'tags' },
           { name = 'luasnip' },
+          { name = 'path' },
           { name = 'buffer' },
         },
       }
       ---- snippets
-      local snip_loader = require'luasnip.loaders.from_vscode'
-      snip_loader.lazy_load()
+      require'luasnip.loaders.from_vscode'.lazy_load()
     end
   }
   use {
@@ -215,11 +224,24 @@ function language(use)
   use {
     '~/code/vim/scnvim',
     config = function()
+      -- require'scnvim'.setup{
+      --   postwin = {
+      --     syntax = true,
+      --     scrollback = 1000,
+      --   },
+      --   snippet = {
+      --     style = 'default',
+      --     engine = {
+      --       name = 'luasnip'
+      --     }
+      --   }
+      -- }
+      -- require'luasnip'.snippets.supercollider = require'scnvim.utils'.get_snippets()
       set_keymap('n', '<leader>st', '<cmd>SCNvimStart<cr>')
       set_keymap('n', '<leader>sk', '<Plug>(scnvim-recompile)')
       set_keymap('n', '<leader>sn', '<cmd>lua sc_scratchpad_new()<cr>')
-      vim.g.scnvim_echo_args = 1
-      vim.g.scnvim_snippet_format = 'luasnip'
+      -- vim.g.scnvim_echo_args = 1
+      -- vim.g.scnvim_snippet_format = 'luasnip'
     end
   }
   -- use {
