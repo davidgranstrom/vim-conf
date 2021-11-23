@@ -66,7 +66,6 @@ set pumblend=10
 " searching
 set ignorecase           " ignore case in search patterns
 set smartcase            " overrides 'ignorecase'
-set showmatch            " highlight search matches while typing
 
 " misc
 set wildignorecase       " be smart case-sensitive
@@ -177,6 +176,12 @@ tnoremap <A-l> <C-\><C-n><C-w>l
 
 augroup vimrc_filetype
   autocmd!
+
+  autocmd BufReadPost *
+        \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+        \ |   exe "normal! g`\""
+        \ | endif
+
   autocmd BufRead,BufNewFile *.h,*.c set filetype=c
   " c#
   autocmd FileType cs set tabstop=4 softtabstop=4 shiftwidth=4

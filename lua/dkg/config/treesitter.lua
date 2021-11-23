@@ -18,17 +18,20 @@ require'nvim-treesitter.configs'.setup {
     "query",
     -- "supercollider",
   },
+  -- indent = {
+  --   enable = true,
+  -- },
   highlight = {
     enable = true,
     disable = {},
   },
   incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = "<Enter>",
-      node_incremental = "<Enter>",
-      node_decremental = "<BS>",
-    },
+    enable = false,
+    -- keymaps = {
+    --   init_selection = "<Enter>",
+    --   node_incremental = "<Enter>",
+    --   node_decremental = "<BS>",
+    -- },
   },
   textobjects = {
     select = {

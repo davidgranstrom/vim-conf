@@ -4,16 +4,22 @@ function set_keymap(mode, lhs, rhs, opts)
 end
 
 function editing(use)
-  use {
-    'tmsvg/pear-tree',
-    setup = function()
-      vim.g.pear_tree_repeatable_expand = 0
-      vim.g.pear_tree_smart_openers = 1
-      vim.g.pear_tree_smart_closers = 1
-      vim.g.pear_tree_smart_backspace = 1
-      vim.g.pear_tree_ft_disabled = {'TelescopePrompt'}
-    end
-  }
+  -- use {
+  --   'tmsvg/pear-tree',
+  --   setup = function()
+  --     vim.g.pear_tree_repeatable_expand = 0
+  --     vim.g.pear_tree_smart_openers = 1
+  --     vim.g.pear_tree_smart_closers = 1
+  --     vim.g.pear_tree_smart_backspace = 1
+  --     vim.g.pear_tree_ft_disabled = {'TelescopePrompt'}
+  --   end
+  -- }
+  -- use {
+  --   'windwp/nvim-autopairs',
+  --   config = function()
+  --     require('nvim-autopairs').setup{}
+  --   end
+  -- }
   use 'tpope/vim-commentary'
   use {
     'tpope/vim-surround',
@@ -25,19 +31,14 @@ function editing(use)
     'tpope/vim-abolish',
     cmd = 'S'
   }
-  use {
-    'nvim-treesitter/nvim-treesitter',
-    run = 'TSUpdate'
-  }
-  use {
-    'nvim-treesitter/nvim-treesitter-textobjects',
-  }
+  use 'nvim-treesitter/nvim-treesitter'
+  use 'nvim-treesitter/nvim-treesitter-textobjects'
   use {
     'nvim-treesitter/playground',
     cmd = 'TSPlaygroundToggle',
   }
   use {
-    '~/code/vim/neogen',
+    'danymat/neogen',
     config = function()
       require'neogen'.setup {
         enabled = true,
@@ -61,7 +62,6 @@ function editing(use)
     end,
     requires = 'nvim-treesitter/nvim-treesitter',
   }
-  -- use 'gpanders/nvim-parinfer'
 end
 
 function navigation(use)
@@ -121,8 +121,8 @@ function utils(use)
   use {
     'L3MON4D3/LuaSnip',
     config = function()
-      -- set_keymap('i', '<C-j>', '<cmd>lua require"luasnip".expand_or_jump()<cr>', {noremap = true, silent = false})
-      -- set_keymap('i', '<S-Tab>', '<cmd>lua require"luasnip".jump(-1)<cr>', {noremap = true, silent = false})
+      set_keymap('i', '<C-j>', '<cmd>lua require"luasnip".expand_or_jump()<cr>', {noremap = true, silent = false})
+      set_keymap('i', '<C-k>', '<cmd>lua require"luasnip".jump(-1)<cr>', {noremap = true, silent = false})
     end
   }
   use {
@@ -136,11 +136,6 @@ function utils(use)
     },
     config = function()
       local cmp = require'cmp'
-      local luasnip = require'luasnip'
-      local has_words_before = function()
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-      end
       cmp.setup {
         completion = {
           keyword_length = 3,
@@ -150,20 +145,11 @@ function utils(use)
           ghost_text = false
         },
         -- documentation = false,
-        snippet = {
-          expand = function(args)
-            require'luasnip'.lsp_expand(args.body)
-          end
-        },
         mapping = {
-          ['<C-j>'] = cmp.mapping.confirm({ select = true }),
+          ['<CR>'] = cmp.mapping.confirm({ select = true }),
           ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
-            elseif luasnip.expand_or_jumpable() then
-              luasnip.expand_or_jump()
-            elseif has_words_before() then
-              cmp.complete()
             else
               fallback()
             end
@@ -171,8 +157,6 @@ function utils(use)
           ['<S-Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-              luasnip.jump(-1)
             else
               fallback()
             end
@@ -184,24 +168,11 @@ function utils(use)
             max_item_count = 30,
           },
           { name = 'tags' },
-          { name = 'luasnip' },
           { name = 'path' },
           { name = 'buffer' },
         },
       }
-      ---- snippets
-      require'luasnip.loaders.from_vscode'.lazy_load()
     end
-  }
-  use {
-    'mfussenegger/nvim-dap',
-    requires = {
-      'theHamsta/nvim-dap-virtual-text',
-    }
-  }
-  use {
-    'jbyuki/venn.nvim',
-    -- cmd = 'VBox'
   }
   use {
     'lewis6991/gitsigns.nvim',
@@ -224,42 +195,27 @@ function language(use)
   use {
     '~/code/vim/scnvim',
     config = function()
-      -- require'scnvim'.setup{
-      --   postwin = {
-      --     syntax = true,
-      --     scrollback = 1000,
-      --   },
-      --   snippet = {
-      --     style = 'default',
-      --     engine = {
-      --       name = 'luasnip'
-      --     }
-      --   }
-      -- }
+      -- require'scnvim'.setup{}
+        -- postwin = {
+        --   syntax = true,
+        --   scrollback = 1000,
+        -- },
+        -- snippet = {
+        --   style = 'default',
+        --   engine = {
+        --     name = 'luasnip'
+        --   }
+        -- }
       -- require'luasnip'.snippets.supercollider = require'scnvim.utils'.get_snippets()
       set_keymap('n', '<leader>st', '<cmd>SCNvimStart<cr>')
       set_keymap('n', '<leader>sk', '<Plug>(scnvim-recompile)')
       set_keymap('n', '<leader>sn', '<cmd>lua sc_scratchpad_new()<cr>')
-      -- vim.g.scnvim_echo_args = 1
+      vim.g.scnvim_echo_args = 1
+      -- vim.g.scnvim_eval_flash_duration = 0
       -- vim.g.scnvim_snippet_format = 'luasnip'
     end
   }
-  -- use {
-  --   'Olical/conjure',
-  --   tag = 'v4.23.0',
-  --   ft = 'fennel',
-  --   setup = function()
-  --     vim.g['conjure#filetype#fennel'] = 'conjure.client.fennel.stdio'
-  --   end
-  -- }
   use 'bakpakin/fennel.vim'
-  -- use {
-  --   'ziglang/zig.vim',
-  -- }
-  -- use {
-  --   'Olical/aniseed',
-  --   tag = 'v3.21.0',
-  -- }
 end
 
 function appearance(use)
@@ -281,6 +237,8 @@ function appearance(use)
         char = '│',
         filetype_exclude = {'terminal', 'help', 'scnvim', 'git', 'markdown', 'fennel'},
         show_first_indent_level = false,
+        -- show_current_context = true,
+        -- show_current_context_start = false,
       }
     end
   }
