@@ -206,7 +206,7 @@ function language(use)
         --     name = 'luasnip'
         --   }
         -- }
-      -- require'luasnip'.snippets.supercollider = require'scnvim.utils'.get_snippets()
+      require'luasnip'.snippets.supercollider = require'scnvim.utils'.get_snippets()
       set_keymap('n', '<leader>st', '<cmd>SCNvimStart<cr>')
       set_keymap('n', '<leader>sk', '<Plug>(scnvim-recompile)')
       set_keymap('n', '<leader>sn', '<cmd>lua sc_scratchpad_new()<cr>')
@@ -235,7 +235,7 @@ function appearance(use)
     config = function()
       require'indent_blankline'.setup{
         char = '│',
-        filetype_exclude = {'terminal', 'help', 'scnvim', 'git', 'markdown', 'fennel'},
+        filetype_exclude = {'terminal', 'help', 'scnvim', 'git', 'markdown', 'fennel', 'packer'},
         show_first_indent_level = false,
         -- show_current_context = true,
         -- show_current_context_start = false,
@@ -259,7 +259,7 @@ function misc(use)
   }
 end
 
-return require'packer'.startup(function()
+return require'packer'.startup({function()
   use 'wbthomason/packer.nvim'
   navigation(use)
   editing(use)
@@ -267,4 +267,11 @@ return require'packer'.startup(function()
   language(use)
   appearance(use)
   misc(use)
-end)
+end,
+config = {
+  display = {
+    open_fn = function()
+      return require('packer.util').float({ border = 'single' })
+    end
+  }
+}})
