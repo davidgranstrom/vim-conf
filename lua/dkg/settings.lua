@@ -39,7 +39,7 @@ set.ignorecase = true
 -- overrides 'ignorecase'
 set.smartcase = true
 -- highlight search matches while typing
-set.showmatch = true
+set.showmatch = false
 
 --- Formatting
 

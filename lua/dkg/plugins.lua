@@ -22,6 +22,18 @@ local function plugins()
   use { 'tpope/vim-commentary' }
   use { 'tpope/vim-surround', config = surround }
   use { 'tpope/vim-abolish', cmd = 'S' }
+  use {
+    'folke/tokyonight.nvim',
+    config = function() require'dkg.colorscheme' end
+  }
+  use {
+    'nvim-telescope/telescope.nvim',
+    requires = {
+      'nvim-lua/popup.nvim',
+      'nvim-lua/plenary.nvim',
+    },
+    config = telescope
+  }
   use { 'nvim-treesitter/nvim-treesitter' }
   use { 'nvim-treesitter/nvim-treesitter-textobjects' }
   use { 'nvim-treesitter/playground', cmd = 'TSPlaygroundToggle' }
@@ -38,14 +50,6 @@ local function plugins()
     end,
     config = vim_tmux_navigator
   }
-  use {
-    'nvim-telescope/telescope.nvim',
-    requires = {
-      'nvim-lua/popup.nvim',
-      'nvim-lua/plenary.nvim',
-    },
-    config = telescope
-  }
   use { 'neovim/nvim-lspconfig' }
   use {
     'tpope/vim-fugitive',
@@ -59,17 +63,17 @@ local function plugins()
     'L3MON4D3/LuaSnip',
     config = luasnip
   }
-  use {
-    'hrsh7th/nvim-cmp',
-    requires = {
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-path',
-      'quangnguyen30192/cmp-nvim-tags',
-      'saadparwaiz1/cmp_luasnip',
-    },
-    config = nvim_cmp
-  }
+  -- use {
+  --   'hrsh7th/nvim-cmp',
+  --   requires = {
+  --     'hrsh7th/cmp-buffer',
+  --     'hrsh7th/cmp-nvim-lsp',
+  --     'hrsh7th/cmp-path',
+  --     'quangnguyen30192/cmp-nvim-tags',
+  --     'saadparwaiz1/cmp_luasnip',
+  --   },
+  --   config = nvim_cmp
+  -- }
   use {
     'lewis6991/gitsigns.nvim',
     requires = {
@@ -82,7 +86,6 @@ local function plugins()
     config = scnvim
   }
   use { 'bakpakin/fennel.vim' }
-  use { 'folke/tokyonight.nvim' }
   use {
     'lukas-reineke/indent-blankline.nvim',
     config = indent_blankline
@@ -110,4 +113,4 @@ local function plugins()
   -- }
 end
 
-require'packer'.startup({plugins, config})
+require'packer'.startup({plugins, config = config})
