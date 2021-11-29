@@ -1,5 +1,7 @@
 local map = require'dkg.utils'.map
 
+vim.cmd [[ let mapleader = ' ' ]]
+
 -- edit init.lua
 map('n', '<leader>ev', '<cmd>tabedit $MYVIMRC<cr>')
 -- change to current directory
