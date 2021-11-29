@@ -22,11 +22,26 @@ local function plugins()
   use { 'tpope/vim-commentary' }
   use { 'tpope/vim-surround', config = surround }
   use { 'tpope/vim-abolish', cmd = 'S' }
-  use {
-    'folke/tokyonight.nvim',
-    -- workaround for overriding some hl groups
-    config = function() require'dkg.colorscheme' end
-  }
+  use { 'folke/tokyonight.nvim', config = function() require'dkg.colorscheme' end }
+  use { 'nvim-treesitter/nvim-treesitter' }
+  use { 'nvim-treesitter/nvim-treesitter-textobjects' }
+  use { 'nvim-treesitter/playground', cmd = 'TSPlaygroundToggle' }
+  use { 'danymat/neogen', requires = 'nvim-treesitter/nvim-treesitter', config = neogen }
+  use { 'justinmk/vim-dirvish' }
+  use { 'neovim/nvim-lspconfig' }
+  use { 'tpope/vim-fugitive', config = fugitive }
+  use { 'norcalli/nvim-colorizer.lua', cmd = 'ColorizerAttachToBuffer' }
+  use { 'L3MON4D3/LuaSnip', config = luasnip }
+  use { 'lewis6991/gitsigns.nvim', requires = 'nvim-lua/plenary.nvim', config = gitsigns }
+  use { '~/code/vim/scnvim', config = scnvim }
+  use { 'bakpakin/fennel.vim' }
+  use { 'lukas-reineke/indent-blankline.nvim', config = indent_blankline }
+  use { 'kyazdani42/nvim-web-devicons' }
+  use { 'alec-gibson/nvim-tetris', cmd = 'Tetris' }
+  use { 'editorconfig/editorconfig-vim' }
+  use { 'tpope/vim-repeat' }
+  use { 'tpope/vim-unimpaired', config = unimpaired }
+  use { '~/code/vim/nvim-markdown-preview', cmd = 'MarkdownPreview', }
   use {
     'nvim-telescope/telescope.nvim',
     requires = {
@@ -35,15 +50,6 @@ local function plugins()
     },
     config = telescope
   }
-  use { 'nvim-treesitter/nvim-treesitter' }
-  use { 'nvim-treesitter/nvim-treesitter-textobjects' }
-  use { 'nvim-treesitter/playground', cmd = 'TSPlaygroundToggle' }
-  use {
-    'danymat/neogen',
-    requires = 'nvim-treesitter/nvim-treesitter',
-    config = neogen,
-  }
-  use { 'justinmk/vim-dirvish' }
   use {
     'christoomey/vim-tmux-navigator',
     setup = function()
@@ -51,19 +57,12 @@ local function plugins()
     end,
     config = vim_tmux_navigator
   }
-  use { 'neovim/nvim-lspconfig' }
-  use {
-    'tpope/vim-fugitive',
-    config = fugitive
-  }
-  use {
-    'norcalli/nvim-colorizer.lua',
-    cmd = 'ColorizerAttachToBuffer'
-  }
-  use {
-    'L3MON4D3/LuaSnip',
-    config = luasnip
-  }
+  -- use {
+  --   'windwp/nvim-autopairs',
+  --   config = function()
+  --     require('nvim-autopairs').setup{}
+  --   end
+  -- }
   -- use {
   --   'hrsh7th/nvim-cmp',
   --   requires = {
@@ -74,43 +73,6 @@ local function plugins()
   --     'saadparwaiz1/cmp_luasnip',
   --   },
   --   config = nvim_cmp
-  -- }
-  use {
-    'lewis6991/gitsigns.nvim',
-    requires = {
-      'nvim-lua/plenary.nvim'
-    },
-    config = gitsigns
-  }
-  use {
-    '~/code/vim/scnvim',
-    config = scnvim
-  }
-  use { 'bakpakin/fennel.vim' }
-  use {
-    'lukas-reineke/indent-blankline.nvim',
-    config = indent_blankline
-  }
-  use { 'kyazdani42/nvim-web-devicons' }
-  use {
-    'alec-gibson/nvim-tetris',
-    cmd = 'Tetris'
-  }
-  use { 'editorconfig/editorconfig-vim' }
-  use { 'tpope/vim-repeat' }
-  use {
-    'tpope/vim-unimpaired',
-    config = unimpaired
-  }
-  use {
-    '~/code/vim/nvim-markdown-preview',
-    cmd = 'MarkdownPreview',
-  }
-  -- use {
-  --   'windwp/nvim-autopairs',
-  --   config = function()
-  --     require('nvim-autopairs').setup{}
-  --   end
   -- }
 end
 
