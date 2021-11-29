@@ -1,36 +1,66 @@
-local set = vim.o
+local set = vim.opt
 
--- Editing
-set.hidden                                        -- be able to hide modified buffers
-set.virtualedit = 'all'                           -- be able to access all areas of the buffer    
-set.clipboard = 'unnamed'                         -- yank to system-wide clipboard
-set.inccommand = 'nosplit'                        -- preview changes (:s/) incrementally
-set.completeopt = {'menu', 'menuone', 'noselect'} -- popup menu behaviour (completion)
+--- Editing
 
--- Appearance
-set.termguicolors      -- enable true color
-set.scrolloff = 4      -- keep a distance of from the cursor when scrolling
-set.nowrap             -- don't wrap words
-set.linebreak          -- break at word boundries for wrapped text
-set.noshowcmd          -- don't display partial commands (g,c etc.)
+-- be able to hide modified buffers
+set.hidden = true
+-- be able to access all areas of the buffer
+set.virtualedit = 'all'
+-- yank to system-wide clipboard
+set.clipboard = 'unnamed'
+-- preview changes (:s/) incrementally
+set.inccommand = 'nosplit'
+-- popup menu behaviour (completion)
+set.completeopt = {'menu', 'menuone', 'noselect'}
+
+--- Appearance
+
+-- enable true color
+set.termguicolors = true
+-- keep a distance from the cursor when scrolling
+set.scrolloff = 4
+-- don't wrap words
+set.wrap = false
+-- break at word boundries for wrapped text
+set.linebreak = true
+-- don't display partial commands (g,c etc.)
+set.showcmd = false
+-- columns left/right of cursor for nowrap
 set.sidescrolloff = 1
+-- pop-up menu transparency
 set.pumblend = 10
 
--- Searching
-set.ignorecase -- ignore case in search patterns
-set.smartcase  -- overrides 'ignorecase'
-set.showmatch  -- highlight search matches while typing
+--- Searching
 
--- Misc
-set.wildignorecase             -- be smart case-sensitive
-set.lazyredraw                 -- don't redraw screen for macros
-set.diffopt:append('vertical') -- use vertical diffs by default
+-- ignore case in search patterns
+set.ignorecase = true
+-- overrides 'ignorecase'
+set.smartcase = true
+-- highlight search matches while typing
+set.showmatch = true
 
--- Idendation/Formating
-set.tabstop = 2     -- tabstop
-set.softtabstop = 2 -- soft tab stop
-set.shiftwidth = 2  -- shiftwidth
-set.copyindent      -- copy indent chars from previous line
-set.expandtab       -- use whitespace instead of tabs
-set.shiftround      -- round indent to multiples of 'shiftwidth'
-set.nojoinspaces    -- only insert one space after a join command
+--- Formatting
+
+-- width of a <Tab> character
+set.tabstop = 2
+-- Ignore soft tab stop (use shiftwidth value instead)
+set.softtabstop = -1
+-- shiftwidth
+set.shiftwidth = 2
+-- copy indent chars from previous line
+set.copyindent = true
+-- use whitespace instead of tabs
+set.expandtab = true
+-- round indent to multiples of 'shiftwidth'
+set.shiftround = true
+-- only insert one space after a join command
+set.joinspaces = false
+
+--- Misc
+
+-- be smart case-sensitive
+set.wildignorecase = true
+-- don't redraw screen for macros
+set.lazyredraw = true
+-- use vertical diffs
+set.diffopt:append('vertical')

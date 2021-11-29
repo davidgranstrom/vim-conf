@@ -1,13 +1,3 @@
-local api = vim.api
-local uv = vim.loop
-
-require'dkg.plugins'
-require'dkg.config.lsp'
-require'dkg.config.treesitter'
-require'dkg.config.telescope'
--- require'random'
--- require'make'
-
 --- Easy printing
 _G.P = function(...)
   local num = select("#", ...)
@@ -56,3 +46,11 @@ function sc_scratchpad_new()
     end)
   end)
 end
+
+require'dkg.performance'
+require'dkg.settings'
+require'dkg.mappings'
+require'dkg.commands'
+require'dkg.statusline'
+require'dkg.plugins'
+
