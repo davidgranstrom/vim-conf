@@ -1,6 +1,5 @@
-local map = require'dkg.utils'.map
-
 return function()
+  local keymap = require'dkg.utils'.map
   local mappings = {
     {'<A-h>', '<cmd>TmuxNavigateLeft<cr>'},
     {'<A-j>', '<cmd>TmuxNavigateDown<cr>'},
@@ -9,6 +8,6 @@ return function()
   }
   for _, maps in ipairs(mappings) do
     local map, action = unpack(maps)
-    map('n', map, action, {silent = true})
+    keymap('n', map, action, {silent = true})
   end
 end

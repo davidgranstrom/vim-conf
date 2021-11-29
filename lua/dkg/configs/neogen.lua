@@ -1,6 +1,5 @@
-local map = require'dkg.utils'.map
-
 return function()
+  local map = require'dkg.utils'.map
   require'neogen'.setup{
     enabled = true,
     languages = {

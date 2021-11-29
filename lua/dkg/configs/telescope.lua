@@ -1,6 +1,5 @@
-local map = require'dkg.utils'.map
-
 return function()
+  local keymap = require'dkg.utils'.map
   local actions = require'telescope.actions'
   local sorters = require'telescope.sorters'
   local previewers = require'telescope.previewers'
@@ -39,6 +38,6 @@ return function()
   }
   for _, provider in ipairs(providers) do
     local map, action = unpack(provider)
-    map('n', map, string.format(cmd, action), {silent = true})
+    keymap('n', map, string.format(cmd, action), {silent = true})
   end
 end

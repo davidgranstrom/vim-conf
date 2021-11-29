@@ -1,12 +1,12 @@
-local telescope = require'dkg.plugins.telescope'
-local surround = require'dkg.plugins.surround'
-local neogen = require'dkg.plugins.neogen'
-local fugitive = require'dkg.plugins.fugitive'
-local nvim_cmp = require'dkg.plugins.nvim-cmp'
-local vim_tmux_navigator = require'dkg.plugins.vim-tmux-navigator'
-local gitsigns = require'dkg.plugins.gitsigns'
-local scnvim = require'dkg.plugins.scnvim'
-local indent_blankline = require'dkg.plugins.indent-blankline'
+local telescope = require'dkg.configs.telescope'
+local surround = require'dkg.configs.surround'
+local neogen = require'dkg.configs.neogen'
+local fugitive = require'dkg.configs.fugitive'
+local nvim_cmp = require'dkg.configs.nvim-cmp'
+local vim_tmux_navigator = require'dkg.configs.vim-tmux-navigator'
+local gitsigns = require'dkg.configs.gitsigns'
+local scnvim = require'dkg.configs.scnvim'
+local indent_blankline = require'dkg.configs.indent-blankline'
 
 local config = {
   display = {
@@ -81,17 +81,7 @@ local function plugins()
     config = scnvim
   }
   use { 'bakpakin/fennel.vim' }
-  use {
-    'folke/tokyonight.nvim',
-    setup = function()
-      vim.g.tokyonight_style = 'night'
-    end,
-    -- config = function()
-    --   vim.cmd [[colorscheme tokyonight]]
-    --   vim.cmd [[hi! link EndOfBuffer NonText]]
-    --   vim.cmd [[hi! link VertSplit Normal]]
-    -- end
-  }
+  use { 'folke/tokyonight.nvim' }
   use {
     'lukas-reineke/indent-blankline.nvim',
     config = indent_blankline
