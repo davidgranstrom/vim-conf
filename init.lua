@@ -1,3 +1,5 @@
+require'impatient'
+
 require'dkg.utils'
 require'dkg.performance'
 require'dkg.settings'

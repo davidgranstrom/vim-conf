@@ -19,10 +19,10 @@ local config = {
 
 local function plugins()
   use { 'wbthomason/packer.nvim' }
+  use { 'lewis6991/impatient.nvim' }
   use { 'tpope/vim-commentary' }
   use { 'tpope/vim-surround', config = surround }
   use { 'tpope/vim-abolish', cmd = 'S' }
-  use { 'folke/tokyonight.nvim', config = function() require'dkg.colorscheme' end }
   use { 'nvim-treesitter/nvim-treesitter' }
   use { 'nvim-treesitter/nvim-treesitter-textobjects' }
   use { 'nvim-treesitter/playground', cmd = 'TSPlaygroundToggle' }
@@ -42,6 +42,15 @@ local function plugins()
   use { 'tpope/vim-repeat' }
   use { 'tpope/vim-unimpaired', config = unimpaired }
   use { '~/code/vim/nvim-markdown-preview', cmd = 'MarkdownPreview', }
+  use {
+    'folke/tokyonight.nvim',
+    config = function()
+      vim.g.tokyonight_style = 'night'
+      vim.cmd [[colorscheme tokyonight]]
+      vim.cmd [[hi! link EndOfBuffer NonText]]
+      vim.cmd [[hi! link VertSplit Normal]]
+    end
+  }
   use {
     'nvim-telescope/telescope.nvim',
     requires = {
