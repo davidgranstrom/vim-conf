@@ -7,6 +7,7 @@ local vim_tmux_navigator = require'dkg.configs.vim-tmux-navigator'
 local gitsigns = require'dkg.configs.gitsigns'
 local scnvim = require'dkg.configs.scnvim'
 local indent_blankline = require'dkg.configs.indent-blankline'
+local unimpaired = require'dkg.configs.unimpaired'
 
 local config = {
   display = {
@@ -93,7 +94,10 @@ local function plugins()
   }
   use { 'editorconfig/editorconfig-vim' }
   use { 'tpope/vim-repeat' }
-  use { 'tpope/vim-unimpaired' }
+  use {
+    'tpope/vim-unimpaired',
+    config = unimpaired
+  }
   use {
     '~/code/vim/nvim-markdown-preview',
     cmd = 'MarkdownPreview',

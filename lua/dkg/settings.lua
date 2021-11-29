@@ -12,6 +12,8 @@ set.clipboard = 'unnamed'
 set.inccommand = 'nosplit'
 -- popup menu behaviour (completion)
 set.completeopt = {'menu', 'menuone', 'noselect'}
+-- enable mouse
+set.mouse = 'a'
 
 --- Appearance
 

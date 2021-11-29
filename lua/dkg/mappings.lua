@@ -1,6 +1,7 @@
 local map = require'dkg.utils'.map
 
 vim.cmd [[ let mapleader = ' ' ]]
+vim.cmd [[ let maplocalleader = ' ' ]]
 
 -- edit init.lua
 map('n', '<leader>ev', '<cmd>tabedit $MYVIMRC<cr>')
