@@ -1,3 +1,9 @@
+--- Commands
+
+-- JSON formatting with jq
+vim.cmd [[command! JSONPretty %!jq '.']]
+vim.cmd [[command! JSONUgly %!jq -c '.']]
+
 --- Easy printing
 _G.P = function(...)
   local num = select("#", ...)
@@ -47,15 +53,20 @@ function sc_scratchpad_new()
   end)
 end
 
---- Keymap wrapper
-local function map(mode, lhs, rhs, opts)
+--- Keymap wrappers
+local function map(mode, lhs, rhs, opts, buffer)
   opts = opts or {}
   opts = vim.tbl_extend('keep', {}, opts, {noremap = true})
+  buffer = buffer or false
   if type(mode) ~= 'table' then
     mode = {mode}
   end
   for _, m in ipairs(mode) do
-    vim.api.nvim_set_keymap(m, lhs, rhs, opts)
+    if buffer then
+      vim.api.nvim_buf_set_keymap(0, m, lhs, rhs, opts)
+    else
+      vim.api.nvim_set_keymap(m, lhs, rhs, opts)
+    end
   end
 end
 

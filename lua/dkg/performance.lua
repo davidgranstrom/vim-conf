@@ -1,4 +1,4 @@
---- Disable plugins to reduce startup time
+--- Disable builtin plugins to reduce startup time
 
 vim.g.make_loaded = 1
 vim.g.random_loaded = 1

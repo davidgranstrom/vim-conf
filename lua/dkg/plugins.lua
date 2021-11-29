@@ -1,13 +1,13 @@
-local telescope = require'dkg.configs.telescope'
-local surround = require'dkg.configs.surround'
-local neogen = require'dkg.configs.neogen'
 local fugitive = require'dkg.configs.fugitive'
-local nvim_cmp = require'dkg.configs.nvim-cmp'
-local vim_tmux_navigator = require'dkg.configs.vim-tmux-navigator'
 local gitsigns = require'dkg.configs.gitsigns'
-local scnvim = require'dkg.configs.scnvim'
 local indent_blankline = require'dkg.configs.indent-blankline'
+local neogen = require'dkg.configs.neogen'
+local nvim_cmp = require'dkg.configs.nvim-cmp'
+local scnvim = require'dkg.configs.scnvim'
+local surround = require'dkg.configs.surround'
+local telescope = require'dkg.configs.telescope'
 local unimpaired = require'dkg.configs.unimpaired'
+local vim_tmux_navigator = require'dkg.configs.vim-tmux-navigator'
 
 local config = {
   display = {
@@ -24,6 +24,7 @@ local function plugins()
   use { 'tpope/vim-abolish', cmd = 'S' }
   use {
     'folke/tokyonight.nvim',
+    -- workaround for overriding some hl groups
     config = function() require'dkg.colorscheme' end
   }
   use {
