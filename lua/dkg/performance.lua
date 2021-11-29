@@ -1,4 +1,7 @@
---- Disable default plugins to reduce startup time
+--- Disable plugins to reduce startup time
+
+vim.g.make_loaded = 1
+vim.g.random_loaded = 1
 
 vim.g.did_install_default_menus = 1
 vim.g.did_install_syntax_menu = 1
