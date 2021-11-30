@@ -1,12 +1,8 @@
-local api = vim.api
-local uv = vim.loop
+--- Commands
 
-require'dkg.plugins'
-require'dkg.config.lsp'
-require'dkg.config.treesitter'
-require'dkg.config.telescope'
--- require'random'
--- require'make'
+-- JSON formatting with jq
+vim.cmd [[command! JSONPretty %!jq '.']]
+vim.cmd [[command! JSONUgly %!jq -c '.']]
 
 --- Easy printing
 _G.P = function(...)
@@ -56,3 +52,24 @@ function sc_scratchpad_new()
     end)
   end)
 end
+
+--- Keymap wrappers
+local function map(mode, lhs, rhs, opts, buffer)
+  opts = opts or {}
+  opts = vim.tbl_extend('keep', {}, opts, {noremap = true})
+  buffer = buffer or false
+  if type(mode) ~= 'table' then
+    mode = {mode}
+  end
+  for _, m in ipairs(mode) do
+    if buffer then
+      vim.api.nvim_buf_set_keymap(0, m, lhs, rhs, opts)
+    else
+      vim.api.nvim_set_keymap(m, lhs, rhs, opts)
+    end
+  end
+end
+
+return {
+  map = map,
+}

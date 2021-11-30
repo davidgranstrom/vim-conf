@@ -87,7 +87,7 @@ local function active_left()
     s = s .. pad(glyphs.branch, 1, 1) .. gitbranch
   end
   -- make integration
-  s = s .. ' %{MakeBuildProgress()}'
+  -- s = s .. ' %{MakeBuildProgress()}'
   -- help buffer flag, modified flag, read-only flag
   s = s .. ' %h%m%r%'
   return s
