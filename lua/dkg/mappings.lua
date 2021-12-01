@@ -13,9 +13,6 @@ map('n', '<leader>c', '<cmd>cd %:p:h | pwd<cr>')
 -- exit insert mode
 map('i', 'jk', '<Esc>')
 
--- Y should behave like C and D
-map('n', 'Y', 'y$')
-
 -- save buffer
 map({'n', 'i'}, '<A-s>', '<cmd>write<cr>')
 
