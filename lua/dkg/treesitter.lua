@@ -64,6 +64,15 @@ require'nvim-treesitter.configs'.setup {
         ["[]"] = "@class.outer",
       },
     },
+    swap = {
+      enable = true,
+      swap_next = {
+        ["<leader>sw"] = "@parameter.inner",
+      },
+      swap_previous = {
+        ["<leader>SW"] = "@parameter.inner",
+      },
+    },
   },
   playground = {
     enable = true,

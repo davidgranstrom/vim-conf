@@ -40,7 +40,7 @@ local directions = {'up', 'right', 'down', 'left'}
 local win_cmds = {'+', '>', '-', '<'}
 for i = 1, #directions do
   local lhs = string.format('<%s>', directions[i])
-  local rhs = string.format('<cmd>3wincmd %s', win_cmds[i])
+  local rhs = string.format('<cmd>3wincmd %s<cr>', win_cmds[i])
   map('n', lhs, rhs, {silent = true})
 end
 
@@ -51,7 +51,7 @@ map('n', 'Q', '<Nop>')
 map('n', '<leader>r', '*``cgn')
 
 -- don't move cursor after visual selection yank
-map('v', '<expr>y', '"my\"" . v:register . "y`y"')
+map('v', '<expr>y', [["my\"" . v:register . "y`y"]])
 
 -- remap esc in terminal mode
 map('t', '<Esc>', '<C-\\><C-n>')

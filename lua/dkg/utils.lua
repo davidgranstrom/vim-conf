@@ -70,6 +70,11 @@ local function map(mode, lhs, rhs, opts, buffer)
   end
 end
 
+local function buf_map(mode, lhs, rhs, opts)
+  map(mode, lhs, rhs, opts, true)
+end
+
 return {
   map = map,
+  buf_map = buf_map,
 }
