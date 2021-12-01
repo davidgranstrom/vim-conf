@@ -2,17 +2,11 @@ local set = vim.opt
 
 --- Editing
 
--- be able to hide modified buffers
-set.hidden = true
-
 -- be able to access all areas of the buffer
 set.virtualedit = 'all'
 
 -- yank to system-wide clipboard
 set.clipboard = 'unnamed'
-
--- preview changes (:s/) incrementally
-set.inccommand = 'nosplit'
 
 -- popup menu behaviour (completion)
 set.completeopt = {'menu', 'menuone', 'noselect'}
@@ -73,9 +67,6 @@ set.expandtab = true
 
 -- round indent to multiples of 'shiftwidth'
 set.shiftround = true
-
--- only insert one space after a join command
-set.joinspaces = false
 
 --- Misc
 
