@@ -1,9 +1,11 @@
 local set = vim.opt
 
---- Editing
+-------------
+-- Editing --
+-------------
 
--- be able to access all areas of the buffer
-set.virtualedit = 'all'
+-- work-around for nvim-cmp
+set.virtualedit = {'block', 'insert'}
 
 -- yank to system-wide clipboard
 set.clipboard = 'unnamed'
@@ -14,7 +16,9 @@ set.completeopt = {'menu', 'menuone', 'noselect'}
 -- enable mouse
 set.mouse = 'a'
 
---- Appearance
+----------------
+-- Appearance --
+----------------
 
 -- enable true color
 set.termguicolors = true
@@ -37,7 +41,15 @@ set.sidescrolloff = 1
 -- pop-up menu transparency
 set.pumblend = 10
 
---- Searching
+-- show list chars
+set.list = true
+
+-- highlight trailing whitespace
+set.listchars:append('trail:∙')
+
+---------------
+-- Searching --
+---------------
 
 -- ignore case in search patterns
 set.ignorecase = true
@@ -48,7 +60,9 @@ set.smartcase = true
 -- highlight search matches while typing
 set.showmatch = false
 
---- Formatting
+----------------
+-- Formatting --
+----------------
 
 -- width of a <Tab> character
 set.tabstop = 2
@@ -68,7 +82,9 @@ set.expandtab = true
 -- round indent to multiples of 'shiftwidth'
 set.shiftround = true
 
---- Misc
+----------
+-- Misc --
+----------
 
 -- be smart case-sensitive
 set.wildignorecase = true
@@ -78,3 +94,13 @@ set.lazyredraw = true
 
 -- use vertical diffs
 set.diffopt:append('vertical')
+
+-----------------
+-- Diagnostics --
+-----------------
+
+vim.diagnostic.config({
+  virtual_text = false,
+  update_in_insert = false,
+  signs = true,
+})

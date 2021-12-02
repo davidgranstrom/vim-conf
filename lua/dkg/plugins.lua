@@ -41,6 +41,7 @@ local function plugins()
   use { 'editorconfig/editorconfig-vim' }
   use { 'tpope/vim-repeat' }
   use { 'tpope/vim-unimpaired', config = unimpaired }
+  use { 'onsails/lspkind-nvim' }
   use { '~/code/vim/nvim-markdown-preview', cmd = 'MarkdownPreview', }
   use {
     'folke/tokyonight.nvim',

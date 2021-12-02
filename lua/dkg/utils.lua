@@ -53,25 +53,42 @@ function sc_scratchpad_new()
   end)
 end
 
+--- Split a single line function call into one parameter per line
+function split_single_call()
+  local lnum, col = unpack(vim.api.nvim_win_get_cursor(0))
+  vim.api.nvim_buf_set_mark(0, '<', lnum, col, {})
+  -- find the open paren
+  vim.cmd[[normal! f(]]
+  vim.cmd[[exe "normal! a\<cr>"]]
+  -- find the closing paren
+  vim.cmd[[normal! f)]]
+  vim.cmd[[exe "normal! i\<cr>\<esc>k"]]
+  -- perform the split
+  vim.cmd[[s/,/,\r/g]]
+  lnum, col = unpack(vim.api.nvim_win_get_cursor(0))
+  vim.api.nvim_buf_set_mark(0, '>', lnum, col, {})
+  -- reindent
+  vim.cmd[[normal! vgv=]]
+end
+
 --- Keymap wrappers
-local function map(mode, lhs, rhs, opts, buffer)
+local function map(mode, lhs, rhs, opts, bufnr)
   opts = opts or {}
   opts = vim.tbl_extend('keep', {}, opts, {noremap = true})
-  buffer = buffer or false
   if type(mode) ~= 'table' then
     mode = {mode}
   end
   for _, m in ipairs(mode) do
-    if buffer then
-      vim.api.nvim_buf_set_keymap(0, m, lhs, rhs, opts)
+    if bufnr then
+      vim.api.nvim_buf_set_keymap(bufnr, m, lhs, rhs, opts)
     else
       vim.api.nvim_set_keymap(m, lhs, rhs, opts)
     end
   end
 end
 
-local function buf_map(mode, lhs, rhs, opts)
-  map(mode, lhs, rhs, opts, true)
+local function buf_map(bufnr, mode, lhs, rhs, opts)
+  map(mode, lhs, rhs, opts, bufnr)
 end
 
 return {
