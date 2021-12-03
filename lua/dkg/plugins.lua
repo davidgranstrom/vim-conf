@@ -27,6 +27,7 @@ local function plugins()
   use { 'tpope/vim-repeat' }
   use { 'tpope/vim-unimpaired', config = r'unimpaired' }
   use { 'editorconfig/editorconfig-vim' }
+  use { 'numToStr/Navigator.nvim', config = r'navigator' }
   use { 'justinmk/vim-dirvish' }
   use { 'danymat/neogen', requires = 'nvim-treesitter/nvim-treesitter', config = r'neogen' }
   use { 'norcalli/nvim-colorizer.lua', cmd = 'ColorizerAttachToBuffer' }
@@ -50,13 +51,6 @@ local function plugins()
       'nvim-lua/plenary.nvim',
     },
     config = r'telescope'
-  }
-  use {
-    'christoomey/vim-tmux-navigator',
-    setup = function()
-      vim.g.tmux_navigator_no_mappings = 1
-    end,
-    config = r'vim-tmux-navigator'
   }
   use { 'L3MON4D3/LuaSnip', config = r'luasnip' }
   use {
