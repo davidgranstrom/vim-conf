@@ -14,26 +14,26 @@ end
 local function plugins()
   use { 'wbthomason/packer.nvim' }
   use { 'lewis6991/impatient.nvim' }
-  use { 'tpope/vim-commentary' }
-  use { 'tpope/vim-surround', config = r'surround' }
-  use { 'tpope/vim-abolish', cmd = 'S' }
+  use { 'neovim/nvim-lspconfig' }
   use { 'nvim-treesitter/nvim-treesitter' }
   use { 'nvim-treesitter/nvim-treesitter-textobjects' }
   use { 'nvim-treesitter/playground', cmd = 'TSPlaygroundToggle' }
-  use { 'danymat/neogen', requires = 'nvim-treesitter/nvim-treesitter', config = r'neogen' }
-  use { 'justinmk/vim-dirvish' }
-  use { 'neovim/nvim-lspconfig' }
+  use { '~/code/vim/scnvim', config = r'scnvim' }
+  use { '~/code/vim/nvim-markdown-preview', cmd = 'MarkdownPreview', }
+  use { 'tpope/vim-commentary' }
+  use { 'tpope/vim-surround', config = r'surround' }
+  use { 'tpope/vim-abolish', cmd = 'S' }
   use { 'tpope/vim-fugitive', config = r'fugitive' }
+  use { 'tpope/vim-repeat' }
+  use { 'tpope/vim-unimpaired', config = r'unimpaired' }
+  use { 'editorconfig/editorconfig-vim' }
+  use { 'justinmk/vim-dirvish' }
+  use { 'danymat/neogen', requires = 'nvim-treesitter/nvim-treesitter', config = r'neogen' }
   use { 'norcalli/nvim-colorizer.lua', cmd = 'ColorizerAttachToBuffer' }
   use { 'lewis6991/gitsigns.nvim', requires = 'nvim-lua/plenary.nvim', config = r'gitsigns' }
-  use { '~/code/vim/scnvim', config = r'scnvim' }
   use { 'bakpakin/fennel.vim' }
   use { 'lukas-reineke/indent-blankline.nvim', config = r'indent-blankline' }
   use { 'alec-gibson/nvim-tetris', cmd = 'Tetris' }
-  use { 'editorconfig/editorconfig-vim' }
-  use { 'tpope/vim-repeat' }
-  use { 'tpope/vim-unimpaired', config = r'unimpaired' }
-  use { '~/code/vim/nvim-markdown-preview', cmd = 'MarkdownPreview', }
   use {
     'folke/tokyonight.nvim',
     config = function()
@@ -68,10 +68,10 @@ local function plugins()
       'quangnguyen30192/cmp-nvim-tags',
       'saadparwaiz1/cmp_luasnip',
       'onsails/lspkind-nvim',
+      'kyazdani42/nvim-web-devicons'
     },
     config = r'nvim-cmp'
   }
-  use { 'kyazdani42/nvim-web-devicons' }
   -- use {
   --   'windwp/nvim-autopairs',
   --   config = function()
