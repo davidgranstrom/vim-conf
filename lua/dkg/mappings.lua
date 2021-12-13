@@ -24,8 +24,8 @@ map({'n', 'i'}, '<F1>', '<Esc>')
 map('n', '<C-l>', '10zl')
 map('n', '<C-h>', '10zh')
 
--- move a step to the right in insert mode 
-map('i', '<C-l>', '<C-o>l')
+-- move to the right in insert mode
+map('i', '<C-l>', '<Right>')
 
 -- paste last yanked item
 map({'n', 'x'}, 'gp', '"0p')
