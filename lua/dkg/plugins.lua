@@ -66,12 +66,12 @@ local function plugins()
     },
     config = r'nvim-cmp'
   }
-  -- use {
-  --   'windwp/nvim-autopairs',
-  --   config = function()
-  --     require('nvim-autopairs').setup{}
-  --   end
-  -- }
+  use {
+    'windwp/nvim-autopairs',
+    config = function()
+      require('nvim-autopairs').setup{}
+    end
+  }
 end
 
 local packer_config = {
