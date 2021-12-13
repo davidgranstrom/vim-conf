@@ -3,6 +3,7 @@
 -- JSON formatting with jq
 vim.cmd [[command! JSONPretty %!jq '.']]
 vim.cmd [[command! JSONUgly %!jq -c '.']]
+vim.cmd [[command! UUID lua require'dkg.scripts.uuidgen'()]]
 
 --- Easy printing
 _G.P = function(...)
