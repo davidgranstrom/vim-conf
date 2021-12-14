@@ -8,7 +8,7 @@ local function uuid()
   return ''
 end
 
-return function ()
+return function()
   local keys = 'a' .. uuid() .. '<esc>'
   vim.api.nvim_input(keys)
 end
