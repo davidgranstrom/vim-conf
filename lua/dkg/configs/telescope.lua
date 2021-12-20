@@ -29,6 +29,9 @@ require'telescope'.setup{
   },
 }
 
+-- use fzf sorter
+require'telescope'.load_extension('fzf')
+
 local cmd = '<cmd>Telescope %s<cr>'
 local providers = {
   {'<leader>t', 'git_files'},

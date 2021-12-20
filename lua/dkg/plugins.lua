@@ -44,6 +44,7 @@ local function plugins()
       vim.cmd [[hi! link VertSplit Normal]]
     end
   }
+  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
   use {
     'nvim-telescope/telescope.nvim',
     requires = {
