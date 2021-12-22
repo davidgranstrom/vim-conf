@@ -45,6 +45,7 @@ local function plugins()
     end
   }
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+  use {'~/code/vim/telescope-scdoc' }
   use {
     'nvim-telescope/telescope.nvim',
     requires = {

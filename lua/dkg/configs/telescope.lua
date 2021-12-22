@@ -31,6 +31,7 @@ require'telescope'.setup{
 
 -- use fzf sorter
 require'telescope'.load_extension('fzf')
+require'telescope'.load_extension('scdoc')
 
 local cmd = '<cmd>Telescope %s<cr>'
 local providers = {

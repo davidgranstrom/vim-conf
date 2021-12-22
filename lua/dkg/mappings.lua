@@ -48,9 +48,6 @@ map('n', 'Q', '<Nop>')
 -- easy renaming
 map('n', '<leader>r', '*``cgn')
 
--- don't move cursor after visual selection yank
-map('v', '<expr>y', [["my\"" . v:register . "y`y"]])
-
 -- remap esc in terminal mode
 map('t', '<Esc>', '<C-\\><C-n>')
 

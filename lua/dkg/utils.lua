@@ -1,3 +1,6 @@
+local uv = vim.loop
+local api = vim.api
+
 --- Commands
 
 -- JSON formatting with jq
