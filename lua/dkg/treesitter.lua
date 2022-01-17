@@ -13,9 +13,10 @@ require'nvim-treesitter.configs'.setup {
     "typescript",
     "json",
     "yaml",
-    "dockerfile",
     "fennel",
+    "dockerfile",
     "query",
+    -- "markdown",
     -- "supercollider",
   },
   -- indent = {
@@ -70,7 +71,7 @@ require'nvim-treesitter.configs'.setup {
         ["<leader>sw"] = "@parameter.inner",
       },
       swap_previous = {
-        ["<leader>SW"] = "@parameter.inner",
+        ["<leader>sW"] = "@parameter.inner",
       },
     },
   },

@@ -35,13 +35,12 @@ local function plugins()
   use { 'bakpakin/fennel.vim' }
   use { 'lukas-reineke/indent-blankline.nvim', config = r'indent-blankline' }
   use { 'alec-gibson/nvim-tetris', cmd = 'Tetris' }
+  use { 'jbyuki/venn.nvim' }
   use {
-    'folke/tokyonight.nvim',
+    'rebelot/kanagawa.nvim',
     config = function()
-      vim.g.tokyonight_style = 'night'
-      vim.cmd [[colorscheme tokyonight]]
+      vim.cmd [[colorscheme kanagawa]]
       vim.cmd [[hi! link EndOfBuffer NonText]]
-      vim.cmd [[hi! link VertSplit Normal]]
     end
   }
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
@@ -71,7 +70,7 @@ local function plugins()
   use {
     'windwp/nvim-autopairs',
     config = function()
-      require('nvim-autopairs').setup{}
+      require'nvim-autopairs'.setup{}
     end
   }
 end
