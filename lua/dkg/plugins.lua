@@ -35,7 +35,7 @@ local function plugins()
   use { 'bakpakin/fennel.vim' }
   use { 'lukas-reineke/indent-blankline.nvim', config = r'indent-blankline' }
   use { 'alec-gibson/nvim-tetris', cmd = 'Tetris' }
-  use { 'jbyuki/venn.nvim' }
+  use { 'jbyuki/venn.nvim', config = r'venn' }
   use {
     'rebelot/kanagawa.nvim',
     config = function()
