@@ -1,5 +1,7 @@
 # init.lua
 
+New location: https://github.com/davidgranstrom/dotfiles
+
 Nvim configuration in lua.
 
 ## Details
